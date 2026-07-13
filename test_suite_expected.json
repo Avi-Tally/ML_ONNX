@@ -1,0 +1,4718 @@
+[
+  {
+    "query": "List the parties to whom I need to make the payment this week",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Oldest 10 Bills which are pending to receive today only above 1L ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 100000.0
+      },
+      "limit": 10,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Payables till date",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which vendors are due for payment this week?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What\u2019s the total overdue payable beyond 30 days?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 30
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Identify the top 5 parties to whom the payment is pending for feb 2025",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "month_year",
+        "month": 2,
+        "year": 2025
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 5,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "how many customers bills are due in the next 10 days and what is the total value?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 10
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Bills which are pending today starting with oldest billdate first for which the amount is less than 1L? ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 100000.0
+      },
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the overdue payable amount?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show highest pending and cleared receivables bill amount for sundry debtors also give their GST status?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "sundry debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Total Receivables amount less than 90 days ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": "<",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Receivable > 90 days ?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Customer dues and settled bills with over due amount less than 55000",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 55000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how many bills are due to receive in next 7 days.list in ascending order of bill date",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 7
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What\u2019s my total outstanding receivable amount?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How many customers owe me money right now?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": true,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What\u2019s the total overdue receivable amount?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show me ageing of receivables by 30, 60, 90 days.",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which customers have not paid for more than 60 days?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 60
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What\u2019s the oldest unpaid bill in my books and what is the Tax amount?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Customer dues for today?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "highest receivable amount for creditors with overdue days less than a month",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "creditors",
+      "date_filter": null,
+      "age_filter": {
+        "operator": "<",
+        "days": 30
+      },
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "lowest receivable bill amount",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "top 5 parties with overdue receivables with maximum overdue days which have settled bills as well. ",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 5,
+      "sort": {
+        "field": "due_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "My total receivable ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Overdue receivables ?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Total pending receivables?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Outstanding of Sundry Creditors?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Display the last 7 days due outstanding of debtors",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "debtors",
+      "date_filter": {
+        "type": "last_days",
+        "days": 7
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "For Aquatech system, how many overdue bills are available till date and what is the total value of it ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Aquatech system",
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show me the overdue bills of the party AquaTech system",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "AquaTech system",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the outstanding amount for Anand Cargo ?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Anand Cargo",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Net outstanding amount?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Display the last 7 days outstanding of the group Relaxo",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Relaxo",
+      "date_filter": {
+        "type": "last_days",
+        "days": 7
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "For Sukan Engineering , how many overdue bills are available till date and what is the total value of it ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Sukan Engineering",
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the ageing of the outstanding amount based on the bill date for the 6 months from Jan 2025 for the ledger Rashmi Traders",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Rashmi Traders",
+      "date_filter": {
+        "type": "explicit_range",
+        "start_day": 1,
+        "start_month": 1,
+        "start_year": 2025,
+        "end_day": 30,
+        "end_month": 6,
+        "end_year": 2025
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "bill_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show me the overdue invoices of the Jagat",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Jagat",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How much does Dew Cargo owe me?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Dew Cargo",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which suppliers bills are due today ?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which customer bills are pending to receive today ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "When are my collections due ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show me all invoices pending from Thermax Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Thermax Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How many days overdue is bill 613 and what is the gst status?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which vendors are due to receive today?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Whom should I follow up , Can you give me their address ",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the pending and cleared amount for Thermax Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Thermax Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how much amount needs to be paid in next 15 days and receivables in next 15 days",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 15
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Amount of Bill no 308 for Abhishek and give the tax amount",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": "Abhishek",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "308",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "List all the pending receivable bills number for Chemical Process Pvt LTD",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Chemical Process Pvt LTD",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the total pending amount for Chemical Process Pipping Pvt Ltd for bill number MODI/25-26/956",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": "Chemical Process Pipping Pvt Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "MODI/25-26/956",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Is there any pending amount for ledger DeltaFlow?",
+    "intent": "GET_LEDGER_BALANCE",
+    "expected_entities": {
+      "ledger_name": "DeltaFlow",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the total outstanding balance for Ledger CECO?",
+    "intent": "GET_LEDGER_BALANCE",
+    "expected_entities": {
+      "ledger_name": "CECO",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the total outstanding under Group Expenses",
+    "intent": "GET_LEDGER_BALANCE",
+    "expected_entities": {
+      "ledger_name": "Expenses",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the payment status of Bill Number 1027 under Ledger Supreme ?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": "Supreme",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "1027",
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Was Bill Number 104 settled fully for Varad engineers?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": "Varad engineers",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "104",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show the opening amounts for payables with their totals",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Display the Opening Amount, pending and final balance of payables as on 02-03-2025",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": "02-Mar-2025",
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show receivable ageing for Thermax Ltd based on due date",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Thermax Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give payable ageing analysis for Sundry Creditors using bill date",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Infosys Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show ageing for Sundry Creditors where pending amount is greater than 500000",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 500000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "give the total number of bills pending to be paid to thermax in last 30 days",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "thermax",
+      "date_filter": {
+        "type": "last_days",
+        "days": 30
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": true,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "give the party who has the least number of pending bills in last 10 days",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "last_days",
+        "days": 10
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the voucher number linked to bill reference 613?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which voucher type was used for bill 613?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the balance outstanding for bill 613 as of today?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": "today",
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Has any partial payment been received against bill 613?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which ledger is associated with bill 613?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How many days overdue is bill 613?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "613",
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Are there any postdated outstanding bills?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "List parties with postdated outstanding bills",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which parties have postdated receivables?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which parties have postdated payables?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show customer advances for Reliance Industries Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show supplier advances for Sundry Creditors",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which ledgers have on-account receipts pending adjustment?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "bill_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show groups with pending credit notes greater than \u20b950,000",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 50000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "List ledgers having on-account payments less than \u20b925,000",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 25000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "bill_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give adjustment summary for Reliance Industries Ltd and Infosys Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show adjustment balances for Debtors group sorted by voucher count descending",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which groups have pending debit notes equal to \u20b910,000?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 10001.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show adjustment summary across all groups sorted by voucher count ascending",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which receipts for Reliance Industries Ltd are still unallocated?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show pending customer advance transactions for Infosys Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Infosys Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "List all unadjusted receipts across the company",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which payments are not linked to any bills?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show adjustment bills for Sundry Debtors",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show old unallocated receipts for Customers sorted by voucher date ascending",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Customers",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show pending credit note transactions for Jagat Ventures",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Jagat Ventures",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "List adjustment vouchers with highest pending amount first",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show adjustment transactions for Reliance Industries Ltd and Tata Motors",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show adjustment entries for Customers sorted by voucher date descending",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Customers",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How much cash will I be getting this week?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how much money owed to me is overdue?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How much money should i be getting today?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how much of my paymentsis overdue?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "how much payment to me is past due date?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "My total receivable ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "net amount receivable beyond due date?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Net outstanding amount?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "net outstanding payables?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "outstanding?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "payment that is late?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Till date payable ?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "todays outstanding",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "what are my outstanding's?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "what are my payables and receivables?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "what do i owe and how much i should get as of today?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "what do i owe as of today?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the overdue payable amount?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "what money i should get?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What\u2019s the total overdue payable beyond 30 days?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 30
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Total Receivables amount",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Total unadjusted payments",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Total payables as of today",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What will be my payables by next month?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 30
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What will be my payables by next HY?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 180
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give me the outstanding amount for FY 2025-26 and also show how much is overdue beyond 90 days.",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "explicit_range",
+        "start_day": 1,
+        "start_month": 4,
+        "start_year": 2025,
+        "end_day": 31,
+        "end_month": 3,
+        "end_year": 2026
+      },
+      "age_filter": {
+        "operator": ">",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show receivable outstanding",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show advanced received",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Overdue receivables ?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Overdue payables",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Total unadjusted receipts",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Display outstanding balances and also show monthly trend for the past 6 months.",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "last_days",
+        "days": 180
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Net Outstanding",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Display receivable outstanding between October 2024 and February 2025",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "explicit_range",
+        "start_day": 1,
+        "start_month": 10,
+        "start_year": 2024,
+        "end_day": 28,
+        "end_month": 2,
+        "end_year": 2025
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show company-wise outstanding and also identify whether the balance is receivable, payable, or net.",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show company-wise outstanding for ModiChem company and also identify whether the balance is receivable, payable, or net.",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "ModiChem company",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show net outstanding company-wise and list parties with both receivable and payable balances.",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how much am i owed?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give payable outstanding company-wise and list bills nearing due date within 7 days.",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 7
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Debtors Bills expected to pay today only and which are settled yesterday?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "creditor's Bills which are due today for collections with overdue amount equal to 60000",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 60001.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "latests 5 Bills which are due today for payments to Jagat?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Jagat",
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 5,
+      "sort": {
+        "field": "bill_date",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Oldest 10 Bills which are pending to receive today only above 1L ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 100000.0
+      },
+      "limit": 10,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Bills which are pending today starting with oldest billdate first for which the amount is less than 1L? ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 100000.0
+      },
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Customer dues and settled bills with over due amount less than 55000",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 55000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Display the Opening Amount, pending and final balance of payables as on 02-03-2025",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": "02-Mar-2025",
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "For Aquatech system, how many overdue bills are available till date that crossed 60 days and what is the total value of it. Which bill has the highest overdue bills?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Aquatech system",
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": {
+        "operator": ">",
+        "days": 60
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "highest receivable amount for creditors with avg overdue days less than a month",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "creditors",
+      "date_filter": null,
+      "age_filter": {
+        "operator": "<",
+        "days": 30
+      },
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "highest receivable bill amount for debtors that has pending amount equal to 2L",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 200001.0
+      },
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how many bills are due to receive in next 7 days.list in ascending order of bill date",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 7
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "how many customers bills are due in the next 10 days and what is the total value? Which bill has the least overdue days",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 10
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "due_date",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How much does Anand Cargo owe me along with overdue date and how much is cleared?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Anand Cargo",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "List due payable bills as on today with most overdue days on top?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "till_today"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "due_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "list the bills with new billdates on top due for payments and how much is cleared?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "lowest receivable amount only for gstr 2a creditors",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "gstr 2a creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "top 5 parties with overdue receivables with maximum overdue days which have settled bills as well. ",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 5,
+      "sort": {
+        "field": "due_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Receivable > 90 days ?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show highest pending and cleared receivables bill amount for sundry debtors?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "sundry debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Total Receivables amount less than 90 days ",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": "<",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the outstanding amount for Mr Raj?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Mr Raj",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "whats the most overdue date bill that i need to pay and that are cleared?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "due_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "which bill is highest amount among the pending ones?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is the pending and cleared amount for Thermax Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Thermax Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What was the rate applied for Agru in Bill Number 049/24-25?",
+    "intent": "GET_BILL_DETAILS",
+    "expected_entities": {
+      "ledger_name": "Agru",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": "049/24-25",
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What\u2019s the oldest unpaid bill in my books?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How many customers owe me money right now?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": true,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Identify the top 5 parties to whom the payment is pending for feb 2025 with highest average overdue days.",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "month_year",
+        "month": 2,
+        "year": 2025
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 5,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Identify the parties to whom the payment is pending with their total value in decreasing avg overdue days",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "List the parties to whom I need to make the payment this week in decreasing pending amount",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "what amount should i get from debtors this week?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "debtors",
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which customers have not paid for more than 60 days?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 60
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which vendors are due for payment this week?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "this_week"
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Who are my top 10 debtors based on pending bills ?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 10,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Who should I follow up ",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Total cleared bills for Reliance Industries Ltd",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "Total bills for Infosys Ltd including cleared bill",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Infosys Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How much is pending from Sundry Creditors? ",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How much is cleared from Sundry Creditors?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "Which party has the highest amount of cleared bills?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "Which party has cleared bill amount more than 50000",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 50000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "cleared"
+    }
+  },
+  {
+    "query": "List suppliers who has both Overdue and cleared Payables in increasing order?",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give pending amount for credit card expenses also what is the cleared amount?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "credit card expenses",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which parties under sundry creditors for goods import are overdue receivables?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "sundry creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Show payable summary for GSTR2A Creditors",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "GSTR2A Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "net outstanding for debtors with avg average overdue days less than 2 days",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "debtors",
+      "date_filter": null,
+      "age_filter": {
+        "operator": "<",
+        "days": 2
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "overdue payables for Sundry Creditors for this quarter",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": {
+        "type": "last_days",
+        "days": 90
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "How much is pending from Sun Enterprises?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Sun Enterprises",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": true,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Give payable ageing analysis for Sundry Creditors using bill date",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Infosys Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "List payable ageing for Debtors group based on bill date sorted by bill count",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show ageing summary for Jagat and Thermax based on due date",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Jagat",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show payable ageing for Agru with pending amount greater than 100000",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Agru",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 100000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "List receivable ageing for sundry creditors where total pending amount is less than 50000",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "sundry creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 50000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show ageing analysis for Reliance Industries Ltd based on bill date with total pending amount equal to 250000",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Reliance Industries Ltd",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": "<",
+        "value": 250001.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "bill_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Give payable ageing for Sundry Debtors sorted by bill count ascending",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Sundry Debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Show ageing for Sundry Creditors where pending amount is greater than 500000",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": "Sundry Creditors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": {
+        "operator": ">",
+        "value": 500000.0
+      },
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "give the total number of bills pending to be paid to thermax in last 30 days",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": "thermax",
+      "date_filter": {
+        "type": "last_days",
+        "days": 30
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": true,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "give the party who has the least number of pending bills in last 10 days",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "last_days",
+        "days": 10
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "What is an overdue bill?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Difference between payable and receivable",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How does bill ageing work?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What does overdue amount mean in accounting?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the purpose of bill-wise tracking in Tally?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Why do businesses monitor outstanding receivables?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the meaning of net outstanding?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What happens if payments are received on account but not adjusted against bills?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "bill_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the difference between Sundry Debtors and Sundry Creditors?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How do overdue bills affect cash flow?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Why is ageing analysis important for businesses?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What does partially settled bill mean?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the purpose of maintaining bill references?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How are receivables different from revenue?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What are unadjusted receipts in outstanding reports?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Why do companies track supplier payables separately?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the meaning of overdue by days?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "How is pending amount calculated for a bill?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the impact of delayed customer payments on a business?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What are advanced receipts in accounting?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Why might outstanding reports become misleading?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "What is the difference between closing balance and outstanding balance?",
+    "intent": "UNKNOWN",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Is my receivable ageing getting worse compared to last quarter?",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which customers are taking the longest time to clear payments, and is that a risk for cash flow?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "due_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Are overdue receivables increasing this financial year?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which group contributes the highest overdue outstanding, and should I be concerned?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": 1,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Do my payable trends indicate delayed vendor payments?",
+    "intent": "GET_PAYABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which parties consistently delay payments beyond 90 days?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": {
+        "operator": ">",
+        "days": 90
+      },
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Is my collection efficiency improving over the past 6 months?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": {
+        "type": "last_days",
+        "days": 180
+      },
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which debtors should I prioritize for follow-up based on overdue amount?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Are my outstanding receivables unusually high compared to previous quarters?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which suppliers have the largest pending payable balances, and could this impact operations?",
+    "intent": "GET_TOP_CREDITORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Are there too many old pending bills in Sundry Debtors?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": "Sundry Debtors",
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "bill_date",
+        "order": "asc"
+      },
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which customers have partially settled bills most frequently?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Is the company becoming more dependent on a few customers for receivables?",
+    "intent": "GET_TOP_DEBTORS",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Are overdue bills concentrated within a specific customer group?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": true,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  },
+  {
+    "query": "Which ageing bucket has the highest outstanding amount, and what does it indicate?",
+    "intent": "GET_AGEING",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": null,
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Is my net outstanding position improving month over month?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which ledgers have high outstanding but low recent collections?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": {
+        "field": "amount",
+        "order": "desc"
+      },
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": null
+    }
+  },
+  {
+    "query": "Which creditor and debtor have pending, overdue receivables?",
+    "intent": "GET_RECEIVABLES",
+    "expected_entities": {
+      "ledger_name": null,
+      "date_filter": null,
+      "age_filter": null,
+      "amount_filter": null,
+      "limit": null,
+      "sort": null,
+      "reference_date": null,
+      "is_bill_query": false,
+      "document_ref": null,
+      "date_target": "due_date",
+      "count_only": false,
+      "sum_only": false,
+      "status_filter": "pending"
+    }
+  }
+]

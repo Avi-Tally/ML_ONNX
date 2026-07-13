@@ -1,0 +1,93 @@
+Net outstanding amount?
+Whom should I follow up , Can you give me their address
+how much amount needs to be paid in next 15 days and receivables in next 15 days
+Amount of Bill no 308 for Abhishek and give the tax amount
+What is the total pending amount for Chemical Process Pipping Pvt Ltd for bill number MODI/25-26/956
+What is the payment status of Bill Number 1027 under Ledger Supreme ?
+Was Bill Number 104 settled fully for Varad engineers?
+give the party who has the least number of pending bills in last 10 days
+Are there any postdated outstanding bills?
+List parties with postdated outstanding bills
+Which ledgers have on-account receipts pending adjustment?
+Show groups with pending credit notes greater than ₹50,000
+List ledgers having on-account payments less than ₹25,000
+Give adjustment summary for Reliance Industries Ltd and Infosys Ltd
+Show adjustment balances for Debtors group sorted by voucher count descending
+Which groups have pending debit notes equal to ₹10,000?
+Show adjustment summary across all groups sorted by voucher count ascending
+Which receipts for Reliance Industries Ltd are still unallocated?
+Show pending customer advance transactions for Infosys Ltd
+List all unadjusted receipts across the company
+Which payments are not linked to any bills?
+Show adjustment bills for Sundry Debtors
+Show old unallocated receipts for Customers sorted by voucher date ascending
+Show pending credit note transactions for Jagat Ventures
+List adjustment vouchers with highest pending amount first
+Show adjustment transactions for Reliance Industries Ltd and Tata Motors
+Show adjustment entries for Customers sorted by voucher date descending
+Net outstanding amount?
+outstanding?
+payment that is late?
+todays outstanding
+what are my outstanding's?
+what are my payables and receivables?
+what do i owe and how much i should get as of today?
+Total unadjusted payments
+Give me the outstanding amount for FY 2025-26 and also show how much is overdue beyond 90 days.
+Show advanced received
+Total unadjusted receipts
+Display outstanding balances and also show monthly trend for the past 6 months.
+Net Outstanding
+Show company-wise outstanding and also identify whether the balance is receivable, payable, or net.
+Show company-wise outstanding for ModiChem company and also identify whether the balance is receivable, payable, or net.
+Show net outstanding company-wise and list parties with both receivable and payable balances.
+which bill is highest amount among the pending ones?
+What was the rate applied for Agru in Bill Number 049/24-25?
+What’s the oldest unpaid bill in my books?
+Who should I follow up
+Total cleared bills for Reliance Industries Ltd
+Total bills for Infosys Ltd including cleared bill
+How much is cleared from Sundry Creditors?
+Which party has the highest amount of cleared bills?
+Which party has cleared bill amount more than 50000
+give the party who has the least number of pending bills in last 10 days
+What is an overdue bill?
+Difference between payable and receivable
+How does bill ageing work?
+What does overdue amount mean in accounting?
+What is the purpose of bill-wise tracking in Tally?
+Why do businesses monitor outstanding receivables?
+What is the meaning of net outstanding?
+What happens if payments are received on account but not adjusted against bills?
+What is the difference between Sundry Debtors and Sundry Creditors?
+How do overdue bills affect cash flow?
+Why is ageing analysis important for businesses?
+What does partially settled bill mean?
+What is the purpose of maintaining bill references?
+How are receivables different from revenue?
+What are unadjusted receipts in outstanding reports?
+Why do companies track supplier payables separately?
+What is the meaning of overdue by days?
+How is pending amount calculated for a bill?
+What is the impact of delayed customer payments on a business?
+What are advanced receipts in accounting?
+Why might outstanding reports become misleading?
+What is the difference between closing balance and outstanding balance?
+Is my receivable ageing getting worse compared to last quarter?
+Which customers are taking the longest time to clear payments, and is that a risk for cash flow?
+Are overdue receivables increasing this financial year?
+Which group contributes the highest overdue outstanding, and should I be concerned?
+Do my payable trends indicate delayed vendor payments?
+Which parties consistently delay payments beyond 90 days?
+Is my collection efficiency improving over the past 6 months?
+Which debtors should I prioritize for follow-up based on overdue amount?
+Are my outstanding receivables unusually high compared to previous quarters?
+Which suppliers have the largest pending payable balances, and could this impact operations?
+Are there too many old pending bills in Sundry Debtors?
+Which customers have partially settled bills most frequently?
+Is the company becoming more dependent on a few customers for receivables?
+Are overdue bills concentrated within a specific customer group?
+Which ageing bucket has the highest outstanding amount, and what does it indicate?
+Is my net outstanding position improving month over month?
+Which ledgers have high outstanding but low recent collections?
+Which creditor and debtor have pending, overdue receivables?

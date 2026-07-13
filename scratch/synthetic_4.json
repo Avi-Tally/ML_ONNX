@@ -1,0 +1,3408 @@
+[
+    {
+        "query": "Show me individual pending bills for VIP Clients generated this month where the amount is between 5000 and 7500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "VIP Clients",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 5 debtors from South Region Debtors having outstanding older than 90 days with balances exceeding 21000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 21000.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Local Suppliers from the last 15 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 15
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "compare top 3 creditors in south region debtors who have pending bills between 2500 and 22500 overdue by 7 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 22500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Sundry Debtors for invoices due in the next 30 days ranging from 2500 to 7500 please",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 15 oldest bills for East Zone Dealers with value strictly > 6000 and age < 120 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 6000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Retrieve individual pending bills for Retailers generated this month where the amount is between 7500 and 27500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 27500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 3 debtors from Wholesalers having outstanding older than 60 days with balances exceeding 15000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "what is the total sum of payables for south region debtors from the last 120 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 7 creditors in Retailers who have pending bills between 5000 and 15000 overdue by 30 days please",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 15000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Local Suppliers for invoices due in the next 60 days ranging from 2500 to 5000",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 60
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 5000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 15 oldest bills for Key Vendors with value strictly > 17500 and age < 90 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 17500.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Retailers generated this month where the amount is in the range of 10000 and 30000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 30000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "who are my top 3 debtors from wholesalers having outstanding older than 30 days with balances exceeding 15000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Key Vendors from the last 30 days where the bill value was under 2500? please",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": {
+                "type": "last_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 20 creditors in Hardware Suppliers who have pending bills between 2500 and 12500 overdue by 30 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 12500.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Fetch an ageing summary of Group Expenses for invoices due in the next 60 days ranging from 7500 to 27500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": {
+                "type": "next_days",
+                "days": 60
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 27500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 5 oldest bills for Retailers with value strictly > 12500 and age < 45 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "show me individual pending bills for group expenses generated this month where the amount is between 7500 and 27500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 27500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 3 debtors from Key Vendors having outstanding older than 90 days with balances exceeding 15000? please",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Retailers from the last 60 days where the bill value was under 7500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 60
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 5 creditors in Group Expenses who have pending bills between 1000 and 11000 overdue by 60 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 11000.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of VIP Clients for invoices due in the next 90 days between 7500 to 10000",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "VIP Clients",
+            "date_filter": {
+                "type": "next_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "count only the top 20 oldest bills for group expenses with value strictly > 11000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 11000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Key Accounts generated this month where the amount is between 10000 and 30000 sorted by highest amount first please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 30000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 10 debtors from Group Expenses having outstanding older than 120 days with balances exceeding 12500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Local Suppliers from the last 7 days where the bill value was under 5000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 5000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 10 creditors in Sundry Creditors who have pending bills in the range of 10000 and 12500 overdue by 120 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "give me an ageing summary of sundry debtors for invoices due in the next 30 days ranging from 7500 to 17500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 17500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 20 oldest bills for Sundry Debtors with value strictly > 25000 and age < 60 days please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 25000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Retailers generated this month where the amount is between 1000 and 6000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 6000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 5 debtors from Hardware Suppliers having outstanding older than 15 days with balances exceeding 12500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Retailers from the last 120 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "compare top 10 creditors in vip clients who have pending bills between 2500 and 5000 overdue by 15 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "VIP Clients",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 5000.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Wholesalers for invoices due in the next 30 days ranging from 1000 to 21000 please",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 21000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 7 oldest bills for South Region Debtors with value strictly > 7500 and age < 60 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 7500.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Retrieve individual pending bills for East Zone Dealers generated this month where the amount is between 1000 and 6000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 6000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 20 debtors from Key Accounts having outstanding older than 7 days with balances exceeding 10000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 10000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "what is the total sum of payables for group expenses from the last 60 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": {
+                "type": "last_days",
+                "days": 60
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 15 creditors in Hardware Suppliers who have pending bills between 5000 and 15000 overdue by 15 days please",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 15000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Hardware Suppliers for invoices due in the next 60 days ranging from 2500 to 7500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 60
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 15 oldest bills for Key Accounts with value strictly > 12500 and age < 120 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for South Region Debtors generated this month where the amount is in the range of 7500 and 17500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 17500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "who are my top 5 debtors from group expenses having outstanding older than 15 days with balances exceeding 7500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 7500.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for South Region Debtors from the last 7 days where the bill value was under 10000? please",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": {
+                "type": "last_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 10000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 20 creditors in Key Vendors who have pending bills between 2500 and 22500 overdue by 60 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 22500.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Fetch an ageing summary of Key Vendors for invoices due in the next 30 days ranging from 2500 to 12500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 10 oldest bills for South Region Debtors with value strictly > 3500 and age < 60 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 3500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "show me individual pending bills for retailers generated this month where the amount is between 7500 and 10000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 10 debtors from Key Accounts having outstanding older than 30 days with balances exceeding 10000? please",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 10000.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Retailers from the last 90 days where the bill value was under 1000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 1000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 5 creditors in Key Vendors who have pending bills between 5000 and 7500 overdue by 7 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 7500.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Local Suppliers for invoices due in the next 90 days between 10000 to 12500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "count only the top 7 oldest bills for local suppliers with value strictly > 15000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Sundry Creditors generated this month where the amount is between 1000 and 11000 sorted by highest amount first please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 11000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 20 debtors from South Region Debtors having outstanding older than 45 days with balances exceeding 6000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 6000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Group Expenses from the last 90 days where the bill value was under 7500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": {
+                "type": "last_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 15 creditors in East Zone Dealers who have pending bills in the range of 7500 and 10000 overdue by 60 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "give me an ageing summary of sundry debtors for invoices due in the next 30 days ranging from 10000 to 30000",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 30
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 30000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 5 oldest bills for VIP Clients with value strictly > 10000 and age < 45 days please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "VIP Clients",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 10000.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for North Zone Customers generated this month where the amount is between 2500 and 5000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 5000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 3 debtors from Marketing Expenses having outstanding older than 60 days with balances exceeding 7500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 7500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Wholesalers from the last 120 days where the bill value was under 1000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 1000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "compare top 5 creditors in local suppliers who have pending bills between 5000 and 25000 overdue by 45 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 25000.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Wholesalers for invoices due in the next 45 days ranging from 7500 to 10000 please",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 45
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 10 oldest bills for Local Suppliers with value strictly > 12500 and age < 60 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Retrieve individual pending bills for Wholesalers generated this month where the amount is between 1000 and 3500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 3500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 20 debtors from Key Vendors having outstanding older than 15 days with balances exceeding 27500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 27500.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "what is the total sum of payables for key accounts from the last 120 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 15 creditors in East Zone Dealers who have pending bills between 7500 and 17500 overdue by 15 days please",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 17500.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Sundry Creditors for invoices due in the next 90 days ranging from 2500 to 12500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 3 oldest bills for North Zone Customers with value strictly > 12500 and age < 7 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for East Zone Dealers generated this month where the amount is in the range of 10000 and 12500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "who are my top 5 debtors from key accounts having outstanding older than 90 days with balances exceeding 12500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Wholesalers from the last 45 days where the bill value was under 5000? please",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 45
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 5000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 10 creditors in North Zone Customers who have pending bills between 1000 and 6000 overdue by 7 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 6000.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Fetch an ageing summary of VIP Clients for invoices due in the next 7 days ranging from 1000 to 21000",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "VIP Clients",
+            "date_filter": {
+                "type": "next_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 21000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 15 oldest bills for Sundry Creditors with value strictly > 15000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "show me individual pending bills for sundry creditors generated this month where the amount is between 7500 and 17500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 17500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 20 debtors from Retailers having outstanding older than 120 days with balances exceeding 10000? please",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 10000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for East Zone Dealers from the last 120 days where the bill value was under 10000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 10000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 15 creditors in Wholesalers who have pending bills between 7500 and 10000 overdue by 7 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Sundry Creditors for invoices due in the next 7 days between 5000 to 7500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "count only the top 7 oldest bills for retailers with value strictly > 25000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 25000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Local Suppliers generated this month where the amount is between 1000 and 21000 sorted by highest amount first please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 21000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 10 debtors from North Zone Customers having outstanding older than 15 days with balances exceeding 22500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 22500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Key Accounts from the last 90 days where the bill value was under 5000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": {
+                "type": "last_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 5000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 7 creditors in Retailers who have pending bills in the range of 1000 and 11000 overdue by 15 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 11000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "give me an ageing summary of south region debtors for invoices due in the next 120 days ranging from 2500 to 7500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "South Region Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 7 oldest bills for Sundry Debtors with value strictly > 6000 and age < 15 days please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 6000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Marketing Expenses generated this month where the amount is between 7500 and 27500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 27500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 10 debtors from Sundry Creditors having outstanding older than 30 days with balances exceeding 7500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 7500.0
+            },
+            "limit": 10,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for East Zone Dealers from the last 120 days where the bill value was under 1000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "East Zone Dealers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 1000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "compare top 15 creditors in wholesalers who have pending bills between 10000 and 12500 overdue by 30 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Sundry Debtors for invoices due in the next 120 days ranging from 2500 to 12500 please",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 7 oldest bills for Wholesalers with value strictly > 21000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 21000.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Retrieve individual pending bills for Hardware Suppliers generated this month where the amount is between 5000 and 15000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 15000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 20 debtors from Marketing Expenses having outstanding older than 60 days with balances exceeding 6000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 6000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "what is the total sum of payables for sundry debtors from the last 15 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "last_days",
+                "days": 15
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 7 creditors in Sundry Creditors who have pending bills between 5000 and 7500 overdue by 90 days please",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 7500.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of Sundry Debtors for invoices due in the next 7 days ranging from 2500 to 22500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "next_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 22500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 20 oldest bills for Key Accounts with value strictly > 3500 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 3500.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Group Expenses generated this month where the amount is in the range of 2500 and 7500 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 7500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "who are my top 3 debtors from retailers having outstanding older than 15 days with balances exceeding 27500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 15
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 27500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Hardware Suppliers from the last 45 days where the bill value was under 5000? please",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 45
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 5000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 20 creditors in Wholesalers who have pending bills between 1000 and 21000 overdue by 90 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 90
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 1000.0,
+                "max": 21000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Fetch an ageing summary of Marketing Expenses for invoices due in the next 120 days ranging from 10000 to 30000",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": {
+                "type": "next_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 30000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 3 oldest bills for Local Suppliers with value strictly > 12500 and age < 45 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "show me individual pending bills for sundry debtors generated this month where the amount is between 10000 and 15000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 15000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 7 debtors from Group Expenses having outstanding older than 60 days with balances exceeding 27500? please",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 60
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 27500.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Sundry Debtors from the last 120 days where the bill value was under 2500?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Debtors",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 3 creditors in Marketing Expenses who have pending bills between 7500 and 12500 overdue by 45 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 45
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 12500.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Give me an ageing summary of North Zone Customers for invoices due in the next 7 days between 10000 to 12500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 7
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "count only the top 20 oldest bills for sundry creditors with value strictly > 30000 and age < 30 days",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Sundry Creditors",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 30
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 30000.0
+            },
+            "limit": 20,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Key Vendors generated this month where the amount is between 7500 and 12500 sorted by highest amount first please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Vendors",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Who are my top 7 debtors from Marketing Expenses having outstanding older than 7 days with balances exceeding 12500?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Marketing Expenses",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 7
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 12500.0
+            },
+            "limit": 7,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Local Suppliers from the last 120 days where the bill value was under 1000?",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Local Suppliers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 120
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 1000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Compare top 3 creditors in Wholesalers who have pending bills in the range of 7500 and 10000 overdue by 120 days",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": "between",
+                "min": 7500.0,
+                "max": 10000.0
+            },
+            "limit": 3,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "give me an ageing summary of north zone customers for invoices due in the next 90 days ranging from 10000 to 12500",
+        "intent": "GET_AGEING",
+        "expected_entities": {
+            "ledger_name": "North Zone Customers",
+            "date_filter": {
+                "type": "next_days",
+                "days": 90
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 10000.0,
+                "max": 12500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "Count only the top 5 oldest bills for Wholesalers with value strictly > 11000 and age < 120 days please",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Wholesalers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": "<",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 11000.0
+            },
+            "limit": 5,
+            "sort": {
+                "field": "bill_date",
+                "order": "asc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": true,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "what is the total outstanding for Group Expenses for amounts between 5000 and 10000",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Group Expenses",
+            "date_filter": null,
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 5000.0,
+                "max": 10000.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "top 5 creditors vs top 10 debtors report for amounts > 50000",
+        "intent": "GET_TOP_CREDITORS",
+        "expected_entities": {
+            "ledger_name": null,
+            "date_filter": null,
+            "age_filter": null,
+            "amount_filter": {
+                "operator": ">",
+                "value": 50000.0
+            },
+            "limit": 5,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": null
+        }
+    },
+    {
+        "query": "Show me individual pending bills for Key Accounts generated this month where the amount is in the range of 2500 and 5000 sorted by highest amount first",
+        "intent": "GET_RECEIVABLES",
+        "expected_entities": {
+            "ledger_name": "Key Accounts",
+            "date_filter": {
+                "type": "this_month"
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "between",
+                "min": 2500.0,
+                "max": 5000.0
+            },
+            "limit": null,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": true,
+            "document_ref": null,
+            "date_target": "bill_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "who are my top 15 debtors from hardware suppliers having outstanding older than 120 days with balances exceeding 15000?",
+        "intent": "GET_TOP_DEBTORS",
+        "expected_entities": {
+            "ledger_name": "Hardware Suppliers",
+            "date_filter": null,
+            "age_filter": {
+                "operator": ">",
+                "days": 120
+            },
+            "amount_filter": {
+                "operator": ">",
+                "value": 15000.0
+            },
+            "limit": 15,
+            "sort": {
+                "field": "amount",
+                "order": "desc"
+            },
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": false,
+            "status_filter": "pending"
+        }
+    },
+    {
+        "query": "What is the total sum of payables for Retailers from the last 15 days where the bill value was under 2500? please",
+        "intent": "GET_PAYABLES",
+        "expected_entities": {
+            "ledger_name": "Retailers",
+            "date_filter": {
+                "type": "last_days",
+                "days": 15
+            },
+            "age_filter": null,
+            "amount_filter": {
+                "operator": "<",
+                "value": 2500.0
+            },
+            "limit": null,
+            "sort": null,
+            "reference_date": null,
+            "is_bill_query": false,
+            "document_ref": null,
+            "date_target": "due_date",
+            "count_only": false,
+            "sum_only": true,
+            "status_filter": null
+        }
+    }
+]

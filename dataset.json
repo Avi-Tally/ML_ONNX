@@ -1,0 +1,5430 @@
+[
+    {
+        "text": "list all companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what's our tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what is our stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables for bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "list all companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what do we have in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "stock report",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show me inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "what companies are loaded",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "due to receive in next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "fetch vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "payables for john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "fetch stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "stock status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills for debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ledger balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "give me the balance of purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vouchers today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "transactions today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "pending bills from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show balance for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show balance for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "account balance of bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "due for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vouchers today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "bills pending today starting with oldest",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get ledger acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "trial balance sheet",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "fetch recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vouchers today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "fetch vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what is the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "payables for bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "which companies do we have",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "which companies do we have",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "receivables for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what is the balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what were the transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "tell me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "daybook",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "what did we do",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "bills pending today starting with oldest",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "receivables for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables for sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills for debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "fetch balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "daybook",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "daybook",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what do we have in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "tell me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "payables for sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "current stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "items in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show me inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "ledger balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "get ledger acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "list loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what is our stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "get recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "daily transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "closing balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "fetch recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "closing balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ledger balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "companies list",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show me inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "stock status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what companies are loaded",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills pending today starting with oldest",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is the balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "closing balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bills which are pending today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "tell me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "display trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "what's our tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "get recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "closing balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "items in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "fetch vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "items in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what companies are loaded",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show items",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "what companies are loaded",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is in cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "closing balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "give me the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "daybook",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what's our tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "give me the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "stock report",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "vouchers today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how much is tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what companies are loaded",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what were the transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "display companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "display stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "which companies do we have",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending bills from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "transactions today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "trial balance sheet",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "companies list",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "get trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "bills which are pending today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables for acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "what did we do",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show ledger acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what is our stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how much is in purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "list all companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "current stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show me the vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "due to receive in next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "items in stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "current stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "inventory status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "closing balance of john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "companies list",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what is the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "list companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "balance sheet for cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ledger purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "trial balance sheet",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "fetch vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "transactions today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "receivables for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "receivables for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show me inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending bills from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "transactions today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "due for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "outstanding for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show me the vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "list companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "show entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is in john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how much is cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "inventory status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what is our stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "what is the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "current stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dues from debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ledger cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills which are pending today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "list loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what did we do",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dues from debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "stock status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "inventory summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "trial balance sheet",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "list loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "list companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show items",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "payables for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how much is in cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "fetch stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "closing balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "get ledger purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "display stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "closing balance of sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get day book",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending bills from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "fetch stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what is the balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ledger",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues from debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "stock status",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "display companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "display trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "what were the transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show me the vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "fetch balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "which companies do we have",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what's the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dues from debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "daily transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what did we do",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "fetch balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what do we owe",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "payables for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "dues from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills for debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "display trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what are the loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "recent entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills for debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vouchers today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "transactions today",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "day book",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what is the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "show balance for bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "recent vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "customer dues and settled bills",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ledger tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "fetch balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "due for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "recent entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what is the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "balance of cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending bills from customers",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show me the vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ledger balance of acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ledger cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "account balance of tax",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills pending today starting with oldest",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show items",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills for debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "tell me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "closing balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ledger acme corp",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "current stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "stock report",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivables for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show balance for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "balance sheet for bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "fetch balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "tell me the companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "list loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "what do customers owe",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show balance for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how much is in sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "give me the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bills which are pending today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "display companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "fetch tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show me tb",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "list loaded companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "get stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivable > 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how much is sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "fetch recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "due for john doe",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "get day book",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "highest amount of cleared bills",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "pending payable balances",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "display stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "inventory",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "fetch trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many overdue bills are available",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is our stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "get payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bills which are pending today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "due to receive in next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "balance of sales",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "dues from debtors",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "account balance of cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "ageing of the outstanding amount",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show items",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "closing balance of bank",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "who should i follow up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "oldest billdate first",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding receivables amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "due for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "inventory summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "due for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "display stock summary",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "prioritize for follow-up",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "list companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue payable amount",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "get trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "outstanding for purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "partially settled bills most frequently",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "tb report",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show balance for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how many customers bills are due",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "day book",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "pending bills today",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "companies list",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "largest dues",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "list all companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "how much is cash",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what's my total outstanding receivable",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "due to receive in next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "total overdue payable beyond 30 days",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "collection efficiency",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top creditors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is in",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "recent entries",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "receivables less than 90 days",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "bills due in the next",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top 10 debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "how much is owed to me",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "vendors are due for payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show top debtors",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "recent transactions",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "suppliers outstanding",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "purchase",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "fetch balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "show me the vouchers",
+        "intent": "GET_RECENT_VOUCHERS"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "highest outstandings",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "get companies",
+        "intent": "LIST_COMPANIES"
+    },
+    {
+        "text": "give me the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "old pending bills",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "balance sheet for",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "concentrated within a specific customer group",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "show items",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "ageing bucket",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "consistently delay payments beyond",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "ageing report",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "outstanding receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "dues to suppliers",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how much is pending from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "outstanding of sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "how many customers owe me money",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "vendors due for payment this week",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "what is the overdue receivable amount",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "total pending receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "largest pending payable balances",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "dependent on a few customers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "parties to whom i need to make the payment",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "can i see the trial balance",
+        "intent": "GET_TRIAL_BALANCE"
+    },
+    {
+        "text": "top 5 parties to whom the payment is pending",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "overdue bills till date",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "what are my total receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "show stock",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bill ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "show receivables",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "top suppliers",
+        "intent": "GET_TOP_DEBTORS"
+    },
+    {
+        "text": "stock report",
+        "intent": "GET_STOCK_SUMMARY"
+    },
+    {
+        "text": "give me the balance of",
+        "intent": "GET_LEDGER_BALANCE"
+    },
+    {
+        "text": "payables till date",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "cleared from sundry creditors",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "bills which are pending",
+        "intent": "GET_RECEIVABLES"
+    },
+    {
+        "text": "pending payables",
+        "intent": "GET_PAYABLES"
+    },
+    {
+        "text": "show ageing",
+        "intent": "GET_AGEING"
+    },
+    {
+        "text": "stock report",
+        "intent": "GET_STOCK_SUMMARY"
+    }
+]
