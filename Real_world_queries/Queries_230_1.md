@@ -2,7 +2,7 @@ List the parties to whom I need to make the payment this week
 Oldest 10 Bills which are pending to receive today only above 1L 
 Payables till date
 Which vendors are due for payment this week?
-What’s the total overdue payable beyond 30 days?
+What’s the total overdue payable age > 30 days?
 Identify the top 5 parties to whom the payment is pending for feb 2025
 how many customers bills are due in the next 10 days and what is the total value?
 Bills which are pending today starting with oldest billdate first for which the amount is less than 1L? 
