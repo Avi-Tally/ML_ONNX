@@ -681,8 +681,13 @@ class TallyClient:
                     parent_group = elem.findtext("PARENTGROUP") or ""
                     cleared_on = elem.findtext("CLEAREDON") or ""
                     
+                    # Robustly parse and clean foreign currency/multicurrency amount strings (e.g. "? 36511.00 @ Rs 104.10/? = Rs 3800795.10")
+                    amt_str = amt.strip()
+                    if "=" in amt_str:
+                        amt_str = amt_str.split("=")[-1].strip()
+                    cleaned_amt = "".join(c for c in amt_str if c.isdigit() or c in [".", "-"])
                     try:
-                        amt_float = float(amt.strip() or 0)
+                        amt_float = float(cleaned_amt)
                     except:
                         amt_float = 0.0
                         
