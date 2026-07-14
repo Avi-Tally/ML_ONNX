@@ -47,12 +47,12 @@ What is the pending and cleared amount for Thermax Ltd
 how much amount needs to be paid in next 15 days and receivables in next 15 days
 Amount of Bill no 308 and give the tax amount
 List all the pending receivable bills number for Chemical Process Pvt LTD
-What is the total pending amount for Chemical Process Pipping Pvt Ltd for bill number MODI/25-26/956
+What is the total pending amount for bill number 1128
 Is there any pending amount for ledger DeltaFlow?
 What is the total outstanding balance for Ledger CECO?
 What is the total outstanding under Group Expenses
 What is the payment status of Bill Number 1027 under Ledger Supreme ?
-Was Bill Number 104 settled fully for Varad engineers?
+Was Bill Number 104 settled?
 Show the opening amounts for payables with their totals
 Display the Opening Amount, pending and final balance of payables as on 02-03-2025
 Show receivable ageing for Thermax Ltd based on due date
