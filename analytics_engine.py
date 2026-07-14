@@ -38,8 +38,13 @@ class AnalyticsEngine:
         filtered_bills = []
         
         for b in bills:
+            # Clean foreign currency amount details if present
+            amt_str = b.get("amount", "0").strip()
+            if "=" in amt_str:
+                amt_str = amt_str.split("=")[-1].strip()
+            cleaned_amt = "".join(c for c in amt_str if c.isdigit() or c in [".", "-"])
             try:
-                amt = float(b.get("amount", "0"))
+                amt = float(cleaned_amt)
             except ValueError:
                 amt = 0.0
                 
