@@ -7,11 +7,11 @@ Identify the top 5 parties to whom the payment is pending for feb 2025
 how many customers bills are due in the next 10 days and what is the total value?
 Bills which are pending today starting with oldest billdate first for which the amount is less than 1L? 
 What is the overdue payable amount?
-Show highest pending and cleared receivables bill amount for sundry debtors also give their GST status?
-Total Receivables amount less than 90 days 
-Receivable > 90 days ?
-Customer dues and settled bills with over due amount less than 55000
-how many bills are due to receive in next 7 days.list in ascending order of bill date
+Show highest pending and cleared receivable bill amount for sundry debtors also give their GST status?
+Total Receivable amount less than 90 days 
+Receivables > 90 days ?
+Customer settled bills with over due amount less than 55000
+how many bills are due to receive in next 7 days in ascending order of bill date
 What’s my total outstanding receivable amount?
 How many customers owe me money right now?
 What’s the total overdue receivable amount?
@@ -45,7 +45,7 @@ Which vendors are due to receive today?
 Whom should I follow up , Can you give me their address 
 What is the pending and cleared amount for Thermax Ltd
 how much amount needs to be paid in next 15 days and receivables in next 15 days
-Amount of Bill no 308 for Abhishek and give the tax amount
+Amount of Bill no 308 and give the tax amount
 List all the pending receivable bills number for Chemical Process Pvt LTD
 What is the total pending amount for Chemical Process Pipping Pvt Ltd for bill number MODI/25-26/956
 Is there any pending amount for ledger DeltaFlow?
