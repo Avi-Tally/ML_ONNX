@@ -210,5 +210,5 @@ Contributions to this project are welcome! If you have ideas for new features or
 
 ## 📧 Contact
 
-*   **E-mail**: [avijain2017@gmail.com](mailto:)
+*   **E-mail**: [aviral.jain@tallysolutions.com](mailto:aviral.jain@tallysolutions.com)
 *   **LinkedIn**: [Aviral Jain](https://www.linkedin.com/in/aviral-jain-27018331b)
