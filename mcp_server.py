@@ -299,7 +299,10 @@ def _query_tally_internal(query: str) -> str:
                     return f"[{company_name}] I couldn't identify the bill number in your query."
                 
                 # Fetch all bills for the company
-                bills = tally_client.fetch_bills(company_name, port, "All", from_date=None, to_date=None)
+                # Always keep post-dated bills visible as pending (exclude_pdc = True)
+                # Only net them out if the user explicitly asks for "net" balances
+                exclude_pdc = not any(k in query.lower() for k in ["net outstanding", "net payable", "net receivable", "netting", "after pdc"])
+                bills = tally_client.fetch_bills(company_name, port, "All", from_date=None, to_date=None, exclude_pdc=exclude_pdc, ledger_filter=document_ref)
                 if not bills:
                     return f"[{company_name}] No bills could be retrieved."
 
@@ -365,6 +368,9 @@ def _query_tally_internal(query: str) -> str:
                 tdl_f_date = None if date_target == "due_date" else f_date
                 tdl_t_date = None if date_target == "due_date" else t_date
                 
+                # Always keep post-dated bills visible as pending (exclude_pdc = True)
+                # Only net them out if the user explicitly asks for "net" balances
+                exclude_pdc = not any(k in query.lower() for k in ["net outstanding", "net payable", "net receivable", "netting", "after pdc"])
                 bills = tally_client.fetch_bills(
                     company_name, 
                     port, 
@@ -372,7 +378,9 @@ def _query_tally_internal(query: str) -> str:
                     from_date=tdl_f_date, 
                     to_date=tdl_t_date, 
                     status_filter=parsed.get("parameters", {}).get("status_filter"),
-                    reference_date=parsed.get("parameters", {}).get("reference_date")
+                    reference_date=parsed.get("parameters", {}).get("reference_date"),
+                    exclude_pdc=exclude_pdc,
+                    ledger_filter=resolved_ledger
                 )
                 if not bills:
                     return f"[{company_name}] No bill details could be retrieved."

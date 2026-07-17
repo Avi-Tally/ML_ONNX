@@ -536,7 +536,7 @@ class TallyClient:
             
         return vouchers
 
-    def fetch_bills(self, company_name, port, report_type="All", from_date=None, to_date=None, status_filter=None, reference_date=None):
+    def fetch_bills(self, company_name, port, report_type="All", from_date=None, to_date=None, status_filter=None, reference_date=None, exclude_pdc=True, ledger_filter=None):
         """Fetches bills using a custom TDL collection and a streaming parser."""
         ref_date_formatted = None
         if reference_date:
@@ -567,6 +567,10 @@ class TallyClient:
         if filter_names:
             date_filter_tag = f"<FILTERS>{', '.join(filter_names)}</FILTERS>"
             date_filter_def = "\n                    ".join(filter_defs)
+            
+        pdc_vars = ""
+        if exclude_pdc:
+            pdc_vars = "\n                <SVEXCLUDEPOSTDATED>Yes</SVEXCLUDEPOSTDATED>\n                <SVEXCLUDEOPTIONAL>Yes</SVEXCLUDEOPTIONAL>"
          
         payload = f"""<ENVELOPE>
     <HEADER>
@@ -580,16 +584,17 @@ class TallyClient:
             <STATICVARIABLES>
                 <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
                 <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-                {f'<SVCURRENTDATE>{ref_date_formatted}</SVCURRENTDATE>' if ref_date_formatted else ''}
+                {f'<SVCURRENTDATE>{ref_date_formatted}</SVCURRENTDATE>' if ref_date_formatted else ''}{pdc_vars}
             </STATICVARIABLES>
             <TDL>
                 <TDLMESSAGE>
                     <COLLECTION NAME="CustomBillCollection">
                         <TYPE>Bill</TYPE>
-                        <FETCH>Name, BillDate, BillCreditPeriod, ClosingBalance, OpeningBalance, Parent, ClearedOn</FETCH>
+                        <FETCH>Name, BillDate, BillCreditPeriod, ClosingBalance, OpeningBalance, Parent, ClearedOn, IsBillWiseOn</FETCH>
                         <COMPUTE>PartyGSTIN: $Partygstin:Ledger:$Parent</COMPUTE>
                         <COMPUTE>GSTRegType: $GSTRegistrationType:Ledger:$Parent</COMPUTE>
                         <COMPUTE>ParentGroup: $Parent:Ledger:$Parent</COMPUTE>
+                        <COMPUTE>IsBillWiseOn: $IsBillWiseOn:Ledger:$Parent</COMPUTE>
                         {date_filter_tag}
                     </COLLECTION>
                     {date_filter_def}
@@ -646,7 +651,7 @@ class TallyClient:
                     return text.encode('utf-8')
                     
             stream = SanitizedStream(response)
-            
+            is_global_query = (ledger_filter is None)
             bills = []
             
             context = ET.iterparse(stream, events=('end',))
@@ -655,6 +660,10 @@ class TallyClient:
                     name = elem.findtext("NAME") or ""
                     party = elem.findtext("PARENT") or ""
                     date = elem.findtext("BILLDATE") or ""
+                    is_billwise = elem.findtext("ISBILLWISEON") or ""
+                    if is_billwise.strip().lower() == "no":
+                        elem.clear()
+                        continue
                     
                     due_date_elem = elem.find("BILLCREDITPERIOD")
                     due_date = date
@@ -710,6 +719,14 @@ class TallyClient:
                     
                     is_payable = amt_float > 0
                     is_receivable = amt_float < 0
+                    
+                    # Context-aware group lineage filtering for global queries
+                    if is_global_query:
+                        # Tally outstandings family consists of both Sundry Creditors and Sundry Debtors.
+                        # We only exclude non-trade groups (loans, provisions, assets, etc.).
+                        if not (is_creditor or is_debtor):
+                            elem.clear()
+                            continue
                             
                     # Filter based on report_type
                     if report_type == "Receivable" and not is_receivable:

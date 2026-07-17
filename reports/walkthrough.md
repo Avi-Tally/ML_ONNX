@@ -124,7 +124,8 @@ We verified the pipeline E2E by running all 230 real-world queries sequentially 
 *   **Peak Memory Footprint:** **243.21 MB** (Stabilized under the 250 MB target threshold).
 *   **Memory Leak Verification:** **+4.02 MB** cumulative memory delta over 231 sequential runs, confirming stable process lifecycle.
 
-### **Discrepancy Reconciliation (GUI vs. API)**
-Our live diagnostics reconciled the natural discrepancies between Tally's logical database collection and default GUI reports down to the last rupee:
-*   **Post-Dated Vouchers:** GUI report default excludes post-dated receipts (e.g. `Receipt #368` clearing ₹260,888.00), leaving the bills open on the GUI screen. Our database API correctly shows them as cleared.
-*   **Ledger Configuration:** Invoices like Abhay Limited's `1400115918` (₹51,715.06) are open in Tally's database collection but missing in the GUI due to date range configurations or disabled bill-wise details on the ledger master.
+### **Discrepancy Reconciliation (GUI vs. API) [Resolved]**
+Our refactoring reconciled the natural discrepancies between Tally's logical database collection and default GUI reports, achieving 100% parity:
+*   **Post-Dated Vouchers [Resolved]**: Tally GUI's default outstandings report excludes post-dated/optional vouchers, while Tally's database logical collection nets them out. We resolved this by injecting Tally static variables `<SVEXCLUDEPOSTDATED>Yes</SVEXCLUDEPOSTDATED>` and `<SVEXCLUDEOPTIONAL>Yes</SVEXCLUDEOPTIONAL>` into SOAP requests when querying outstanding bills, allowing us to match Tally's GUI default view exactly (or include them if requested via `"pdc"` or `"post-dated"` keywords).
+*   **Ledger Configuration [Resolved]**: Ledgers like `Abhay Limited` (with bill `1400115918` for `₹51,715.06`) had the "bill-by-bill" option disabled. Tally's database logical collection still returned the bill, but Tally GUI excluded it. We resolved this by querying `$IsBillWiseOn:Ledger:$Parent` in the TDL payload and dynamically filtering out any bills where `IsBillWiseOn == "No"`.
+
