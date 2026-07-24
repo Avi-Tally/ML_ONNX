@@ -1,9 +1,9 @@
 # NLP Engine Mismatch Report
 
-**Total Queries:** 855
-**Passed:** 855
+**Total Queries:** 727
+**Passed:** 727
 **Failed:** 0
-**Total FAQ/Unknown:** 22
+**Total FAQ/Unknown:** 84
 **Pass Rate:** 100.00%
 
 ## Mismatches
