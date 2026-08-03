@@ -23,29 +23,27 @@ def train_and_export(data_file: str):
     # Filter out UNKNOWN intents so the models only learn from valid queries
     dataset = [q for q in dataset if q.get('intent', q.get('expected_intent')) != 'UNKNOWN']
 
-    # Initialize lists to hold the text inputs and corresponding labels for each parameter
+    # Define the list of all 10 parameters we need to extract and train models for
+    param_keys = [
+        "status_filter", "date_target", "is_bill_query", 
+        "voucher_type", "tax_filter", "pdc_only", 
+        "include_cleared", "group_name", "gst_status", "godown_name"
+    ]
+    
+    # Initialize a dictionary to hold labels for each parameter
+    labels_dict = {key: [] for key in param_keys}
     queries = []
-    status_labels = []
-    date_target_labels = []
-    is_bill_labels = []
 
     # 2. Label Extraction
     for item in dataset:
         queries.append(item['query'].lower())
         entities = item.get('expected_entities', {})
         
-        # Extract status_filter (e.g., 'pending', 'cleared'). 
-        # Default to 'None' string to avoid actual Python None types crashing scikit-learn
-        status = entities.get('status_filter')
-        status_labels.append(status if status else 'None')
-
-        # Extract date_target (e.g., 'bill_date', 'due_date')
-        dt = entities.get('date_target')
-        date_target_labels.append(dt if dt else 'None')
-
-        # Extract boolean is_bill_query flag (converted to string for classification)
-        ib = entities.get('is_bill_query')
-        is_bill_labels.append(str(ib))
+        # Extract each parameter dynamically
+        for key in param_keys:
+            val = entities.get(key)
+            # Default to 'None' string to avoid Python None types crashing scikit-learn
+            labels_dict[key].append(str(val) if val is not None else 'None')
 
     print(f"Total valid queries: {len(queries)}")
 
@@ -100,10 +98,9 @@ def train_and_export(data_file: str):
         
         print(f"Saved {name} to {onnx_path} (Size: {os.path.getsize(onnx_path)/1024:.2f} KB)")
 
-    # Execute the training pipeline for each distinct parameter model
-    train_model("status_filter", queries, status_labels)
-    train_model("date_target", queries, date_target_labels)
-    train_model("is_bill_query", queries, is_bill_labels)
+    # Execute the training pipeline for all 10 distinct parameter models
+    for key in param_keys:
+        train_model(key, queries, labels_dict[key])
 
 if __name__ == "__main__":
     import argparse
