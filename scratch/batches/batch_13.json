@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1201,
+    "original_query": "List the bills with Excluded status for the party Om Stell Traders",
+    "live_adapted_query": "List the bills with Excluded status for the party Om Stell Traders"
+  },
+  {
+    "id": 1202,
+    "original_query": "List the bills with Uncertain status for the party OM Stell Traders",
+    "live_adapted_query": "List the bills with Uncertain status for the party OM Stell Traders"
+  },
+  {
+    "id": 1203,
+    "original_query": "What is the outstanding of Laxmi Traders and compare it with the company of 'Raj Company Pvt Ltd' .",
+    "live_adapted_query": "What is the outstanding of Laxmi Traders and compare it with the company of 'Raj Company Pvt Ltd' ."
+  },
+  {
+    "id": 1204,
+    "original_query": "List  only the bills pending in the next week for the party Lakshmi Traders",
+    "live_adapted_query": "List  only the bills pending in the next week for the party Lakshmi Traders"
+  },
+  {
+    "id": 1205,
+    "original_query": "List all the advance receipts agains which the invoice is made, but the bills are yet pending ?",
+    "live_adapted_query": "List all the advance receipts agains which the invoice is made, but the bills are yet pending ?"
+  },
+  {
+    "id": 1206,
+    "original_query": "When should we settle  Young India Stell corporation bill.",
+    "live_adapted_query": "When should we settle  Young India Stell corporation bill."
+  },
+  {
+    "id": 1207,
+    "original_query": "Analyze the payment behaviour of Sona Steel enterprises.",
+    "live_adapted_query": "Analyze the payment behaviour of Sona Steel enterprises."
+  },
+  {
+    "id": 1208,
+    "original_query": "Identify the parties who is  a buyer and a seller and what is the net value either payable or receivable.",
+    "live_adapted_query": "Identify the parties who is  a buyer and a seller and what is the net value either payable or receivable."
+  },
+  {
+    "id": 1209,
+    "original_query": "Show me the bills of Mr Nirman Timbers  and for how long the bill are pending and what are the items which are sold to them?",
+    "live_adapted_query": "Show me the bills of Mr Nirman Timbers  and for how long the bill are pending and what are the items which are sold to them?"
+  }
+]

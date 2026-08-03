@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1001,
+    "original_query": "What is the closing stock as on today as per Last Sale price valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Last Sale price valuation method?"
+  },
+  {
+    "id": 1002,
+    "original_query": "What is the closing stock as on today as per Monthly Avg Cost valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Monthly Avg Cost valuation method?"
+  },
+  {
+    "id": 1003,
+    "original_query": "What is the closing stock as on today as per Standard Cost valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Standard Cost valuation method?"
+  },
+  {
+    "id": 1004,
+    "original_query": "What is the closing stock as on today as per Standard Price valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Standard Price valuation method?"
+  },
+  {
+    "id": 1005,
+    "original_query": "Show Outstanding Sales Bills",
+    "live_adapted_query": "Show Outstanding Sales Bills"
+  },
+  {
+    "id": 1006,
+    "original_query": "Show Cleared Sales Bills",
+    "live_adapted_query": "Show Cleared Sales Bills"
+  },
+  {
+    "id": 1007,
+    "original_query": "Show Bills made but Goods not delivered",
+    "live_adapted_query": "Show Bills made but Goods not delivered"
+  },
+  {
+    "id": 1008,
+    "original_query": "Show Outstanding Purchase Bills",
+    "live_adapted_query": "Show Outstanding Purchase Bills"
+  },
+  {
+    "id": 1009,
+    "original_query": "Show Cleared Purchase Bills",
+    "live_adapted_query": "Show Cleared Purchase Bills"
+  },
+  {
+    "id": 1010,
+    "original_query": "Show Bills received but Goods not received",
+    "live_adapted_query": "Show Bills received but Goods not received"
+  },
+  {
+    "id": 1011,
+    "original_query": "Show Outstanding Bills for Job Work Materials",
+    "live_adapted_query": "Show Outstanding Bills for Job Work Materials"
+  },
+  {
+    "id": 1012,
+    "original_query": "Show Cleared Bills for Job Work Materials",
+    "live_adapted_query": "Show Cleared Bills for Job Work Materials"
+  },
+  {
+    "id": 1013,
+    "original_query": "Show Actual and Billed Quantities",
+    "live_adapted_query": "Show Actual and Billed Quantities"
+  },
+  {
+    "id": 1014,
+    "original_query": "Show Alternate units",
+    "live_adapted_query": "Show Alternate units"
+  },
+  {
+    "id": 1015,
+    "original_query": "Show tail unit of Compound Unit",
+    "live_adapted_query": "Show tail unit of Compound Unit"
+  },
+  {
+    "id": 1016,
+    "original_query": "Show Location details",
+    "live_adapted_query": "Show Location details"
+  },
+  {
+    "id": 1017,
+    "original_query": "Show Batch details",
+    "live_adapted_query": "Show Batch details"
+  },
+  {
+    "id": 1018,
+    "original_query": "Format of Report",
+    "live_adapted_query": "Format of Report"
+  },
+  {
+    "id": 1019,
+    "original_query": "Display name for Ledgers",
+    "live_adapted_query": "Display name for Ledgers"
+  },
+  {
+    "id": 1020,
+    "original_query": "Display name for Stock Items",
+    "live_adapted_query": "Display name for Stock Items"
+  },
+  {
+    "id": 1021,
+    "original_query": "Sorting Method",
+    "live_adapted_query": "Sorting Method"
+  },
+  {
+    "id": 1022,
+    "original_query": "Enable Stripe View",
+    "live_adapted_query": "Enable Stripe View"
+  },
+  {
+    "id": 1023,
+    "original_query": "Is the payment done for the party Asian Paints Limited for the bill number TN1701286266",
+    "live_adapted_query": "Is the payment done for the party Asian Paints Limited for the bill number TN1701286266"
+  },
+  {
+    "id": 1024,
+    "original_query": "List the payment transactions which are not reconciled",
+    "live_adapted_query": "List the payment transactions which are not reconciled"
+  },
+  {
+    "id": 1025,
+    "original_query": "Why was the payment made to the party Marini rani.",
+    "live_adapted_query": "Why was the payment made to the party Marini rani."
+  },
+  {
+    "id": 1026,
+    "original_query": "How to generate the Payment Advice",
+    "live_adapted_query": "How to generate the Payment Advice"
+  },
+  {
+    "id": 1027,
+    "original_query": "What is the total number of payments made to the party Banu, and what is the aggregate value of those payments?",
+    "live_adapted_query": "What is the total number of payments made to the party Banu, and what is the aggregate value of those payments?"
+  },
+  {
+    "id": 1028,
+    "original_query": "Is the payment made against the bill 2554 of Banu party  and what is the value paid",
+    "live_adapted_query": "Is the payment made against the bill 2554 of Banu party  and what is the value paid"
+  },
+  {
+    "id": 1029,
+    "original_query": "Classify the payment records based on the mode of payment with the count and the amount",
+    "live_adapted_query": "Classify the payment records based on the mode of payment with the count and the amount"
+  },
+  {
+    "id": 1030,
+    "original_query": "Name the bills which were cleared when the payment was made to AVPC  dated 2nd dec -17",
+    "live_adapted_query": "Name the bills which were cleared when the payment was made to AVPC  dated 2nd dec -17"
+  },
+  {
+    "id": 1031,
+    "original_query": "List the payments made via Same bank transfer",
+    "live_adapted_query": "List the payments made via Same bank transfer"
+  },
+  {
+    "id": 1032,
+    "original_query": "Is the payment advice issued to Warnar Ltd for the latest payment ?",
+    "live_adapted_query": "Is the payment advice issued to Warnar Ltd for the latest payment ?"
+  },
+  {
+    "id": 1033,
+    "original_query": "Display monthly payment trend bank wise",
+    "live_adapted_query": "Display monthly payment trend bank wise"
+  },
+  {
+    "id": 1034,
+    "original_query": "When was the last payment made to M& M Marbels and what was the mode of the payment",
+    "live_adapted_query": "When was the last payment made to M& M Marbels and what was the mode of the payment"
+  },
+  {
+    "id": 1035,
+    "original_query": "Give me the count of only  cheque payment for the past 6 months and including value",
+    "live_adapted_query": "Give me the count of only  cheque payment for the past 6 months and including value"
+  },
+  {
+    "id": 1036,
+    "original_query": "Give me the count of reconciled and unreconciled payment records",
+    "live_adapted_query": "Give me the count of reconciled and unreconciled payment records"
+  },
+  {
+    "id": 1037,
+    "original_query": "Can you provide information about the payment made with reference number UIKIK009988777, including the recipient's account details?",
+    "live_adapted_query": "Can you provide information about the payment made with reference number UIKIK009988777, including the recipient's account details?"
+  },
+  {
+    "id": 1038,
+    "original_query": "Display the list of the payment advice which are pending to email to the suppliers",
+    "live_adapted_query": "Display the list of the payment advice which are pending to email to the suppliers"
+  },
+  {
+    "id": 1039,
+    "original_query": "Remind me to make the payment for Asain paints tomorrow",
+    "live_adapted_query": "Remind me to make the payment for Asain paints tomorrow"
+  },
+  {
+    "id": 1040,
+    "original_query": "Share the payment Advice via whatsapp or email for the payments made today",
+    "live_adapted_query": "Share the payment Advice via whatsapp or email for the payments made today"
+  },
+  {
+    "id": 1041,
+    "original_query": "List the reconciled payment records for the current month",
+    "live_adapted_query": "List the reconciled payment records for the current month"
+  },
+  {
+    "id": 1042,
+    "original_query": "Display the payment transactions of only forex transactions",
+    "live_adapted_query": "Display the payment transactions of only forex transactions"
+  },
+  {
+    "id": 1043,
+    "original_query": "List only printed and e-mail payment advice for the month of april",
+    "live_adapted_query": "List only printed and e-mail payment advice for the month of april"
+  },
+  {
+    "id": 1044,
+    "original_query": "Display the payment entry records of Tax payments",
+    "live_adapted_query": "Display the payment entry records of Tax payments"
+  },
+  {
+    "id": 1045,
+    "original_query": "How to update the email ID before emailing the payment advice ?",
+    "live_adapted_query": "How to update the email ID before emailing the payment advice ?"
+  },
+  {
+    "id": 1046,
+    "original_query": "Find the payment record with the narration 'Payment made against the bank charges \u2026..'",
+    "live_adapted_query": "Find the payment record with the narration 'Payment made against the bank charges \u2026..'"
+  },
+  {
+    "id": 1047,
+    "original_query": "Display the payment records in which favourning name is different from the ledger name",
+    "live_adapted_query": "Display the payment records in which favourning name is different from the ledger name"
+  },
+  {
+    "id": 1048,
+    "original_query": "Can I mail the payment advice to all the suppliers together.",
+    "live_adapted_query": "Can I mail the payment advice to all the suppliers together."
+  },
+  {
+    "id": 1049,
+    "original_query": "Display the sample format of the Payment advice to send the deails",
+    "live_adapted_query": "Display the sample format of the Payment advice to send the deails"
+  },
+  {
+    "id": 1050,
+    "original_query": "Can I change the title of the payment advice report",
+    "live_adapted_query": "Can I change the title of the payment advice report"
+  },
+  {
+    "id": 1051,
+    "original_query": "Is it possible to change the payment advice Date while printing the payment advice",
+    "live_adapted_query": "Is it possible to change the payment advice Date while printing the payment advice"
+  },
+  {
+    "id": 1052,
+    "original_query": "I need to print the payment advice with the contact details, how can I do it",
+    "live_adapted_query": "I need to print the payment advice with the contact details, how can I do it"
+  },
+  {
+    "id": 1053,
+    "original_query": "How to print the payment advice with the bill wise details ? Including due on date",
+    "live_adapted_query": "How to print the payment advice with the bill wise details ? Including due on date"
+  },
+  {
+    "id": 1054,
+    "original_query": "How to issue the payment advice with the beneficiary account details /",
+    "live_adapted_query": "How to issue the payment advice with the beneficiary account details /"
+  },
+  {
+    "id": 1055,
+    "original_query": "Print the payment advice which is recorded for the party 'Warnar Ltd' with billwise details and transfer details",
+    "live_adapted_query": "Print the payment advice which is recorded for the party 'Warnar Ltd' with billwise details and transfer details"
+  },
+  {
+    "id": 1056,
+    "original_query": "How to print each payment advice in the new page",
+    "live_adapted_query": "How to print each payment advice in the new page"
+  },
+  {
+    "id": 1057,
+    "original_query": "How to change the template of the payment advice and customize accordingly",
+    "live_adapted_query": "How to change the template of the payment advice and customize accordingly"
+  },
+  {
+    "id": 1058,
+    "original_query": "List the payment transactions which are recorded with the On account reference",
+    "live_adapted_query": "List the payment transactions which are recorded with the On account reference"
+  },
+  {
+    "id": 1059,
+    "original_query": "What is the total value of all negative stocks as of today?",
+    "live_adapted_query": "What is the total value of all negative stocks as of today?"
+  },
+  {
+    "id": 1060,
+    "original_query": "List all the stock items that have negative opening balance for today?",
+    "live_adapted_query": "List all the stock items that have negative opening balance for today?"
+  },
+  {
+    "id": 1061,
+    "original_query": "List all the stock items that have negative closing balance for today?",
+    "live_adapted_query": "List all the stock items that have negative closing balance for today?"
+  },
+  {
+    "id": 1062,
+    "original_query": "Which godown has the highest negative stock?",
+    "live_adapted_query": "Which godown has the highest negative stock?"
+  },
+  {
+    "id": 1063,
+    "original_query": "Which godown has the lowest negative stock?",
+    "live_adapted_query": "Which godown has the lowest negative stock?"
+  },
+  {
+    "id": 1064,
+    "original_query": "Which item has the highest negative stock quantity?",
+    "live_adapted_query": "Which item has the highest negative stock quantity?"
+  },
+  {
+    "id": 1065,
+    "original_query": "Which item has the lowest negative stock quantity?",
+    "live_adapted_query": "Which item has the lowest negative stock quantity?"
+  },
+  {
+    "id": 1066,
+    "original_query": "Which items have the highest negative stock values?",
+    "live_adapted_query": "Which items have the highest negative stock values?"
+  },
+  {
+    "id": 1067,
+    "original_query": "Which items have the Lowest negative stock values?",
+    "live_adapted_query": "Which items have the Lowest negative stock values?"
+  },
+  {
+    "id": 1068,
+    "original_query": "List all the negative stock items in Descending order in quantity",
+    "live_adapted_query": "List all the negative stock items in Descending order in quantity"
+  },
+  {
+    "id": 1069,
+    "original_query": "How much kgs of item A is in negative?",
+    "live_adapted_query": "How much kgs of item A is in negative?"
+  },
+  {
+    "id": 1070,
+    "original_query": "What is the total number of items that are in negative?",
+    "live_adapted_query": "What is the total number of items that are in negative?"
+  },
+  {
+    "id": 1071,
+    "original_query": "List all the stock groups that have negative quantity?",
+    "live_adapted_query": "List all the stock groups that have negative quantity?"
+  },
+  {
+    "id": 1072,
+    "original_query": "What is the total negative quantity of each group?",
+    "live_adapted_query": "What is the total negative quantity of each group?"
+  },
+  {
+    "id": 1073,
+    "original_query": "What is the total value of all the negative stock items in each group",
+    "live_adapted_query": "What is the total value of all the negative stock items in each group"
+  },
+  {
+    "id": 1074,
+    "original_query": "Which stock group has the most negative quantity and what is the value?",
+    "live_adapted_query": "Which stock group has the most negative quantity and what is the value?"
+  },
+  {
+    "id": 1075,
+    "original_query": "What is value of the highest negative quantity stock item?",
+    "live_adapted_query": "What is value of the highest negative quantity stock item?"
+  },
+  {
+    "id": 1076,
+    "original_query": "What is the quantity required for item A to convert the negative stock?",
+    "live_adapted_query": "What is the quantity required for item A to convert the negative stock?"
+  },
+  {
+    "id": 1077,
+    "original_query": "Are there any items with negative closing balance still with profit?",
+    "live_adapted_query": "Are there any items with negative closing balance still with profit?"
+  },
+  {
+    "id": 1078,
+    "original_query": "Which month has the highest negative quantity and value in closing balance for Item a?",
+    "live_adapted_query": "Which month has the highest negative quantity and value in closing balance for Item a?"
+  },
+  {
+    "id": 1079,
+    "original_query": "List the sales transactions made for item A before the purchase transactions.",
+    "live_adapted_query": "List the sales transactions made for item A before the purchase transactions."
+  },
+  {
+    "id": 1080,
+    "original_query": "Give me closing negative stock as on today as per FIFO valuation method ( base costing method is average cost)",
+    "live_adapted_query": "Give me closing negative stock as on today as per FIFO valuation method ( base costing method is average cost)"
+  },
+  {
+    "id": 1081,
+    "original_query": "What is the value of negative stock received from third party ?",
+    "live_adapted_query": "What is the value of negative stock received from third party ?"
+  },
+  {
+    "id": 1082,
+    "original_query": "What is the value of Negative stock with third party ?",
+    "live_adapted_query": "What is the value of Negative stock with third party ?"
+  },
+  {
+    "id": 1083,
+    "original_query": "What is the value of our and third party negative stock with us?",
+    "live_adapted_query": "What is the value of our and third party negative stock with us?"
+  },
+  {
+    "id": 1084,
+    "original_query": "What is the value of our negative stock with us?",
+    "live_adapted_query": "What is the value of our negative stock with us?"
+  },
+  {
+    "id": 1085,
+    "original_query": "What is the value of our Negative stockwith us and third party?",
+    "live_adapted_query": "What is the value of our Negative stockwith us and third party?"
+  },
+  {
+    "id": 1086,
+    "original_query": "Give me closing negative stockfor today for Item P as per FIFO method",
+    "live_adapted_query": "Give me closing negative stockfor today for Item P as per FIFO method"
+  },
+  {
+    "id": 1087,
+    "original_query": "What is the closing negative stockas on today as per LIFO Annual negative stockvaluation method?",
+    "live_adapted_query": "What is the closing negative stockas on today as per LIFO Annual negative stockvaluation method?"
+  },
+  {
+    "id": 1088,
+    "original_query": "What is the closing negative stockas on today as per FIFO Perpetual negative stockvaluation method?",
+    "live_adapted_query": "What is the closing negative stockas on today as per FIFO Perpetual negative stockvaluation method?"
+  },
+  {
+    "id": 1089,
+    "original_query": "What is the closing negative stockas on today as per LIFO Perpetual negative stockvaluation method?",
+    "live_adapted_query": "What is the closing negative stockas on today as per LIFO Perpetual negative stockvaluation method?"
+  },
+  {
+    "id": 1090,
+    "original_query": "What is the closing negative stockas on today as per Avg Cost valuation method?",
+    "live_adapted_query": "What is the closing negative stockas on today as per Avg Cost valuation method?"
+  },
+  {
+    "id": 1091,
+    "original_query": "What is the closing negative stock as on today as per Avg Price valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Avg Price valuation method?"
+  },
+  {
+    "id": 1092,
+    "original_query": "What is the closing negative stock as on today as per Last Purchase Cost valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Last Purchase Cost valuation method?"
+  },
+  {
+    "id": 1093,
+    "original_query": "What is the closing negative stock as on today as per Last Sale price valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Last Sale price valuation method?"
+  },
+  {
+    "id": 1094,
+    "original_query": "What is the closing negative stock as on today as per Monthly Avg Cost valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Monthly Avg Cost valuation method?"
+  },
+  {
+    "id": 1095,
+    "original_query": "What is the closing negative stock as on today as per Standard Cost valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Standard Cost valuation method?"
+  },
+  {
+    "id": 1096,
+    "original_query": "What is the closing negative stock as on today as per Standard Price valuation method?",
+    "live_adapted_query": "What is the closing negative stock as on today as per Standard Price valuation method?"
+  },
+  {
+    "id": 1097,
+    "original_query": "What is the total value of all negative batches as of today?",
+    "live_adapted_query": "What is the total value of all negative batches as of today?"
+  },
+  {
+    "id": 1098,
+    "original_query": "List all the batches that have negative opening balance for today?",
+    "live_adapted_query": "List all the batches that have negative opening balance for today?"
+  },
+  {
+    "id": 1099,
+    "original_query": "List all the batches that have negative closing balance for today?",
+    "live_adapted_query": "List all the batches that have negative closing balance for today?"
+  },
+  {
+    "id": 1100,
+    "original_query": "List all the batches that have negative total inwards Quantity",
+    "live_adapted_query": "List all the batches that have negative total inwards Quantity"
+  }
+]

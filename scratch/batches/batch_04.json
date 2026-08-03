@@ -1,0 +1,502 @@
+[
+  {
+    "id": 301,
+    "original_query": "Bills pending 0 to 30 days old",
+    "live_adapted_query": "Bills pending 0 to 30 days old"
+  },
+  {
+    "id": 302,
+    "original_query": "Total overdue receivables past 180 days",
+    "live_adapted_query": "Total overdue receivables past 180 days"
+  },
+  {
+    "id": 303,
+    "original_query": "Age-wise outstanding report for Bosch Ltd",
+    "live_adapted_query": "Age-wise outstanding report for Bosch Ltd"
+  },
+  {
+    "id": 304,
+    "original_query": "Show bills overdue between 60 and 90 days",
+    "live_adapted_query": "Show bills overdue between 60 and 90 days"
+  },
+  {
+    "id": 305,
+    "original_query": "Count of overdue payables over 45 days",
+    "live_adapted_query": "Count of overdue payables over 45 days"
+  },
+  {
+    "id": 306,
+    "original_query": "Ageing report for bills under 50000",
+    "live_adapted_query": "Ageing report for bills under 50000"
+  },
+  {
+    "id": 307,
+    "original_query": "Overdue invoices older than 15 days sorted by age",
+    "live_adapted_query": "Overdue invoices older than 15 days sorted by age"
+  },
+  {
+    "id": 308,
+    "original_query": "What is the sum of receivables overdue beyond 60 days for Zenith Solutions?",
+    "live_adapted_query": "What is the sum of receivables overdue beyond 60 days for Zenith Solutions?"
+  },
+  {
+    "id": 309,
+    "original_query": "Ageing slab summary for outstanding bills",
+    "live_adapted_query": "Ageing slab summary for outstanding bills"
+  },
+  {
+    "id": 310,
+    "original_query": "Pending invoices with overdue age > 30 days for Global Logistics",
+    "live_adapted_query": "Pending invoices with overdue age > 30 days for Global Logistics"
+  },
+  {
+    "id": 311,
+    "original_query": "Show bills overdue by more than 10 days today",
+    "live_adapted_query": "Show bills overdue by more than 10 days today"
+  },
+  {
+    "id": 312,
+    "original_query": "Top 5 debtors by outstanding balance",
+    "live_adapted_query": "Top 5 debtors by outstanding balance"
+  },
+  {
+    "id": 313,
+    "original_query": "Who are the top 10 customers with highest overdue amount?",
+    "live_adapted_query": "Who are the top 10 customers with highest overdue amount?"
+  },
+  {
+    "id": 314,
+    "original_query": "Top 3 debtors for Q1 2025",
+    "live_adapted_query": "Top 3 debtors for Q1 2025"
+  },
+  {
+    "id": 315,
+    "original_query": "Highest outstanding customer accounts",
+    "live_adapted_query": "Highest outstanding customer accounts"
+  },
+  {
+    "id": 316,
+    "original_query": "Top 5 overdue debtors with balance over 1 lakh",
+    "live_adapted_query": "Top 5 overdue debtors with balance over 1 lakh"
+  },
+  {
+    "id": 317,
+    "original_query": "Top 10 debtors having bills overdue beyond 30 days",
+    "live_adapted_query": "Top 10 debtors having bills overdue beyond 30 days"
+  },
+  {
+    "id": 318,
+    "original_query": "List top 5 receivables accounts by pending amount",
+    "live_adapted_query": "List top 5 receivables accounts by pending amount"
+  },
+  {
+    "id": 319,
+    "original_query": "Top customer balances as of 31st March 2025",
+    "live_adapted_query": "Top customer balances as of 31st March 2025"
+  },
+  {
+    "id": 320,
+    "original_query": "Show top 5 debtors this month",
+    "live_adapted_query": "Show top 5 debtors this month"
+  },
+  {
+    "id": 321,
+    "original_query": "Top 3 customer accounts with largest pending dues",
+    "live_adapted_query": "Top 3 customer accounts with largest pending dues"
+  },
+  {
+    "id": 322,
+    "original_query": "Top 10 receivables by total pending balance today",
+    "live_adapted_query": "Top 10 receivables by total pending balance today"
+  },
+  {
+    "id": 323,
+    "original_query": "Identify top 5 clients owe us the most money",
+    "live_adapted_query": "Identify top 5 clients owe us the most money"
+  },
+  {
+    "id": 324,
+    "original_query": "Top 5 debtors for May 2025",
+    "live_adapted_query": "Top 5 debtors for May 2025"
+  },
+  {
+    "id": 325,
+    "original_query": "Who are our top 10 debtors exceeding 50k?",
+    "live_adapted_query": "Who are our top 10 debtors exceeding 50k?"
+  },
+  {
+    "id": 326,
+    "original_query": "Top 5 customer outstandings ordered by amount",
+    "live_adapted_query": "Top 5 customer outstandings ordered by amount"
+  },
+  {
+    "id": 327,
+    "original_query": "Top 5 creditors by pending balance",
+    "live_adapted_query": "Top 5 creditors by pending balance"
+  },
+  {
+    "id": 328,
+    "original_query": "Who are the top 10 vendors we owe money to?",
+    "live_adapted_query": "Who are the top 10 vendors we owe money to?"
+  },
+  {
+    "id": 329,
+    "original_query": "Top 3 suppliers to be paid in Q1 2025",
+    "live_adapted_query": "Top 3 suppliers to be paid in Q1 2025"
+  },
+  {
+    "id": 330,
+    "original_query": "Highest pending vendor accounts",
+    "live_adapted_query": "Highest pending vendor accounts"
+  },
+  {
+    "id": 331,
+    "original_query": "Top 5 creditors with payables exceeding 2 lakhs",
+    "live_adapted_query": "Top 5 creditors with payables exceeding 2 lakhs"
+  },
+  {
+    "id": 332,
+    "original_query": "Top 10 creditors having dues older than 60 days",
+    "live_adapted_query": "Top 10 creditors having dues older than 60 days"
+  },
+  {
+    "id": 333,
+    "original_query": "List top 5 payables accounts by total due amount",
+    "live_adapted_query": "List top 5 payables accounts by total due amount"
+  },
+  {
+    "id": 334,
+    "original_query": "Top vendor balances as of 31st March 2025",
+    "live_adapted_query": "Top vendor balances as of 31st March 2025"
+  },
+  {
+    "id": 335,
+    "original_query": "Show top 5 creditors for this month",
+    "live_adapted_query": "Show top 5 creditors for this month"
+  },
+  {
+    "id": 336,
+    "original_query": "Top 3 suppliers with largest outstanding bills",
+    "live_adapted_query": "Top 3 suppliers with largest outstanding bills"
+  },
+  {
+    "id": 337,
+    "original_query": "Top 10 creditors by total pending payment today",
+    "live_adapted_query": "Top 10 creditors by total pending payment today"
+  },
+  {
+    "id": 338,
+    "original_query": "Identify top 5 suppliers needing payment priority",
+    "live_adapted_query": "Identify top 5 suppliers needing payment priority"
+  },
+  {
+    "id": 339,
+    "original_query": "Top 5 creditors for June 2025",
+    "live_adapted_query": "Top 5 creditors for June 2025"
+  },
+  {
+    "id": 340,
+    "original_query": "Who are our top 10 creditors above 1L?",
+    "live_adapted_query": "Who are our top 10 creditors above 1L?"
+  },
+  {
+    "id": 341,
+    "original_query": "Top 5 vendor payables ordered by amount",
+    "live_adapted_query": "Top 5 vendor payables ordered by amount"
+  },
+  {
+    "id": 342,
+    "original_query": "Net outstanding after pdc for Reliance Industries",
+    "live_adapted_query": "Net outstanding after pdc for Reliance Industries"
+  },
+  {
+    "id": 343,
+    "original_query": "Show post-dated receipts for Reliance",
+    "live_adapted_query": "Show post-dated receipts for Reliance"
+  },
+  {
+    "id": 344,
+    "original_query": "Net payable after PDC for Tata Steel",
+    "live_adapted_query": "Net payable after PDC for Tata Steel"
+  },
+  {
+    "id": 345,
+    "original_query": "List post-dated payment vouchers for Siemens",
+    "live_adapted_query": "List post-dated payment vouchers for Siemens"
+  },
+  {
+    "id": 346,
+    "original_query": "What is the net receivable after pdc netting?",
+    "live_adapted_query": "What is the net receivable after pdc netting?"
+  },
+  {
+    "id": 347,
+    "original_query": "Show post-dated sales invoices for Acme Corp",
+    "live_adapted_query": "Show post-dated sales invoices for Acme Corp"
+  },
+  {
+    "id": 348,
+    "original_query": "Net outstanding payables including post dated cheques",
+    "live_adapted_query": "Net outstanding payables including post dated cheques"
+  },
+  {
+    "id": 349,
+    "original_query": "Post-dated purchase vouchers for Bosch Ltd",
+    "live_adapted_query": "Post-dated purchase vouchers for Bosch Ltd"
+  },
+  {
+    "id": 350,
+    "original_query": "Post dated receipt status for Zenith Solutions",
+    "live_adapted_query": "Post dated receipt status for Zenith Solutions"
+  },
+  {
+    "id": 351,
+    "original_query": "Net receivable after PDC for Metro Retail",
+    "live_adapted_query": "Net receivable after PDC for Metro Retail"
+  },
+  {
+    "id": 352,
+    "original_query": "Show post dated cheques issued to Larsen & Toubro",
+    "live_adapted_query": "Show post dated cheques issued to Larsen & Toubro"
+  },
+  {
+    "id": 353,
+    "original_query": "Net outstanding balance for Thermax after pdc",
+    "live_adapted_query": "Net outstanding balance for Thermax after pdc"
+  },
+  {
+    "id": 354,
+    "original_query": "Post-dated journal entries for adjustment",
+    "live_adapted_query": "Post-dated journal entries for adjustment"
+  },
+  {
+    "id": 355,
+    "original_query": "Net outstanding receivable after pdc deduction for Apex Infotech",
+    "live_adapted_query": "Net outstanding receivable after pdc deduction for Apex Infotech"
+  },
+  {
+    "id": 356,
+    "original_query": "Show all Sales invoices for Delta Cargo",
+    "live_adapted_query": "Show all Sales invoices for Delta Cargo"
+  },
+  {
+    "id": 357,
+    "original_query": "Recent 5 Sales vouchers for Acme Corp",
+    "live_adapted_query": "Recent 5 Sales vouchers for Acme Corp"
+  },
+  {
+    "id": 358,
+    "original_query": "List sales invoices above 50000 from last month",
+    "live_adapted_query": "List sales invoices above 50000 from last month"
+  },
+  {
+    "id": 359,
+    "original_query": "Sales entries for Infosys in April 2025",
+    "live_adapted_query": "Sales entries for Infosys in April 2025"
+  },
+  {
+    "id": 360,
+    "original_query": "Get all sales bills for Sunrise Enterprises",
+    "live_adapted_query": "Get all sales bills for Sunrise Enterprises"
+  },
+  {
+    "id": 361,
+    "original_query": "How many Sales vouchers were recorded this week?",
+    "live_adapted_query": "How many Sales vouchers were recorded this week?"
+  },
+  {
+    "id": 362,
+    "original_query": "Total sales amount for Apex Electronics this month",
+    "live_adapted_query": "Total sales amount for Apex Electronics this month"
+  },
+  {
+    "id": 363,
+    "original_query": "Show sales invoice INV-2025-001 details",
+    "live_adapted_query": "Show sales invoice INV-2025-001 details"
+  },
+  {
+    "id": 364,
+    "original_query": "Get details of Sales Bill 402 for Reliance Industries",
+    "live_adapted_query": "Get details of Sales Bill 402 for Reliance Industries"
+  },
+  {
+    "id": 365,
+    "original_query": "Pending sales invoices for Vanguard Traders",
+    "live_adapted_query": "Pending sales invoices for Vanguard Traders"
+  },
+  {
+    "id": 366,
+    "original_query": "Cleared sales bills for Delta Cargo",
+    "live_adapted_query": "Cleared sales bills for Delta Cargo"
+  },
+  {
+    "id": 367,
+    "original_query": "Top 10 highest Sales invoices this year",
+    "live_adapted_query": "Top 10 highest Sales invoices this year"
+  },
+  {
+    "id": 368,
+    "original_query": "Sales entries recorded today",
+    "live_adapted_query": "Sales entries recorded today"
+  },
+  {
+    "id": 369,
+    "original_query": "Sales vouchers under ledger Global Logistics",
+    "live_adapted_query": "Sales vouchers under ledger Global Logistics"
+  },
+  {
+    "id": 370,
+    "original_query": "Count of sales invoices generated last month",
+    "live_adapted_query": "Count of sales invoices generated last month"
+  },
+  {
+    "id": 371,
+    "original_query": "Details for sales voucher SL-904",
+    "live_adapted_query": "Details for sales voucher SL-904"
+  },
+  {
+    "id": 372,
+    "original_query": "Sales transactions exceeding 200000 in Q1",
+    "live_adapted_query": "Sales transactions exceeding 200000 in Q1"
+  },
+  {
+    "id": 373,
+    "original_query": "Latest sales invoice for Wipro Technologies",
+    "live_adapted_query": "Latest sales invoice for Wipro Technologies"
+  },
+  {
+    "id": 374,
+    "original_query": "Show sales invoice 782 status",
+    "live_adapted_query": "Show sales invoice 782 status"
+  },
+  {
+    "id": 375,
+    "original_query": "List all sales vouchers with amount under 10000",
+    "live_adapted_query": "List all sales vouchers with amount under 10000"
+  },
+  {
+    "id": 376,
+    "original_query": "Sales bills for Zenith Motors from last week",
+    "live_adapted_query": "Sales bills for Zenith Motors from last week"
+  },
+  {
+    "id": 377,
+    "original_query": "Sum of sales vouchers billed to Orion Tech",
+    "live_adapted_query": "Sum of sales vouchers billed to Orion Tech"
+  },
+  {
+    "id": 378,
+    "original_query": "Show sales voucher details for invoice reference SAL-105",
+    "live_adapted_query": "Show sales voucher details for invoice reference SAL-105"
+  },
+  {
+    "id": 379,
+    "original_query": "Oldest 5 sales invoices pending payment",
+    "live_adapted_query": "Oldest 5 sales invoices pending payment"
+  },
+  {
+    "id": 380,
+    "original_query": "Sales transactions for Tata Motors yesterday",
+    "live_adapted_query": "Sales transactions for Tata Motors yesterday"
+  },
+  {
+    "id": 381,
+    "original_query": "Show all Purchase vouchers from Sharma Suppliers",
+    "live_adapted_query": "Show all Purchase vouchers from Sharma Suppliers"
+  },
+  {
+    "id": 382,
+    "original_query": "Recent 10 Purchase invoices for Acme Chemicals",
+    "live_adapted_query": "Recent 10 Purchase invoices for Acme Chemicals"
+  },
+  {
+    "id": 383,
+    "original_query": "Purchase bills above 150000 in last month",
+    "live_adapted_query": "Purchase bills above 150000 in last month"
+  },
+  {
+    "id": 384,
+    "original_query": "List purchase entries for Bharat Heavy Electricals in May 2025",
+    "live_adapted_query": "List purchase entries for Bharat Heavy Electricals in May 2025"
+  },
+  {
+    "id": 385,
+    "original_query": "Get purchase invoice PUR-2025-88 details",
+    "live_adapted_query": "Get purchase invoice PUR-2025-88 details"
+  },
+  {
+    "id": 386,
+    "original_query": "How many purchase vouchers were entered yesterday?",
+    "live_adapted_query": "How many purchase vouchers were entered yesterday?"
+  },
+  {
+    "id": 387,
+    "original_query": "Total purchase amount from Steel Authority this month",
+    "live_adapted_query": "Total purchase amount from Steel Authority this month"
+  },
+  {
+    "id": 388,
+    "original_query": "Show purchase bill 509 for National Traders",
+    "live_adapted_query": "Show purchase bill 509 for National Traders"
+  },
+  {
+    "id": 389,
+    "original_query": "Pending purchase invoices for Hindalco",
+    "live_adapted_query": "Pending purchase invoices for Hindalco"
+  },
+  {
+    "id": 390,
+    "original_query": "Cleared purchase bills for Apex Polymers",
+    "live_adapted_query": "Cleared purchase bills for Apex Polymers"
+  },
+  {
+    "id": 391,
+    "original_query": "Purchase transactions for Bajaj Auto this week",
+    "live_adapted_query": "Purchase transactions for Bajaj Auto this week"
+  },
+  {
+    "id": 392,
+    "original_query": "Count of purchase vouchers recorded in Q2",
+    "live_adapted_query": "Count of purchase vouchers recorded in Q2"
+  },
+  {
+    "id": 393,
+    "original_query": "Show details of purchase voucher reference PB-332",
+    "live_adapted_query": "Show details of purchase voucher reference PB-332"
+  },
+  {
+    "id": 394,
+    "original_query": "Purchase entries exceeding 500000 from Mahindra",
+    "live_adapted_query": "Purchase entries exceeding 500000 from Mahindra"
+  },
+  {
+    "id": 395,
+    "original_query": "Latest 3 purchase invoices from Larsen & Toubro",
+    "live_adapted_query": "Latest 3 purchase invoices from Larsen & Toubro"
+  },
+  {
+    "id": 396,
+    "original_query": "Check purchase bill reference 1044 status",
+    "live_adapted_query": "Check purchase bill reference 1044 status"
+  },
+  {
+    "id": 397,
+    "original_query": "Purchase vouchers with amount less than 20000",
+    "live_adapted_query": "Purchase vouchers with amount less than 20000"
+  },
+  {
+    "id": 398,
+    "original_query": "Purchase entries recorded today",
+    "live_adapted_query": "Purchase entries recorded today"
+  },
+  {
+    "id": 399,
+    "original_query": "Sum of all purchase invoices from Sterling Tools",
+    "live_adapted_query": "Sum of all purchase invoices from Sterling Tools"
+  },
+  {
+    "id": 400,
+    "original_query": "Purchase bill reference P-771 details",
+    "live_adapted_query": "Purchase bill reference P-771 details"
+  }
+]

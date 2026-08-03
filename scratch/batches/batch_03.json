@@ -1,0 +1,502 @@
+[
+  {
+    "id": 201,
+    "original_query": "Why is ageing analysis important for businesses?",
+    "live_adapted_query": "Why is ageing analysis important for businesses?"
+  },
+  {
+    "id": 202,
+    "original_query": "What does partially settled bill mean?",
+    "live_adapted_query": "What does partially settled bill mean?"
+  },
+  {
+    "id": 203,
+    "original_query": "What is the purpose of maintaining bill references?",
+    "live_adapted_query": "What is the purpose of maintaining bill references?"
+  },
+  {
+    "id": 204,
+    "original_query": "How are receivables different from revenue?",
+    "live_adapted_query": "How are receivables different from revenue?"
+  },
+  {
+    "id": 205,
+    "original_query": "What are unadjusted receipts in outstanding reports?",
+    "live_adapted_query": "What are unadjusted receipts in outstanding reports?"
+  },
+  {
+    "id": 206,
+    "original_query": "Why do companies track supplier payables separately?",
+    "live_adapted_query": "Why do companies track supplier payables separately?"
+  },
+  {
+    "id": 207,
+    "original_query": "What is the meaning of overdue by days?",
+    "live_adapted_query": "What is the meaning of overdue by days?"
+  },
+  {
+    "id": 208,
+    "original_query": "How is pending amount calculated for a bill?",
+    "live_adapted_query": "How is pending amount calculated for a bill?"
+  },
+  {
+    "id": 209,
+    "original_query": "What is the impact of delayed customer payments on a business?",
+    "live_adapted_query": "What is the impact of delayed customer payments on a business?"
+  },
+  {
+    "id": 210,
+    "original_query": "What are advanced receipts in accounting?",
+    "live_adapted_query": "What are advanced receipts in accounting?"
+  },
+  {
+    "id": 211,
+    "original_query": "Why might outstanding reports become misleading?",
+    "live_adapted_query": "Why might outstanding reports become misleading?"
+  },
+  {
+    "id": 212,
+    "original_query": "What is the difference between closing balance and outstanding balance?",
+    "live_adapted_query": "What is the difference between closing balance and outstanding balance?"
+  },
+  {
+    "id": 213,
+    "original_query": "Is my receivable ageing getting worse compared to last quarter?",
+    "live_adapted_query": "Is my receivable ageing getting worse compared to last quarter?"
+  },
+  {
+    "id": 214,
+    "original_query": "Which customers are taking the longest time to clear payments, and is that a risk for cash flow?",
+    "live_adapted_query": "Which customers are taking the longest time to clear payments, and is that a risk for cash flow?"
+  },
+  {
+    "id": 215,
+    "original_query": "Are overdue receivables increasing this financial year?",
+    "live_adapted_query": "Are overdue receivables increasing this financial year?"
+  },
+  {
+    "id": 216,
+    "original_query": "Which group contributes the highest overdue outstanding, and should I be concerned?",
+    "live_adapted_query": "Which group contributes the highest overdue outstanding, and should I be concerned?"
+  },
+  {
+    "id": 217,
+    "original_query": "Do my payable trends indicate delayed vendor payments?",
+    "live_adapted_query": "Do my payable trends indicate delayed vendor payments?"
+  },
+  {
+    "id": 218,
+    "original_query": "Which parties consistently delay payments beyond 90 days?",
+    "live_adapted_query": "Which parties consistently delay payments beyond 90 days?"
+  },
+  {
+    "id": 219,
+    "original_query": "Is my collection efficiency improving over the past 6 months?",
+    "live_adapted_query": "Is my collection efficiency improving over the past 6 months?"
+  },
+  {
+    "id": 220,
+    "original_query": "Which debtors should I prioritize for follow-up based on overdue amount?",
+    "live_adapted_query": "Which debtors should I prioritize for follow-up based on overdue amount?"
+  },
+  {
+    "id": 221,
+    "original_query": "Are my outstanding receivables unusually high compared to previous quarters?",
+    "live_adapted_query": "Are my outstanding receivables unusually high compared to previous quarters?"
+  },
+  {
+    "id": 222,
+    "original_query": "Which suppliers have the largest pending payable balances, and could this impact operations?",
+    "live_adapted_query": "Which suppliers have the largest pending payable balances, and could this impact operations?"
+  },
+  {
+    "id": 223,
+    "original_query": "Are there too many old pending bills in Sundry Debtors?",
+    "live_adapted_query": "Are there too many old pending bills in Sundry Debtors?"
+  },
+  {
+    "id": 224,
+    "original_query": "Which customers have partially settled bills most frequently?",
+    "live_adapted_query": "Which customers have partially settled bills most frequently?"
+  },
+  {
+    "id": 225,
+    "original_query": "Is the company becoming more dependent on a few customers for receivables?",
+    "live_adapted_query": "Is the company becoming more dependent on a few customers for receivables?"
+  },
+  {
+    "id": 226,
+    "original_query": "Are overdue bills concentrated within a specific customer group?",
+    "live_adapted_query": "Are overdue bills concentrated within a specific customer group?"
+  },
+  {
+    "id": 227,
+    "original_query": "Which ageing bucket has the highest outstanding amount, and what does it indicate?",
+    "live_adapted_query": "Which ageing bucket has the highest outstanding amount, and what does it indicate?"
+  },
+  {
+    "id": 228,
+    "original_query": "Is my net outstanding position improving month over month?",
+    "live_adapted_query": "Is my net outstanding position improving month over month?"
+  },
+  {
+    "id": 229,
+    "original_query": "Which ledgers have high outstanding but low recent collections?",
+    "live_adapted_query": "Which ledgers have high outstanding but low recent collections?"
+  },
+  {
+    "id": 230,
+    "original_query": "Which creditor and debtor have pending, overdue receivables?",
+    "live_adapted_query": "Which creditor and debtor have pending, overdue receivables?"
+  },
+  {
+    "id": 231,
+    "original_query": "What is the total receivable amount from clients?",
+    "live_adapted_query": "What is the total receivable amount from clients?"
+  },
+  {
+    "id": 232,
+    "original_query": "List all outstanding bills for Acme Corp",
+    "live_adapted_query": "List all outstanding bills for Acme Corp"
+  },
+  {
+    "id": 233,
+    "original_query": "Pending customer bills above 50,000 rupees",
+    "live_adapted_query": "Pending customer bills above 50,000 rupees"
+  },
+  {
+    "id": 234,
+    "original_query": "Show receivables due this week",
+    "live_adapted_query": "Show receivables due this week"
+  },
+  {
+    "id": 235,
+    "original_query": "Count of pending receivable bills for Zenith Solutions",
+    "live_adapted_query": "Count of pending receivable bills for Zenith Solutions"
+  },
+  {
+    "id": 236,
+    "original_query": "Receivable bills starting with highest amount first",
+    "live_adapted_query": "Receivable bills starting with highest amount first"
+  },
+  {
+    "id": 237,
+    "original_query": "Outstanding receivable balance for Apex Infotech",
+    "live_adapted_query": "Outstanding receivable balance for Apex Infotech"
+  },
+  {
+    "id": 238,
+    "original_query": "Customer invoices pending collection today",
+    "live_adapted_query": "Customer invoices pending collection today"
+  },
+  {
+    "id": 239,
+    "original_query": "Receivables from Global Logistics under 1 lakh",
+    "live_adapted_query": "Receivables from Global Logistics under 1 lakh"
+  },
+  {
+    "id": 240,
+    "original_query": "Show all unpaid sales bills for Metro Retail",
+    "live_adapted_query": "Show all unpaid sales bills for Metro Retail"
+  },
+  {
+    "id": 241,
+    "original_query": "Total pending collection amount for Q1 2025",
+    "live_adapted_query": "Total pending collection amount for Q1 2025"
+  },
+  {
+    "id": 242,
+    "original_query": "Receivable bills due in next 15 days",
+    "live_adapted_query": "Receivable bills due in next 15 days"
+  },
+  {
+    "id": 243,
+    "original_query": "How many customer bills are pending to be collected?",
+    "live_adapted_query": "How many customer bills are pending to be collected?"
+  },
+  {
+    "id": 244,
+    "original_query": "Receivables for Dynamic Traders between 50k and 2L",
+    "live_adapted_query": "Receivables for Dynamic Traders between 50k and 2L"
+  },
+  {
+    "id": 245,
+    "original_query": "Show due receivables sorted by due date ascending",
+    "live_adapted_query": "Show due receivables sorted by due date ascending"
+  },
+  {
+    "id": 246,
+    "original_query": "What is the receivable balance of Starlight Enterprises?",
+    "live_adapted_query": "What is the receivable balance of Starlight Enterprises?"
+  },
+  {
+    "id": 247,
+    "original_query": "List receivables till 31st March 2025",
+    "live_adapted_query": "List receivables till 31st March 2025"
+  },
+  {
+    "id": 248,
+    "original_query": "Total outstanding receivables for Horizon Media",
+    "live_adapted_query": "Total outstanding receivables for Horizon Media"
+  },
+  {
+    "id": 249,
+    "original_query": "Fetch all pending debtor invoices for March 2025",
+    "live_adapted_query": "Fetch all pending debtor invoices for March 2025"
+  },
+  {
+    "id": 250,
+    "original_query": "Are there any pending receivables above 5 lakhs?",
+    "live_adapted_query": "Are there any pending receivables above 5 lakhs?"
+  },
+  {
+    "id": 251,
+    "original_query": "Show bill details for invoice REF-9942",
+    "live_adapted_query": "Show bill details for invoice REF-9942"
+  },
+  {
+    "id": 252,
+    "original_query": "Pending sales bill status for Prime Agencies",
+    "live_adapted_query": "Pending sales bill status for Prime Agencies"
+  },
+  {
+    "id": 253,
+    "original_query": "Total value of pending receivables due this month",
+    "live_adapted_query": "Total value of pending receivables due this month"
+  },
+  {
+    "id": 254,
+    "original_query": "Get customer bills due for collection today",
+    "live_adapted_query": "Get customer bills due for collection today"
+  },
+  {
+    "id": 255,
+    "original_query": "Pending debtor balance for Synergy Ltd",
+    "live_adapted_query": "Pending debtor balance for Synergy Ltd"
+  },
+  {
+    "id": 256,
+    "original_query": "List customer bills pending collection under invoice date filter",
+    "live_adapted_query": "List customer bills pending collection under invoice date filter"
+  },
+  {
+    "id": 257,
+    "original_query": "Uncollected receivables for Apex Infotech exceeding 20000",
+    "live_adapted_query": "Uncollected receivables for Apex Infotech exceeding 20000"
+  },
+  {
+    "id": 258,
+    "original_query": "Receivable summary for accounts in North Zone",
+    "live_adapted_query": "Receivable summary for accounts in North Zone"
+  },
+  {
+    "id": 259,
+    "original_query": "What is the total payable amount to vendors?",
+    "live_adapted_query": "What is the total payable amount to vendors?"
+  },
+  {
+    "id": 260,
+    "original_query": "Show all pending bills payable to Tata Steel",
+    "live_adapted_query": "Show all pending bills payable to Tata Steel"
+  },
+  {
+    "id": 261,
+    "original_query": "Vendor payables above 1 lakh",
+    "live_adapted_query": "Vendor payables above 1 lakh"
+  },
+  {
+    "id": 262,
+    "original_query": "Payable bills due this week",
+    "live_adapted_query": "Payable bills due this week"
+  },
+  {
+    "id": 263,
+    "original_query": "Count of unpaid vendor bills for Reliance Industries",
+    "live_adapted_query": "Count of unpaid vendor bills for Reliance Industries"
+  },
+  {
+    "id": 264,
+    "original_query": "Sort pending payables by due date ascending",
+    "live_adapted_query": "Sort pending payables by due date ascending"
+  },
+  {
+    "id": 265,
+    "original_query": "Total amount payable to Larsen & Toubro",
+    "live_adapted_query": "Total amount payable to Larsen & Toubro"
+  },
+  {
+    "id": 266,
+    "original_query": "Pending vendor payments due today",
+    "live_adapted_query": "Pending vendor payments due today"
+  },
+  {
+    "id": 267,
+    "original_query": "Payables for Thermax under 50,000",
+    "live_adapted_query": "Payables for Thermax under 50,000"
+  },
+  {
+    "id": 268,
+    "original_query": "Show all outstanding purchase bills for Aquatech System",
+    "live_adapted_query": "Show all outstanding purchase bills for Aquatech System"
+  },
+  {
+    "id": 269,
+    "original_query": "Total payables due for month of April 2025",
+    "live_adapted_query": "Total payables due for month of April 2025"
+  },
+  {
+    "id": 270,
+    "original_query": "Supplier bills due in next 7 days",
+    "live_adapted_query": "Supplier bills due in next 7 days"
+  },
+  {
+    "id": 271,
+    "original_query": "How many purchase invoices are pending payment?",
+    "live_adapted_query": "How many purchase invoices are pending payment?"
+  },
+  {
+    "id": 272,
+    "original_query": "Payables to Siemens between 1L and 5L",
+    "live_adapted_query": "Payables to Siemens between 1L and 5L"
+  },
+  {
+    "id": 273,
+    "original_query": "Show pending payables sorted by amount descending",
+    "live_adapted_query": "Show pending payables sorted by amount descending"
+  },
+  {
+    "id": 274,
+    "original_query": "What is our net payable balance to Bosch Ltd?",
+    "live_adapted_query": "What is our net payable balance to Bosch Ltd?"
+  },
+  {
+    "id": 275,
+    "original_query": "Vendor payables till 30th June 2025",
+    "live_adapted_query": "Vendor payables till 30th June 2025"
+  },
+  {
+    "id": 276,
+    "original_query": "Total outstanding payables for General Engineering",
+    "live_adapted_query": "Total outstanding payables for General Engineering"
+  },
+  {
+    "id": 277,
+    "original_query": "Fetch all supplier dues for May 2025",
+    "live_adapted_query": "Fetch all supplier dues for May 2025"
+  },
+  {
+    "id": 278,
+    "original_query": "Pending vendor bills greater than 2,00,000",
+    "live_adapted_query": "Pending vendor bills greater than 2,00,000"
+  },
+  {
+    "id": 279,
+    "original_query": "Details for purchase reference PUR-2025-042",
+    "live_adapted_query": "Details for purchase reference PUR-2025-042"
+  },
+  {
+    "id": 280,
+    "original_query": "Pending payment status for ABB Power",
+    "live_adapted_query": "Pending payment status for ABB Power"
+  },
+  {
+    "id": 281,
+    "original_query": "Total value of supplier payables due next month",
+    "live_adapted_query": "Total value of supplier payables due next month"
+  },
+  {
+    "id": 282,
+    "original_query": "List vendor bills due for payment today",
+    "live_adapted_query": "List vendor bills due for payment today"
+  },
+  {
+    "id": 283,
+    "original_query": "Outstanding payables for Schneider Electric",
+    "live_adapted_query": "Outstanding payables for Schneider Electric"
+  },
+  {
+    "id": 284,
+    "original_query": "Vendor payables filtered by purchase invoice date",
+    "live_adapted_query": "Vendor payables filtered by purchase invoice date"
+  },
+  {
+    "id": 285,
+    "original_query": "Unpaid purchase bills for Tata Steel exceeding 75000",
+    "live_adapted_query": "Unpaid purchase bills for Tata Steel exceeding 75000"
+  },
+  {
+    "id": 286,
+    "original_query": "Supplier payables summary for West Zone",
+    "live_adapted_query": "Supplier payables summary for West Zone"
+  },
+  {
+    "id": 287,
+    "original_query": "Show bill ageing report for all customers",
+    "live_adapted_query": "Show bill ageing report for all customers"
+  },
+  {
+    "id": 288,
+    "original_query": "Overdue bills beyond 30 days",
+    "live_adapted_query": "Overdue bills beyond 30 days"
+  },
+  {
+    "id": 289,
+    "original_query": "Bills pending for more than 90 days",
+    "live_adapted_query": "Bills pending for more than 90 days"
+  },
+  {
+    "id": 290,
+    "original_query": "Ageing breakdown of outstanding receivables for Acme Corp",
+    "live_adapted_query": "Ageing breakdown of outstanding receivables for Acme Corp"
+  },
+  {
+    "id": 291,
+    "original_query": "Overdue payables aged between 30 and 60 days",
+    "live_adapted_query": "Overdue payables aged between 30 and 60 days"
+  },
+  {
+    "id": 292,
+    "original_query": "What is the total overdue amount exceeding 60 days?",
+    "live_adapted_query": "What is the total overdue amount exceeding 60 days?"
+  },
+  {
+    "id": 293,
+    "original_query": "Ageing analysis of vendor bills for Siemens",
+    "live_adapted_query": "Ageing analysis of vendor bills for Siemens"
+  },
+  {
+    "id": 294,
+    "original_query": "Bills overdue by less than 15 days",
+    "live_adapted_query": "Bills overdue by less than 15 days"
+  },
+  {
+    "id": 295,
+    "original_query": "How many bills are overdue for more than 120 days?",
+    "live_adapted_query": "How many bills are overdue for more than 120 days?"
+  },
+  {
+    "id": 296,
+    "original_query": "Ageing summary based on invoice date",
+    "live_adapted_query": "Ageing summary based on invoice date"
+  },
+  {
+    "id": 297,
+    "original_query": "Overdue bills above 1 lakh aged > 45 days",
+    "live_adapted_query": "Overdue bills above 1 lakh aged > 45 days"
+  },
+  {
+    "id": 298,
+    "original_query": "Oldest overdue bills listed first",
+    "live_adapted_query": "Oldest overdue bills listed first"
+  },
+  {
+    "id": 299,
+    "original_query": "Show ageing report as on 31-Mar-2025",
+    "live_adapted_query": "Show ageing report as on 31-Mar-2025"
+  },
+  {
+    "id": 300,
+    "original_query": "Ageing profile of receivables for Metro Retail",
+    "live_adapted_query": "Ageing profile of receivables for Metro Retail"
+  }
+]

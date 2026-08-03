@@ -1,0 +1,502 @@
+[
+  {
+    "id": 601,
+    "original_query": "How to pass debit note voucher?",
+    "live_adapted_query": "How to pass debit note voucher?"
+  },
+  {
+    "id": 602,
+    "original_query": "What is opening balance in ledger creation?",
+    "live_adapted_query": "What is opening balance in ledger creation?"
+  },
+  {
+    "id": 603,
+    "original_query": "Why is cash ledger created by default?",
+    "live_adapted_query": "Why is cash ledger created by default?"
+  },
+  {
+    "id": 604,
+    "original_query": "How to enable multi-location inventory?",
+    "live_adapted_query": "How to enable multi-location inventory?"
+  },
+  {
+    "id": 605,
+    "original_query": "Trial balance for Indirect Expenses",
+    "live_adapted_query": "Trial balance for Indirect Expenses"
+  },
+  {
+    "id": 606,
+    "original_query": "Closing balance of Duties & Taxes as of March 2025",
+    "live_adapted_query": "Closing balance of Duties & Taxes as of March 2025"
+  },
+  {
+    "id": 607,
+    "original_query": "Show trial balance of Group Capital Account",
+    "live_adapted_query": "Show trial balance of Group Capital Account"
+  },
+  {
+    "id": 608,
+    "original_query": "Trial balance report as of today",
+    "live_adapted_query": "Trial balance report as of today"
+  },
+  {
+    "id": 609,
+    "original_query": "Fetch trial balance for FY 2024-25",
+    "live_adapted_query": "Fetch trial balance for FY 2024-25"
+  },
+  {
+    "id": 610,
+    "original_query": "Get trial balance for Direct Expenses group",
+    "live_adapted_query": "Get trial balance for Direct Expenses group"
+  },
+  {
+    "id": 611,
+    "original_query": "What is the net trial balance of Fixed Assets for last month?",
+    "live_adapted_query": "What is the net trial balance of Fixed Assets for last month?"
+  },
+  {
+    "id": 612,
+    "original_query": "Trial balance of Sundry Creditors as on 31-03-2025",
+    "live_adapted_query": "Trial balance of Sundry Creditors as on 31-03-2025"
+  },
+  {
+    "id": 613,
+    "original_query": "Give me the trial balance for Current Liabilities",
+    "live_adapted_query": "Give me the trial balance for Current Liabilities"
+  },
+  {
+    "id": 614,
+    "original_query": "Show detailed trial balance for Sales Account",
+    "live_adapted_query": "Show detailed trial balance for Sales Account"
+  },
+  {
+    "id": 615,
+    "original_query": "Trial balance of Loans & Advances",
+    "live_adapted_query": "Trial balance of Loans & Advances"
+  },
+  {
+    "id": 616,
+    "original_query": "What is the closing trial balance of Bank Accounts as of March 2025?",
+    "live_adapted_query": "What is the closing trial balance of Bank Accounts as of March 2025?"
+  },
+  {
+    "id": 617,
+    "original_query": "Display trial balance for Administrative Expenses",
+    "live_adapted_query": "Display trial balance for Administrative Expenses"
+  },
+  {
+    "id": 618,
+    "original_query": "Trial balance for Investments for Q4 2024",
+    "live_adapted_query": "Trial balance for Investments for Q4 2024"
+  },
+  {
+    "id": 619,
+    "original_query": "What's the total trial balance sum for Operating Expenses?",
+    "live_adapted_query": "What's the total trial balance sum for Operating Expenses?"
+  },
+  {
+    "id": 620,
+    "original_query": "Closing balances in Trial Balance for Branch/Divisions",
+    "live_adapted_query": "Closing balances in Trial Balance for Branch/Divisions"
+  },
+  {
+    "id": 621,
+    "original_query": "Get TB for Provisions group as of 31 Dec 2024",
+    "live_adapted_query": "Get TB for Provisions group as of 31 Dec 2024"
+  },
+  {
+    "id": 622,
+    "original_query": "Show me trial balance for Audit Fees",
+    "live_adapted_query": "Show me trial balance for Audit Fees"
+  },
+  {
+    "id": 623,
+    "original_query": "Trial balance summary of Purchase Accounts for this year",
+    "live_adapted_query": "Trial balance summary of Purchase Accounts for this year"
+  },
+  {
+    "id": 624,
+    "original_query": "Fetch closing trial balance of Goods and Services Tax",
+    "live_adapted_query": "Fetch closing trial balance of Goods and Services Tax"
+  },
+  {
+    "id": 625,
+    "original_query": "Show trial balance for Depreciation ledger group",
+    "live_adapted_query": "Show trial balance for Depreciation ledger group"
+  },
+  {
+    "id": 626,
+    "original_query": "Trial balance as on today for Cash-in-hand",
+    "live_adapted_query": "Trial balance as on today for Cash-in-hand"
+  },
+  {
+    "id": 627,
+    "original_query": "Get trial balance for Indirect Incomes",
+    "live_adapted_query": "Get trial balance for Indirect Incomes"
+  },
+  {
+    "id": 628,
+    "original_query": "Trial balance listing for Group Direct Incomes as of Q1",
+    "live_adapted_query": "Trial balance listing for Group Direct Incomes as of Q1"
+  },
+  {
+    "id": 629,
+    "original_query": "Can I see the full trial balance for this month?",
+    "live_adapted_query": "Can I see the full trial balance for this month?"
+  },
+  {
+    "id": 630,
+    "original_query": "Show me trial balance for Reserves & Surplus",
+    "live_adapted_query": "Show me trial balance for Reserves & Surplus"
+  },
+  {
+    "id": 631,
+    "original_query": "Trial balance of Secured Loans",
+    "live_adapted_query": "Trial balance of Secured Loans"
+  },
+  {
+    "id": 632,
+    "original_query": "Give trial balance summary for Salary and Wages",
+    "live_adapted_query": "Give trial balance summary for Salary and Wages"
+  },
+  {
+    "id": 633,
+    "original_query": "Trial balance report for Travelling Expenses for January 2025",
+    "live_adapted_query": "Trial balance report for Travelling Expenses for January 2025"
+  },
+  {
+    "id": 634,
+    "original_query": "What is the trial balance position for Rent Expenses?",
+    "live_adapted_query": "What is the trial balance position for Rent Expenses?"
+  },
+  {
+    "id": 635,
+    "original_query": "Display trial balance for Freight and Cartage",
+    "live_adapted_query": "Display trial balance for Freight and Cartage"
+  },
+  {
+    "id": 636,
+    "original_query": "Get overall trial balance figures as of yesterday",
+    "live_adapted_query": "Get overall trial balance figures as of yesterday"
+  },
+  {
+    "id": 637,
+    "original_query": "Trial balance of Sundry Debtors group",
+    "live_adapted_query": "Trial balance of Sundry Debtors group"
+  },
+  {
+    "id": 638,
+    "original_query": "Fetch trial balance for Printing & Stationery",
+    "live_adapted_query": "Fetch trial balance for Printing & Stationery"
+  },
+  {
+    "id": 639,
+    "original_query": "Trial balance of Legal and Professional Fees",
+    "live_adapted_query": "Trial balance of Legal and Professional Fees"
+  },
+  {
+    "id": 640,
+    "original_query": "Show trial balance for Electricity Charges for Q2 2024",
+    "live_adapted_query": "Show trial balance for Electricity Charges for Q2 2024"
+  },
+  {
+    "id": 641,
+    "original_query": "Get trial balance summary of Commission Received",
+    "live_adapted_query": "Get trial balance summary of Commission Received"
+  },
+  {
+    "id": 642,
+    "original_query": "Trial balance for GST Input Tax Credit",
+    "live_adapted_query": "Trial balance for GST Input Tax Credit"
+  },
+  {
+    "id": 643,
+    "original_query": "Trial balance position for GST Output Tax Liability",
+    "live_adapted_query": "Trial balance position for GST Output Tax Liability"
+  },
+  {
+    "id": 644,
+    "original_query": "Show trial balance for Miscellaneous Expenses",
+    "live_adapted_query": "Show trial balance for Miscellaneous Expenses"
+  },
+  {
+    "id": 645,
+    "original_query": "Trial balance report for Office Expenses for this month",
+    "live_adapted_query": "Trial balance report for Office Expenses for this month"
+  },
+  {
+    "id": 646,
+    "original_query": "Fetch trial balance for Repairs and Maintenance",
+    "live_adapted_query": "Fetch trial balance for Repairs and Maintenance"
+  },
+  {
+    "id": 647,
+    "original_query": "Trial balance for Discount Allowed Account",
+    "live_adapted_query": "Trial balance for Discount Allowed Account"
+  },
+  {
+    "id": 648,
+    "original_query": "Trial balance of Discount Received Account",
+    "live_adapted_query": "Trial balance of Discount Received Account"
+  },
+  {
+    "id": 649,
+    "original_query": "Display trial balance for Bank Overdraft Account",
+    "live_adapted_query": "Display trial balance for Bank Overdraft Account"
+  },
+  {
+    "id": 650,
+    "original_query": "Show trial balance for Telephone & Internet Expenses",
+    "live_adapted_query": "Show trial balance for Telephone & Internet Expenses"
+  },
+  {
+    "id": 651,
+    "original_query": "What is the trial balance for Conveyance Expenses?",
+    "live_adapted_query": "What is the trial balance for Conveyance Expenses?"
+  },
+  {
+    "id": 652,
+    "original_query": "Trial balance of Insurance Expenses as on March 2025",
+    "live_adapted_query": "Trial balance of Insurance Expenses as on March 2025"
+  },
+  {
+    "id": 653,
+    "original_query": "Give trial balance summary for Marketing and Advertising",
+    "live_adapted_query": "Give trial balance summary for Marketing and Advertising"
+  },
+  {
+    "id": 654,
+    "original_query": "Show me the trial balance for Statutory Liabilities",
+    "live_adapted_query": "Show me the trial balance for Statutory Liabilities"
+  },
+  {
+    "id": 655,
+    "original_query": "Trial balance position for TDS Payable",
+    "live_adapted_query": "Trial balance position for TDS Payable"
+  },
+  {
+    "id": 656,
+    "original_query": "Get trial balance for Professional Tax Payable",
+    "live_adapted_query": "Get trial balance for Professional Tax Payable"
+  },
+  {
+    "id": 657,
+    "original_query": "Trial balance for Provident Fund Payable",
+    "live_adapted_query": "Trial balance for Provident Fund Payable"
+  },
+  {
+    "id": 658,
+    "original_query": "What is the trial balance of ESIC Payable as of this month?",
+    "live_adapted_query": "What is the trial balance of ESIC Payable as of this month?"
+  },
+  {
+    "id": 659,
+    "original_query": "Trial balance for Advance Tax Paid",
+    "live_adapted_query": "Trial balance for Advance Tax Paid"
+  },
+  {
+    "id": 660,
+    "original_query": "Show trial balance of Security Deposits",
+    "live_adapted_query": "Show trial balance of Security Deposits"
+  },
+  {
+    "id": 661,
+    "original_query": "Trial balance report for Loan to Directors",
+    "live_adapted_query": "Trial balance report for Loan to Directors"
+  },
+  {
+    "id": 662,
+    "original_query": "Fetch trial balance for Capital Goods",
+    "live_adapted_query": "Fetch trial balance for Capital Goods"
+  },
+  {
+    "id": 663,
+    "original_query": "Trial balance for Plant & Machinery",
+    "live_adapted_query": "Trial balance for Plant & Machinery"
+  },
+  {
+    "id": 664,
+    "original_query": "Show trial balance for Vehicles Group",
+    "live_adapted_query": "Show trial balance for Vehicles Group"
+  },
+  {
+    "id": 665,
+    "original_query": "Trial balance of Furniture & Fixtures as of 2025",
+    "live_adapted_query": "Trial balance of Furniture & Fixtures as of 2025"
+  },
+  {
+    "id": 666,
+    "original_query": "Stock summary for Raw Materials",
+    "live_adapted_query": "Stock summary for Raw Materials"
+  },
+  {
+    "id": 667,
+    "original_query": "How much inventory of Finished Goods do we have?",
+    "live_adapted_query": "How much inventory of Finished Goods do we have?"
+  },
+  {
+    "id": 668,
+    "original_query": "Total stock value for Packaging Materials",
+    "live_adapted_query": "Total stock value for Packaging Materials"
+  },
+  {
+    "id": 669,
+    "original_query": "Current stock position of Electronics items",
+    "live_adapted_query": "Current stock position of Electronics items"
+  },
+  {
+    "id": 670,
+    "original_query": "Stock summary as of March 2025",
+    "live_adapted_query": "Stock summary as of March 2025"
+  },
+  {
+    "id": 671,
+    "original_query": "Show available quantity and value of Spare Parts",
+    "live_adapted_query": "Show available quantity and value of Spare Parts"
+  },
+  {
+    "id": 672,
+    "original_query": "Inventory summary for Chemical Raw Materials",
+    "live_adapted_query": "Inventory summary for Chemical Raw Materials"
+  },
+  {
+    "id": 673,
+    "original_query": "How many stock items in Steel Pipes category have zero stock?",
+    "live_adapted_query": "How many stock items in Steel Pipes category have zero stock?"
+  },
+  {
+    "id": 674,
+    "original_query": "Total stock valuation for Finished Goods as of today",
+    "live_adapted_query": "Total stock valuation for Finished Goods as of today"
+  },
+  {
+    "id": 675,
+    "original_query": "Get stock summary for Hardware components",
+    "live_adapted_query": "Get stock summary for Hardware components"
+  },
+  {
+    "id": 676,
+    "original_query": "Show stock report for Plastic Granules",
+    "live_adapted_query": "Show stock report for Plastic Granules"
+  },
+  {
+    "id": 677,
+    "original_query": "What is the total closing stock of Office Supplies?",
+    "live_adapted_query": "What is the total closing stock of Office Supplies?"
+  },
+  {
+    "id": 678,
+    "original_query": "Inventory details for Electrical Accessories for this month",
+    "live_adapted_query": "Inventory details for Electrical Accessories for this month"
+  },
+  {
+    "id": 679,
+    "original_query": "Stock summary for Textiles & Fabrics",
+    "live_adapted_query": "Stock summary for Textiles & Fabrics"
+  },
+  {
+    "id": 680,
+    "original_query": "How much stock do we have for Lubricants & Oils?",
+    "live_adapted_query": "How much stock do we have for Lubricants & Oils?"
+  },
+  {
+    "id": 681,
+    "original_query": "Show inventory breakdown for Auto Components",
+    "live_adapted_query": "Show inventory breakdown for Auto Components"
+  },
+  {
+    "id": 682,
+    "original_query": "Total stock value of Medical Supplies",
+    "live_adapted_query": "Total stock value of Medical Supplies"
+  },
+  {
+    "id": 683,
+    "original_query": "Give me the stock summary for Fasteners & Bolts",
+    "live_adapted_query": "Give me the stock summary for Fasteners & Bolts"
+  },
+  {
+    "id": 684,
+    "original_query": "Inventory status of Heavy Machinery Spares",
+    "live_adapted_query": "Inventory status of Heavy Machinery Spares"
+  },
+  {
+    "id": 685,
+    "original_query": "Stock balance for Printed Cartons",
+    "live_adapted_query": "Stock balance for Printed Cartons"
+  },
+  {
+    "id": 686,
+    "original_query": "Show stock position of Raw Chemicals as on 31st March 2025",
+    "live_adapted_query": "Show stock position of Raw Chemicals as on 31st March 2025"
+  },
+  {
+    "id": 687,
+    "original_query": "Stock summary report for Trading Goods",
+    "live_adapted_query": "Stock summary report for Trading Goods"
+  },
+  {
+    "id": 688,
+    "original_query": "Count of stock items in Work in Progress category",
+    "live_adapted_query": "Count of stock items in Work in Progress category"
+  },
+  {
+    "id": 689,
+    "original_query": "What is the total stock value of Consumer Goods?",
+    "live_adapted_query": "What is the total stock value of Consumer Goods?"
+  },
+  {
+    "id": 690,
+    "original_query": "List all stock items under Safety Equipment with quantity",
+    "live_adapted_query": "List all stock items under Safety Equipment with quantity"
+  },
+  {
+    "id": 691,
+    "original_query": "Stock summary for Plumbing Fixtures",
+    "live_adapted_query": "Stock summary for Plumbing Fixtures"
+  },
+  {
+    "id": 692,
+    "original_query": "How much stock of Cables & Wires is available in warehouse?",
+    "live_adapted_query": "How much stock of Cables & Wires is available in warehouse?"
+  },
+  {
+    "id": 693,
+    "original_query": "Stock valuation summary for Electronic Components as of FY 2024-25",
+    "live_adapted_query": "Stock valuation summary for Electronic Components as of FY 2024-25"
+  },
+  {
+    "id": 694,
+    "original_query": "Show current stock summary of Laboratory Reagents",
+    "live_adapted_query": "Show current stock summary of Laboratory Reagents"
+  },
+  {
+    "id": 695,
+    "original_query": "Total stock value of Construction Materials",
+    "live_adapted_query": "Total stock value of Construction Materials"
+  },
+  {
+    "id": 696,
+    "original_query": "Stock report for Hydraulic Fittings",
+    "live_adapted_query": "Stock report for Hydraulic Fittings"
+  },
+  {
+    "id": 697,
+    "original_query": "What is the available stock of Bearings & Bushings?",
+    "live_adapted_query": "What is the available stock of Bearings & Bushings?"
+  },
+  {
+    "id": 698,
+    "original_query": "Stock summary of Aluminum Sheets for Q3 2024",
+    "live_adapted_query": "Stock summary of Aluminum Sheets for Q3 2024"
+  },
+  {
+    "id": 699,
+    "original_query": "Show stock status of Copper Wires",
+    "live_adapted_query": "Show stock status of Copper Wires"
+  },
+  {
+    "id": 700,
+    "original_query": "Inventory total value for Agricultural Products",
+    "live_adapted_query": "Inventory total value for Agricultural Products"
+  }
+]

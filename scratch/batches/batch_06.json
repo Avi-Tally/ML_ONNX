@@ -1,0 +1,502 @@
+[
+  {
+    "id": 501,
+    "original_query": "Pending bills between 10000 and 50000",
+    "live_adapted_query": "Pending bills between 10000 and 50000"
+  },
+  {
+    "id": 502,
+    "original_query": "Check status of pending bill INV-2024-001",
+    "live_adapted_query": "Check status of pending bill INV-2024-001"
+  },
+  {
+    "id": 503,
+    "original_query": "Is invoice REF-9948 still pending?",
+    "live_adapted_query": "Is invoice REF-9948 still pending?"
+  },
+  {
+    "id": 504,
+    "original_query": "Show overdue bills sorted by bill date",
+    "live_adapted_query": "Show overdue bills sorted by bill date"
+  },
+  {
+    "id": 505,
+    "original_query": "List all pending bills for FY 2023-24",
+    "live_adapted_query": "List all pending bills for FY 2023-24"
+  },
+  {
+    "id": 506,
+    "original_query": "Total overdue balance above 1 Lakh",
+    "live_adapted_query": "Total overdue balance above 1 Lakh"
+  },
+  {
+    "id": 507,
+    "original_query": "Show pending invoices for Metro Logistics",
+    "live_adapted_query": "Show pending invoices for Metro Logistics"
+  },
+  {
+    "id": 508,
+    "original_query": "Overdue bill count for Alpha Tech",
+    "live_adapted_query": "Overdue bill count for Alpha Tech"
+  },
+  {
+    "id": 509,
+    "original_query": "What is the pending bill amount for Sunrise Corp?",
+    "live_adapted_query": "What is the pending bill amount for Sunrise Corp?"
+  },
+  {
+    "id": 510,
+    "original_query": "Show all outstanding vouchers",
+    "live_adapted_query": "Show all outstanding vouchers"
+  },
+  {
+    "id": 511,
+    "original_query": "List pending items due this week",
+    "live_adapted_query": "List pending items due this week"
+  },
+  {
+    "id": 512,
+    "original_query": "Overdue amount for today",
+    "live_adapted_query": "Overdue amount for today"
+  },
+  {
+    "id": 513,
+    "original_query": "Show pending bills under 25000",
+    "live_adapted_query": "Show pending bills under 25000"
+  },
+  {
+    "id": 514,
+    "original_query": "Get outstanding bill report",
+    "live_adapted_query": "Get outstanding bill report"
+  },
+  {
+    "id": 515,
+    "original_query": "How many bills are currently overdue?",
+    "live_adapted_query": "How many bills are currently overdue?"
+  },
+  {
+    "id": 516,
+    "original_query": "Total unpaid invoice count",
+    "live_adapted_query": "Total unpaid invoice count"
+  },
+  {
+    "id": 517,
+    "original_query": "Show pending bills overdue by less than 15 days",
+    "live_adapted_query": "Show pending bills overdue by less than 15 days"
+  },
+  {
+    "id": 518,
+    "original_query": "List unpaid bills due next week",
+    "live_adapted_query": "List unpaid bills due next week"
+  },
+  {
+    "id": 519,
+    "original_query": "Pending bills for past 90 days",
+    "live_adapted_query": "Pending bills for past 90 days"
+  },
+  {
+    "id": 520,
+    "original_query": "Show outstandings for Phoenix Retail",
+    "live_adapted_query": "Show outstandings for Phoenix Retail"
+  },
+  {
+    "id": 521,
+    "original_query": "Highest 3 pending bills",
+    "live_adapted_query": "Highest 3 pending bills"
+  },
+  {
+    "id": 522,
+    "original_query": "Total overdue amount for Q1",
+    "live_adapted_query": "Total overdue amount for Q1"
+  },
+  {
+    "id": 523,
+    "original_query": "Show pending bills with amount equal to 100000",
+    "live_adapted_query": "Show pending bills with amount equal to 100000"
+  },
+  {
+    "id": 524,
+    "original_query": "List unpaid bills sorted by due date ascending",
+    "live_adapted_query": "List unpaid bills sorted by due date ascending"
+  },
+  {
+    "id": 525,
+    "original_query": "Show outstanding balance for Delta Systems",
+    "live_adapted_query": "Show outstanding balance for Delta Systems"
+  },
+  {
+    "id": 526,
+    "original_query": "Count of pending outstandings",
+    "live_adapted_query": "Count of pending outstandings"
+  },
+  {
+    "id": 527,
+    "original_query": "Show pending bills from 1st April to 30th April",
+    "live_adapted_query": "Show pending bills from 1st April to 30th April"
+  },
+  {
+    "id": 528,
+    "original_query": "List all overdue bills for Omega Electronics",
+    "live_adapted_query": "List all overdue bills for Omega Electronics"
+  },
+  {
+    "id": 529,
+    "original_query": "Show unpaid invoices for batch 2024",
+    "live_adapted_query": "Show unpaid invoices for batch 2024"
+  },
+  {
+    "id": 530,
+    "original_query": "What is the sum of all pending bills?",
+    "live_adapted_query": "What is the sum of all pending bills?"
+  },
+  {
+    "id": 531,
+    "original_query": "Get pending bill status for bill number BILL-505",
+    "live_adapted_query": "Get pending bill status for bill number BILL-505"
+  },
+  {
+    "id": 532,
+    "original_query": "Show top pending bills",
+    "live_adapted_query": "Show top pending bills"
+  },
+  {
+    "id": 533,
+    "original_query": "Overdue outstandings list",
+    "live_adapted_query": "Overdue outstandings list"
+  },
+  {
+    "id": 534,
+    "original_query": "Pending bills with age over 45 days",
+    "live_adapted_query": "Pending bills with age over 45 days"
+  },
+  {
+    "id": 535,
+    "original_query": "Show all unpaid bills for Orion Infotech",
+    "live_adapted_query": "Show all unpaid bills for Orion Infotech"
+  },
+  {
+    "id": 536,
+    "original_query": "What is the total pending bill count?",
+    "live_adapted_query": "What is the total pending bill count?"
+  },
+  {
+    "id": 537,
+    "original_query": "List overdue bills for last financial year",
+    "live_adapted_query": "List overdue bills for last financial year"
+  },
+  {
+    "id": 538,
+    "original_query": "Show pending bills sorted by amount ascending",
+    "live_adapted_query": "Show pending bills sorted by amount ascending"
+  },
+  {
+    "id": 539,
+    "original_query": "Pending invoices summary",
+    "live_adapted_query": "Pending invoices summary"
+  },
+  {
+    "id": 540,
+    "original_query": "Show outstanding list above 500000",
+    "live_adapted_query": "Show outstanding list above 500000"
+  },
+  {
+    "id": 541,
+    "original_query": "Show all unpaid items",
+    "live_adapted_query": "Show all unpaid items"
+  },
+  {
+    "id": 542,
+    "original_query": "Total overdue count for Zenith Traders",
+    "live_adapted_query": "Total overdue count for Zenith Traders"
+  },
+  {
+    "id": 543,
+    "original_query": "Pending bill details for invoice 1045",
+    "live_adapted_query": "Pending bill details for invoice 1045"
+  },
+  {
+    "id": 544,
+    "original_query": "Show outstanding bills aged 30 to 60 days",
+    "live_adapted_query": "Show outstanding bills aged 30 to 60 days"
+  },
+  {
+    "id": 545,
+    "original_query": "What is a ledger?",
+    "live_adapted_query": "What is a ledger?"
+  },
+  {
+    "id": 546,
+    "original_query": "How to record a payment voucher?",
+    "live_adapted_query": "How to record a payment voucher?"
+  },
+  {
+    "id": 547,
+    "original_query": "Why use cost centers?",
+    "live_adapted_query": "Why use cost centers?"
+  },
+  {
+    "id": 548,
+    "original_query": "What is a trial balance?",
+    "live_adapted_query": "What is a trial balance?"
+  },
+  {
+    "id": 549,
+    "original_query": "How to pass a sales entry in Tally?",
+    "live_adapted_query": "How to pass a sales entry in Tally?"
+  },
+  {
+    "id": 550,
+    "original_query": "What is bank reconciliation?",
+    "live_adapted_query": "What is bank reconciliation?"
+  },
+  {
+    "id": 551,
+    "original_query": "Explain input tax credit under GST",
+    "live_adapted_query": "Explain input tax credit under GST"
+  },
+  {
+    "id": 552,
+    "original_query": "What is the difference between debit note and credit note?",
+    "live_adapted_query": "What is the difference between debit note and credit note?"
+  },
+  {
+    "id": 553,
+    "original_query": "How to create a multi-currency ledger?",
+    "live_adapted_query": "How to create a multi-currency ledger?"
+  },
+  {
+    "id": 554,
+    "original_query": "What is FIFO method in inventory valuation?",
+    "live_adapted_query": "What is FIFO method in inventory valuation?"
+  },
+  {
+    "id": 555,
+    "original_query": "How to take backup of company data?",
+    "live_adapted_query": "How to take backup of company data?"
+  },
+  {
+    "id": 556,
+    "original_query": "What is TDS threshold for professional fees under section 194J?",
+    "live_adapted_query": "What is TDS threshold for professional fees under section 194J?"
+  },
+  {
+    "id": 557,
+    "original_query": "How to split company data in Tally?",
+    "live_adapted_query": "How to split company data in Tally?"
+  },
+  {
+    "id": 558,
+    "original_query": "What are contra vouchers used for?",
+    "live_adapted_query": "What are contra vouchers used for?"
+  },
+  {
+    "id": 559,
+    "original_query": "How to print invoice with QR code?",
+    "live_adapted_query": "How to print invoice with QR code?"
+  },
+  {
+    "id": 560,
+    "original_query": "What is the shortcut key to delete a voucher?",
+    "live_adapted_query": "What is the shortcut key to delete a voucher?"
+  },
+  {
+    "id": 561,
+    "original_query": "How to enable e-invoicing in Tally Prime?",
+    "live_adapted_query": "How to enable e-invoicing in Tally Prime?"
+  },
+  {
+    "id": 562,
+    "original_query": "What is a Sundry Creditor?",
+    "live_adapted_query": "What is a Sundry Creditor?"
+  },
+  {
+    "id": 563,
+    "original_query": "How to generate GSTR-3B report?",
+    "live_adapted_query": "How to generate GSTR-3B report?"
+  },
+  {
+    "id": 564,
+    "original_query": "Why does my balance sheet not tally?",
+    "live_adapted_query": "Why does my balance sheet not tally?"
+  },
+  {
+    "id": 565,
+    "original_query": "What is bill-wise accounting?",
+    "live_adapted_query": "What is bill-wise accounting?"
+  },
+  {
+    "id": 566,
+    "original_query": "How to record purchase voucher with GST?",
+    "live_adapted_query": "How to record purchase voucher with GST?"
+  },
+  {
+    "id": 567,
+    "original_query": "What is cost category in Tally?",
+    "live_adapted_query": "What is cost category in Tally?"
+  },
+  {
+    "id": 568,
+    "original_query": "How to alter ledger details?",
+    "live_adapted_query": "How to alter ledger details?"
+  },
+  {
+    "id": 569,
+    "original_query": "What is cash flow statement?",
+    "live_adapted_query": "What is cash flow statement?"
+  },
+  {
+    "id": 570,
+    "original_query": "How to apply interest calculation on overdue bills?",
+    "live_adapted_query": "How to apply interest calculation on overdue bills?"
+  },
+  {
+    "id": 571,
+    "original_query": "What is zero-rated supply in GST?",
+    "live_adapted_query": "What is zero-rated supply in GST?"
+  },
+  {
+    "id": 572,
+    "original_query": "How to pass journal entry for bad debts?",
+    "live_adapted_query": "How to pass journal entry for bad debts?"
+  },
+  {
+    "id": 573,
+    "original_query": "What is compound unit of measure?",
+    "live_adapted_query": "What is compound unit of measure?"
+  },
+  {
+    "id": 574,
+    "original_query": "How to restore Tally backup data?",
+    "live_adapted_query": "How to restore Tally backup data?"
+  },
+  {
+    "id": 575,
+    "original_query": "What is the shortcut key for inventory vouchers?",
+    "live_adapted_query": "What is the shortcut key for inventory vouchers?"
+  },
+  {
+    "id": 576,
+    "original_query": "How to configure discount column in sales invoice?",
+    "live_adapted_query": "How to configure discount column in sales invoice?"
+  },
+  {
+    "id": 577,
+    "original_query": "What is a group in Tally accounting?",
+    "live_adapted_query": "What is a group in Tally accounting?"
+  },
+  {
+    "id": 578,
+    "original_query": "How to track stock item serial numbers?",
+    "live_adapted_query": "How to track stock item serial numbers?"
+  },
+  {
+    "id": 579,
+    "original_query": "What is RCM in GST?",
+    "live_adapted_query": "What is RCM in GST?"
+  },
+  {
+    "id": 580,
+    "original_query": "How to record advance payment to supplier?",
+    "live_adapted_query": "How to record advance payment to supplier?"
+  },
+  {
+    "id": 581,
+    "original_query": "Why use post-dated vouchers?",
+    "live_adapted_query": "Why use post-dated vouchers?"
+  },
+  {
+    "id": 582,
+    "original_query": "What is work in progress (WIP) tracking?",
+    "live_adapted_query": "What is work in progress (WIP) tracking?"
+  },
+  {
+    "id": 583,
+    "original_query": "How to cancel a generated voucher?",
+    "live_adapted_query": "How to cancel a generated voucher?"
+  },
+  {
+    "id": 584,
+    "original_query": "What is credit limit in ledger master?",
+    "live_adapted_query": "What is credit limit in ledger master?"
+  },
+  {
+    "id": 585,
+    "original_query": "How to set up price list in Tally?",
+    "live_adapted_query": "How to set up price list in Tally?"
+  },
+  {
+    "id": 586,
+    "original_query": "What is the default tally admin password reset procedure?",
+    "live_adapted_query": "What is the default tally admin password reset procedure?"
+  },
+  {
+    "id": 587,
+    "original_query": "How to export financial reports to PDF?",
+    "live_adapted_query": "How to export financial reports to PDF?"
+  },
+  {
+    "id": 588,
+    "original_query": "What is trade discount vs cash discount?",
+    "live_adapted_query": "What is trade discount vs cash discount?"
+  },
+  {
+    "id": 589,
+    "original_query": "How to pass entry for salary payment?",
+    "live_adapted_query": "How to pass entry for salary payment?"
+  },
+  {
+    "id": 590,
+    "original_query": "What is automated bank reconciliation?",
+    "live_adapted_query": "What is automated bank reconciliation?"
+  },
+  {
+    "id": 591,
+    "original_query": "How to configure TCS in sales invoice?",
+    "live_adapted_query": "How to configure TCS in sales invoice?"
+  },
+  {
+    "id": 592,
+    "original_query": "What is godown management in Tally?",
+    "live_adapted_query": "What is godown management in Tally?"
+  },
+  {
+    "id": 593,
+    "original_query": "How to record receipt voucher from customer?",
+    "live_adapted_query": "How to record receipt voucher from customer?"
+  },
+  {
+    "id": 594,
+    "original_query": "What is chart of accounts?",
+    "live_adapted_query": "What is chart of accounts?"
+  },
+  {
+    "id": 595,
+    "original_query": "How to view audit trail in Tally Prime?",
+    "live_adapted_query": "How to view audit trail in Tally Prime?"
+  },
+  {
+    "id": 596,
+    "original_query": "What is deferred tax asset?",
+    "live_adapted_query": "What is deferred tax asset?"
+  },
+  {
+    "id": 597,
+    "original_query": "How to record contra voucher for cash deposit?",
+    "live_adapted_query": "How to record contra voucher for cash deposit?"
+  },
+  {
+    "id": 598,
+    "original_query": "What is physical stock verification entry?",
+    "live_adapted_query": "What is physical stock verification entry?"
+  },
+  {
+    "id": 599,
+    "original_query": "How to set budget and scenario control?",
+    "live_adapted_query": "How to set budget and scenario control?"
+  },
+  {
+    "id": 600,
+    "original_query": "What is HSN code requirement for e-way bill?",
+    "live_adapted_query": "What is HSN code requirement for e-way bill?"
+  }
+]

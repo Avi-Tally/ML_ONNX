@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1101,
+    "original_query": "List all the batches that have negative total outwards Quantity",
+    "live_adapted_query": "List all the batches that have negative total outwards Quantity"
+  },
+  {
+    "id": 1102,
+    "original_query": "Which godown has the highest negative stock for batch A",
+    "live_adapted_query": "Which godown has the highest negative stock for batch A"
+  },
+  {
+    "id": 1103,
+    "original_query": "Which godown has the lowest negative stock for Batch A?",
+    "live_adapted_query": "Which godown has the lowest negative stock for Batch A?"
+  },
+  {
+    "id": 1104,
+    "original_query": "Which batch has the highest negative stock quantity?",
+    "live_adapted_query": "Which batch has the highest negative stock quantity?"
+  },
+  {
+    "id": 1105,
+    "original_query": "Which batch has the lowest negative stock quantity?",
+    "live_adapted_query": "Which batch has the lowest negative stock quantity?"
+  },
+  {
+    "id": 1106,
+    "original_query": "Which batch have the highest negative stock values?",
+    "live_adapted_query": "Which batch have the highest negative stock values?"
+  },
+  {
+    "id": 1107,
+    "original_query": "Which batch have the Lowest negative stock values?",
+    "live_adapted_query": "Which batch have the Lowest negative stock values?"
+  },
+  {
+    "id": 1108,
+    "original_query": "List all the negative batches in Descending order in quantity for closing balance",
+    "live_adapted_query": "List all the negative batches in Descending order in quantity for closing balance"
+  },
+  {
+    "id": 1109,
+    "original_query": "List all the negative batches with values in increasing order for outwards",
+    "live_adapted_query": "List all the negative batches with values in increasing order for outwards"
+  },
+  {
+    "id": 1110,
+    "original_query": "List all the negative batches with quantity in decreasing order for opening balance",
+    "live_adapted_query": "List all the negative batches with quantity in decreasing order for opening balance"
+  },
+  {
+    "id": 1111,
+    "original_query": "How much kgs of item A is in negative for batch A?",
+    "live_adapted_query": "How much kgs of item A is in negative for batch A?"
+  },
+  {
+    "id": 1112,
+    "original_query": "What is the total number of batches that are in negative for stock item A?",
+    "live_adapted_query": "What is the total number of batches that are in negative for stock item A?"
+  },
+  {
+    "id": 1113,
+    "original_query": "List all the batches that have negative quantity?",
+    "live_adapted_query": "List all the batches that have negative quantity?"
+  },
+  {
+    "id": 1114,
+    "original_query": "Which batch has the most negative quantity and what is the value for item A?",
+    "live_adapted_query": "Which batch has the most negative quantity and what is the value for item A?"
+  },
+  {
+    "id": 1115,
+    "original_query": "What is value of the highest negative quantity batch ?",
+    "live_adapted_query": "What is value of the highest negative quantity batch ?"
+  },
+  {
+    "id": 1116,
+    "original_query": "What is the quantity required for batch 1 of item A to convert the negative stock?",
+    "live_adapted_query": "What is the quantity required for batch 1 of item A to convert the negative stock?"
+  },
+  {
+    "id": 1117,
+    "original_query": "Which month has the highest negative quantity and value in closing balance for Batch 1?",
+    "live_adapted_query": "Which month has the highest negative quantity and value in closing balance for Batch 1?"
+  },
+  {
+    "id": 1118,
+    "original_query": "List the sales transactions made for batch A before the purchase transactions.",
+    "live_adapted_query": "List the sales transactions made for batch A before the purchase transactions."
+  },
+  {
+    "id": 1119,
+    "original_query": "How many days are there till expiry for batch that have higher negative quantity?",
+    "live_adapted_query": "How many days are there till expiry for batch that have higher negative quantity?"
+  },
+  {
+    "id": 1120,
+    "original_query": "what is the quantity required to be purchased for each batch for item A to convert the negative quantity?",
+    "live_adapted_query": "what is the quantity required to be purchased for each batch for item A to convert the negative quantity?"
+  },
+  {
+    "id": 1121,
+    "original_query": "List the batches with negative quantity that have the expiry date 2 days from today?",
+    "live_adapted_query": "List the batches with negative quantity that have the expiry date 2 days from today?"
+  },
+  {
+    "id": 1122,
+    "original_query": "Show Quantity",
+    "live_adapted_query": "Show Quantity"
+  },
+  {
+    "id": 1123,
+    "original_query": "Show Tail unit of Compound Unit",
+    "live_adapted_query": "Show Tail unit of Compound Unit"
+  },
+  {
+    "id": 1124,
+    "original_query": "Show Basic Rate & Effective Rate",
+    "live_adapted_query": "Show Basic Rate & Effective Rate"
+  },
+  {
+    "id": 1125,
+    "original_query": "Show Value",
+    "live_adapted_query": "Show Value"
+  },
+  {
+    "id": 1126,
+    "original_query": "Show Suppliers",
+    "live_adapted_query": "Show Suppliers"
+  },
+  {
+    "id": 1127,
+    "original_query": "Show Transfers Inward (Production)",
+    "live_adapted_query": "Show Transfers Inward (Production)"
+  },
+  {
+    "id": 1128,
+    "original_query": "Show Job Work Transfer Inward",
+    "live_adapted_query": "Show Job Work Transfer Inward"
+  },
+  {
+    "id": 1129,
+    "original_query": "Show Buyers",
+    "live_adapted_query": "Show Buyers"
+  },
+  {
+    "id": 1130,
+    "original_query": "Show Transfers Outward (Consumption)",
+    "live_adapted_query": "Show Transfers Outward (Consumption)"
+  },
+  {
+    "id": 1131,
+    "original_query": "Show Job Work Transfer Outward",
+    "live_adapted_query": "Show Job Work Transfer Outward"
+  },
+  {
+    "id": 1132,
+    "original_query": "What is the pending amount of  the party \"PISHA SERVICES INDIA PVT LTD.",
+    "live_adapted_query": "What is the pending amount of  the party \"PISHA SERVICES INDIA PVT LTD."
+  },
+  {
+    "id": 1133,
+    "original_query": "Which is the recent pending bill for the party \"PISHA SERVICES INDIA PVT LTD.",
+    "live_adapted_query": "Which is the recent pending bill for the party \"PISHA SERVICES INDIA PVT LTD."
+  },
+  {
+    "id": 1134,
+    "original_query": "What is the pending amount for bill reference ' JAN/980/23-24' for the party 'PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "What is the pending amount for bill reference ' JAN/980/23-24' for the party 'PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1135,
+    "original_query": "Which is the olders bills which is pending for the  party 'PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "Which is the olders bills which is pending for the  party 'PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1136,
+    "original_query": "For the party' PISHA SERVICES INDIA PVT LTD , list all the advance bill references",
+    "live_adapted_query": "For the party' PISHA SERVICES INDIA PVT LTD , list all the advance bill references"
+  },
+  {
+    "id": 1137,
+    "original_query": "For the party' PISHA SERVICES INDIA PVT LTD , list the on account bill references",
+    "live_adapted_query": "For the party' PISHA SERVICES INDIA PVT LTD , list the on account bill references"
+  },
+  {
+    "id": 1138,
+    "original_query": "Display the bills which are raised in the previous year but are pending in the current year for the debtors '  PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "Display the bills which are raised in the previous year but are pending in the current year for the debtors '  PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1139,
+    "original_query": "What is the due date of the bill number MAY/237/24-25 for the party PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "What is the due date of the bill number MAY/237/24-25 for the party PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1140,
+    "original_query": "Display the bills which are overdue by 90 days for the party PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "Display the bills which are overdue by 90 days for the party PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1141,
+    "original_query": "What is the due date of the bill reference MAY/238/24-25  for the party PISHA SERVICES INDIA PVT LTD",
+    "live_adapted_query": "What is the due date of the bill reference MAY/238/24-25  for the party PISHA SERVICES INDIA PVT LTD"
+  },
+  {
+    "id": 1142,
+    "original_query": "What is the opening amount for the bill no 470 for the party 'Pisha services india pvt ltd'",
+    "live_adapted_query": "What is the opening amount for the bill no 470 for the party 'Pisha services india pvt ltd'"
+  },
+  {
+    "id": 1143,
+    "original_query": "From how many days the bill no 477 is pending for the customer Pisha services India pvt ltd'",
+    "live_adapted_query": "From how many days the bill no 477 is pending for the customer Pisha services India pvt ltd'"
+  },
+  {
+    "id": 1144,
+    "original_query": "For the Party Pisha services India pvt ltd, exclude the on account bill reference and display the pending amounts",
+    "live_adapted_query": "For the Party Pisha services India pvt ltd, exclude the on account bill reference and display the pending amounts"
+  },
+  {
+    "id": 1145,
+    "original_query": "For the Party Pisha services India pvt ltd, exclude the advance bill reference and display the pending amounts",
+    "live_adapted_query": "For the Party Pisha services India pvt ltd, exclude the advance bill reference and display the pending amounts"
+  },
+  {
+    "id": 1146,
+    "original_query": "For the party rajendra enterprise , how many bils are pending and what is the total outstanding amount",
+    "live_adapted_query": "For the party rajendra enterprise , how many bils are pending and what is the total outstanding amount"
+  },
+  {
+    "id": 1147,
+    "original_query": "For Rajendra Enterprises , what is the total outstanding pending amount till the end of the April - 24.",
+    "live_adapted_query": "For Rajendra Enterprises , what is the total outstanding pending amount till the end of the April - 24."
+  },
+  {
+    "id": 1148,
+    "original_query": "Till the month of April- 24, for the party Rajendra enterprise, how many bills are overdue by 90 days.",
+    "live_adapted_query": "Till the month of April- 24, for the party Rajendra enterprise, how many bills are overdue by 90 days."
+  },
+  {
+    "id": 1149,
+    "original_query": "What is the pending amount for the reference number ST-7950 and does this reference belongs to Rajendra enterprises or Pisha service India pvt ltd",
+    "live_adapted_query": "What is the pending amount for the reference number ST-7950 and does this reference belongs to Rajendra enterprises or Pisha service India pvt ltd"
+  },
+  {
+    "id": 1150,
+    "original_query": "Does the reference number 8920 & 8922  belongs to the Rajendra enterprise ?",
+    "live_adapted_query": "Does the reference number 8920 & 8922  belongs to the Rajendra enterprise ?"
+  },
+  {
+    "id": 1151,
+    "original_query": "What is the invoice value for the reference number ST-26604.",
+    "live_adapted_query": "What is the invoice value for the reference number ST-26604."
+  },
+  {
+    "id": 1152,
+    "original_query": "For Rajendra enterprise, display the Bill with the highest pending amount with the due date.",
+    "live_adapted_query": "For Rajendra enterprise, display the Bill with the highest pending amount with the due date."
+  },
+  {
+    "id": 1153,
+    "original_query": "For Rajendra enterprises, display the Bill with the lowest pending amount with the due date.",
+    "live_adapted_query": "For Rajendra enterprises, display the Bill with the lowest pending amount with the due date."
+  },
+  {
+    "id": 1154,
+    "original_query": "Show the details of the invoice, inventory details of the bill reference ST-26604.",
+    "live_adapted_query": "Show the details of the invoice, inventory details of the bill reference ST-26604."
+  },
+  {
+    "id": 1155,
+    "original_query": "What is the pending amount for the party Pine Labs private limited",
+    "live_adapted_query": "What is the pending amount for the party Pine Labs private limited"
+  },
+  {
+    "id": 1156,
+    "original_query": "Which inventory items were purchased against the bill reference number MAY/238/24-25 for the customer Pisha?",
+    "live_adapted_query": "Which inventory items were purchased against the bill reference number MAY/238/24-25 for the customer Pisha?"
+  },
+  {
+    "id": 1157,
+    "original_query": "Show me the order number and the date of the bill  reference MAY/236/24-25 for the same party",
+    "live_adapted_query": "Show me the order number and the date of the bill  reference MAY/236/24-25 for the same party"
+  },
+  {
+    "id": 1158,
+    "original_query": "Display the 3 months graph trend of the pending bills for the party Pisha?",
+    "live_adapted_query": "Display the 3 months graph trend of the pending bills for the party Pisha?"
+  },
+  {
+    "id": 1159,
+    "original_query": "What is the ageing of the outstanding amount  based on the bill date for the 6 months for the ledger Pisha.",
+    "live_adapted_query": "What is the ageing of the outstanding amount  based on the bill date for the 6 months for the ledger Pisha."
+  },
+  {
+    "id": 1160,
+    "original_query": "Display the above data using the graph for the pending amount and the age wise",
+    "live_adapted_query": "Display the above data using the graph for the pending amount and the age wise"
+  },
+  {
+    "id": 1161,
+    "original_query": "How many bills are due below 90 days and how many bills are due above 90 days for the party Rajendra enterprises, with the total pending value",
+    "live_adapted_query": "How many bills are due below 90 days and how many bills are due above 90 days for the party Rajendra enterprises, with the total pending value"
+  },
+  {
+    "id": 1162,
+    "original_query": "Which is the outstanding bill will the longest delay for rajendra party.",
+    "live_adapted_query": "Which is the outstanding bill will the longest delay for rajendra party."
+  },
+  {
+    "id": 1163,
+    "original_query": "For the rajendra party, how many overdue bills are available till date and what is the total value of it",
+    "live_adapted_query": "For the rajendra party, how many overdue bills are available till date and what is the total value of it"
+  },
+  {
+    "id": 1164,
+    "original_query": "Print the overdue bills for the Rajendra party ?",
+    "live_adapted_query": "Print the overdue bills for the Rajendra party ?"
+  },
+  {
+    "id": 1165,
+    "original_query": "Print the reminder letter for the party Pisha services India ltd?",
+    "live_adapted_query": "Print the reminder letter for the party Pisha services India ltd?"
+  },
+  {
+    "id": 1166,
+    "original_query": "Email the reminder letter for the party pisha service India ltd",
+    "live_adapted_query": "Email the reminder letter for the party pisha service India ltd"
+  },
+  {
+    "id": 1167,
+    "original_query": "Export the reminder letter in the excel format for the same party ?",
+    "live_adapted_query": "Export the reminder letter in the excel format for the same party ?"
+  },
+  {
+    "id": 1168,
+    "original_query": "Print only  overdue bills for the Rajendra party ?",
+    "live_adapted_query": "Print only  overdue bills for the Rajendra party ?"
+  },
+  {
+    "id": 1169,
+    "original_query": "Whats app the ledger outstanding of the party phoenix ?",
+    "live_adapted_query": "Whats app the ledger outstanding of the party phoenix ?"
+  },
+  {
+    "id": 1170,
+    "original_query": "Settle all the bill reference of the party Sree venkatestwara and co from the ledger outstanding report",
+    "live_adapted_query": "Settle all the bill reference of the party Sree venkatestwara and co from the ledger outstanding report"
+  },
+  {
+    "id": 1171,
+    "original_query": "Display the address of the below parties",
+    "live_adapted_query": "Display the address of the below parties"
+  },
+  {
+    "id": 1172,
+    "original_query": "1. Sree venkatesthwara and co",
+    "live_adapted_query": "1. Sree venkatesthwara and co"
+  },
+  {
+    "id": 1173,
+    "original_query": "2. Solai Agency",
+    "live_adapted_query": "2. Solai Agency"
+  },
+  {
+    "id": 1174,
+    "original_query": "With the pending amount and the contact details such as address, number and total value",
+    "live_adapted_query": "With the pending amount and the contact details such as address, number and total value"
+  },
+  {
+    "id": 1175,
+    "original_query": "Display the complete details  of the bill reference number 2425056 i.e. vouchers included and the inventory details for supreme Agro products",
+    "live_adapted_query": "Display the complete details  of the bill reference number 2425056 i.e. vouchers included and the inventory details for supreme Agro products"
+  },
+  {
+    "id": 1176,
+    "original_query": "What is the total outstanding of the vendor 'Sri Devi Transport ' pending for the financial period 23-24.",
+    "live_adapted_query": "What is the total outstanding of the vendor 'Sri Devi Transport ' pending for the financial period 23-24."
+  },
+  {
+    "id": 1177,
+    "original_query": "Continuation of the above questions",
+    "live_adapted_query": "Continuation of the above questions"
+  },
+  {
+    "id": 1178,
+    "original_query": "For the total pending amount vendor 'Sri Devi Transport, exclude the advance references and then display the Pending value.",
+    "live_adapted_query": "For the total pending amount vendor 'Sri Devi Transport, exclude the advance references and then display the Pending value."
+  },
+  {
+    "id": 1179,
+    "original_query": "What is the pending amount for the 'Control Print Ltd' party excluding the 'On Account References' bills",
+    "live_adapted_query": "What is the pending amount for the 'Control Print Ltd' party excluding the 'On Account References' bills"
+  },
+  {
+    "id": 1180,
+    "original_query": "Settle the bill references of 3252014438EX of the party Control print Ltd, from axis bank OD account for the full amount",
+    "live_adapted_query": "Settle the bill references of 3252014438EX of the party Control print Ltd, from axis bank OD account for the full amount"
+  },
+  {
+    "id": 1181,
+    "original_query": "Show me the overdue invoices of the party 'CONVAY WATER PURIFIER PVT LTD',",
+    "live_adapted_query": "Show me the overdue invoices of the party 'CONVAY WATER PURIFIER PVT LTD',"
+  },
+  {
+    "id": 1182,
+    "original_query": "How can I view the overdue invoices of the ledger ' Wheels India Private Limited",
+    "live_adapted_query": "How can I view the overdue invoices of the ledger ' Wheels India Private Limited"
+  },
+  {
+    "id": 1183,
+    "original_query": "What is the Ageing analyis for the party Wheels India Private Limited (Based on the due dates) and present it graphically",
+    "live_adapted_query": "What is the Ageing analyis for the party Wheels India Private Limited (Based on the due dates) and present it graphically"
+  },
+  {
+    "id": 1184,
+    "original_query": "How many invoices are pending for payment for the party 'Wheels India Limited\".",
+    "live_adapted_query": "How many invoices are pending for payment for the party 'Wheels India Limited\"."
+  },
+  {
+    "id": 1185,
+    "original_query": "Break up the outstanding amount by less than and more than 180 days by due date for the ledger 'Wheels India Limited\".",
+    "live_adapted_query": "Break up the outstanding amount by less than and more than 180 days by due date for the ledger 'Wheels India Limited\"."
+  },
+  {
+    "id": 1186,
+    "original_query": "Display the narration provided for the bill reference no JUN/229/24-25 for the above party",
+    "live_adapted_query": "Display the narration provided for the bill reference no JUN/229/24-25 for the above party"
+  },
+  {
+    "id": 1187,
+    "original_query": "Which are the stocks purchased for the reference number JUN/259/24-25- Ref1  for the same party.",
+    "live_adapted_query": "Which are the stocks purchased for the reference number JUN/259/24-25- Ref1  for the same party."
+  },
+  {
+    "id": 1188,
+    "original_query": "Display those with the bill details.",
+    "live_adapted_query": "Display those with the bill details."
+  },
+  {
+    "id": 1189,
+    "original_query": "Display party wise pending invoice count with their total value for all the parties",
+    "live_adapted_query": "Display party wise pending invoice count with their total value for all the parties"
+  },
+  {
+    "id": 1190,
+    "original_query": "For the party KLM ltd >> invoice number  HO/21/2024, what is the ITC at risk and the balance pending amount considering different in tax ?",
+    "live_adapted_query": "For the party KLM ltd >> invoice number  HO/21/2024, what is the ITC at risk and the balance pending amount considering different in tax ?"
+  },
+  {
+    "id": 1191,
+    "original_query": "Display status wise pending bills for the Party KLM Ltd with the consolidated pending amount, Difference in Tax, Balance amount diff in Tax",
+    "live_adapted_query": "Display status wise pending bills for the Party KLM Ltd with the consolidated pending amount, Difference in Tax, Balance amount diff in Tax"
+  },
+  {
+    "id": 1192,
+    "original_query": "How much is the total amount of difference in tax for Laxmi Traders",
+    "live_adapted_query": "How much is the total amount of difference in tax for Laxmi Traders"
+  },
+  {
+    "id": 1193,
+    "original_query": "For the OM Stell Traders display the GST Information for the reference number KM/21/24-25.",
+    "live_adapted_query": "For the OM Stell Traders display the GST Information for the reference number KM/21/24-25."
+  },
+  {
+    "id": 1194,
+    "original_query": "What is the Balance after 'Difference in Tax ' for the party OM Stell Tranders.",
+    "live_adapted_query": "What is the Balance after 'Difference in Tax ' for the party OM Stell Tranders."
+  },
+  {
+    "id": 1195,
+    "original_query": "Is there any difference in amount in books vs amount on portal for SLM Private Ltd.",
+    "live_adapted_query": "Is there any difference in amount in books vs amount on portal for SLM Private Ltd."
+  },
+  {
+    "id": 1196,
+    "original_query": "List the transactions available only in the books for all the Party with the respective  bill reference numbers?",
+    "live_adapted_query": "List the transactions available only in the books for all the Party with the respective  bill reference numbers?"
+  },
+  {
+    "id": 1197,
+    "original_query": "List the transactions available only in the Portal for all the Party with their respective  reference numbers and date ?",
+    "live_adapted_query": "List the transactions available only in the Portal for all the Party with their respective  reference numbers and date ?"
+  },
+  {
+    "id": 1198,
+    "original_query": "List party name with their GST Numbers and pending amount and difference in the tax amount for all the party",
+    "live_adapted_query": "List party name with their GST Numbers and pending amount and difference in the tax amount for all the party"
+  },
+  {
+    "id": 1199,
+    "original_query": "List the bills with Mismatched status for the party Om Stell Traders",
+    "live_adapted_query": "List the bills with Mismatched status for the party Om Stell Traders"
+  },
+  {
+    "id": 1200,
+    "original_query": "List the bills with Reconciled status for the party Om Stell Traders",
+    "live_adapted_query": "List the bills with Reconciled status for the party Om Stell Traders"
+  }
+]

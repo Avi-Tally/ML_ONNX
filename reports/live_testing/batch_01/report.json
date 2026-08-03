@@ -1,0 +1,871 @@
+[
+  {
+    "id": 1,
+    "original_query": "List the parties to whom I need to make the payment this week",
+    "executed_query": "List the parties to whom I need to make the payment this week",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_PAYABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "this_week"
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to None\n\n### Analytical Report: Payables - Bella Casa Data for User Activity (Port 9000)\n**Total Outstanding:** \u20b9 423,635,226.49\n\n| Date | Due Date | Bill Name | Party | Amount | Type | Age |\n| :--- | :--- | :--- | :--- | :--- | :---: | :--- |\n| 20170831 | 20170831 | HSN/COMM/GST/00864 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 9,997,577.14 | Cr (Payable) | 31d |\n| 20170731 | 20170731 | HSN/COMM/GST/0066 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 5,369,277.00 | Cr (Payable) | 62d |\n| 20170905 | 20170905 | JK175172 | INDIAN CUSTOMES | \u20b9 4,856,336.74 | Cr (Payable) | 26d |\n| 20170402 | 20170502 | 36 | GUPTA EXPORT (SALES) | \u20b9 2,339,571.00 | Cr (Payable) | 152d |\n| 20170402 | 20170502 | 25 | GUPTA EXPORT (SALES) | \u20b9 2,005,347.00 | Cr (Payable) | 152d |\n| 20170713 | 20170713 | GST/055/17-18 | MURUGAN TEXTILES | \u20b9 1,737,364.00 | Cr (Payable) | 80d |\n| 20170814 | 20170814 | GST/376/17-18 | MURUGAN TEXTILES | \u20b9 1,731,033.00 | Cr (Payable) | 48d |\n| 20170815 | 20170815 | 1932/17-18 | INDIAN CUSTOMES | \u20b9 1,698,745.00 | Cr (Payable) | 47d |\n| 20170403 | 20170702 | S 37/17-18 | MALCHAND & CO.FABRIC PVT.LTD | \u20b9 1,396,367.00 | Cr (Payable) | 91d |\n| 20170402 | 20170502 | 27 | GUPTA EXPORT (SALES) | \u20b9 1,336,897.00 | Cr (Payable) | 152d |\n| 20170721 | 20170721 | 79/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,261,056.00 | Cr (Payable) | 72d |\n| 20170721 | 20170721 | 80/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,260,302.00 | Cr (Payable) | 72d |\n| 20170818 | 20170818 | 780/17-18 | RADHAKISHAN TEXTILE MILLS | \u20b9 1,254,691.00 | Cr (Payable) | 44d |\n| 20170424 | 20170723 | S 71/17-18 | MALCHAND EXPORT | \u20b9 1,212,793.00 | Cr (Payable) | 70d |\n| 20170125 | 20170425 | S 287/16-17 | MALCHAND TEXTILE MILLS | \u20b9 1,200,320.00 | Cr (Payable) | 159d |\n| 20170801 | 20170801 | GST/242/17-18 | MURUGAN TEXTILES | \u20b9 1,190,586.00 | Cr (Payable) | 61d |\n| 20170731 | 20170731 | VPT-277/17-18 | V.P. TEX PRIVATE LIMITED | \u20b9 1,183,569.00 | Cr (Payable) | 62d |\n| 20170621 | 20170820 | 325/17-18 | Sri Krishna Textiles | \u20b9 1,181,510.00 | Cr (Payable) | 42d |\n| 20170804 | 20170804 | 2017-18/001 | MAUH CONSTRATION COMPANY | \u20b9 1,180,000.00 | Cr (Payable) | 58d |\n| 20130507 | 20130507 | OP | HANUNG TOYS & TEXTILES LTD. (Debtor) | \u20b9 1,166,472.00 | Cr (Payable) | 1608d |\n| 20170729 | 20170729 | 149/17-18 | HMBS TEXTILES | \u20b9 1,162,479.00 | Cr (Payable) | 64d |\n| 20170316 | 20170614 | S 361/16-17 | MALCHAND EXPORT | \u20b9 1,161,230.00 | Cr (Payable) | 109d |\n| 20170325 | 20170623 | S 372/16-17 | MALCHAND EXPORT | \u20b9 1,145,210.00 | Cr (Payable) | 100d |\n| 20170308 | 20170606 | S 317/16-17 | MALCHAND EXPORT | \u20b9 1,142,550.00 | Cr (Payable) | 117d |\n| 20170616 | 20170616 | 486/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,141,202.00 | Cr (Payable) | 107d |\n\n*(Showing 25 out of 47595 matching bills)*",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:36:46.966261",
+      "query": "List the parties to whom I need to make the payment this week",
+      "total_time_ms": 129129.389,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.009,
+          "current_ram_mb": 0.0,
+          "peak_ram_mb": 0.0,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41043041397000,
+          "details": {
+            "query_len": 61
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1294.913,
+          "current_ram_mb": 0.45,
+          "peak_ram_mb": 15.437,
+          "delta_ram_mb": 0.45,
+          "end_ns": 41044336310000,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 827.711,
+          "current_ram_mb": 0.412,
+          "peak_ram_mb": 15.761,
+          "delta_ram_mb": -0.038,
+          "end_ns": 41045164021000,
+          "details": {
+            "intent": "GET_PAYABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.028,
+          "current_ram_mb": 0.413,
+          "peak_ram_mb": 15.761,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41045164049400,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.007,
+          "current_ram_mb": 0.413,
+          "peak_ram_mb": 15.761,
+          "delta_ram_mb": -0.0,
+          "end_ns": 41045164056000,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.044,
+          "current_ram_mb": 0.413,
+          "peak_ram_mb": 15.761,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41045164099900,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 127001.674,
+          "current_ram_mb": 0.481,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.068,
+          "end_ns": 41172165774000,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 4.979,
+          "current_ram_mb": 0.481,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41172170752700,
+          "details": {
+            "output_len": 2930
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "original_query": "Oldest 10 Bills which are pending to receive today only above 1L",
+    "executed_query": "Oldest 10 Bills which are pending to receive today only above 1L",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_RECEIVABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "till_today"
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to None\n\n### Analytical Report: Receivables - Bella Casa Data for User Activity (Port 9000)\n**Total Outstanding:** \u20b9 1,302,373.08\n\n| Date | Due Date | Bill Name | Party | Amount | Type | Age |\n| :--- | :--- | :--- | :--- | :--- | :---: | :--- |\n| 20130331 | 20130331 | Op | ANAMIKA CREATION | \u20b9 132,367.50 | Dr (Receivable) | 1652d |\n| 20130331 | 20130331 | OP | AND DESIGNS INDIA LTD. | \u20b9 107,040.58 | Dr (Receivable) | 1652d |\n| 20130331 | 20150331 | PAYMENT | PRAVEEN KUMAR VYAS | \u20b9 235,000.00 | Dr (Receivable) | 922d |\n| 20130507 | 20130507 | OP | HANUNG TOYS & TEXTILES LTD. (Debtor) | \u20b9 1,166,472.00 | Cr (Payable) | 1615d |\n| 20140331 | 20140331 | 16713 | PRAVEEN KUMAR VYAS | \u20b9 220,999.68 | Cr (Payable) | 1287d |\n| 20140428 | 20140428 | 426 | ROBEMALL APPARELS PVT LTD | \u20b9 350,820.00 | Dr (Receivable) | 1259d |\n| 20140510 | 20140510 | 547 | SHRI BALAJI TEXTILE-DELHI | \u20b9 137,841.00 | Dr (Receivable) | 1247d |\n| 20141127 | 20150307 | 343 | Jay Amba Textiles | \u20b9 153,689.00 | Cr (Payable) | 946d |\n| 20150214 | 20150415 | 4587 | The Bombay Dyeing&Mfg Co.Ltd | \u20b9 339,304.00 | Dr (Receivable) | 907d |\n| 20150327 | 20150327 | 296 | VANIJ TEXO PACK PVT LTD | \u20b9 207,574.00 | Cr (Payable) | 926d |",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:38:59.773006",
+      "query": "Oldest 10 Bills which are pending to receive today only above 1L",
+      "total_time_ms": 132604.455,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.031,
+          "current_ram_mb": 0.483,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41172373095300,
+          "details": {
+            "query_len": 64
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1171.187,
+          "current_ram_mb": 0.521,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.038,
+          "end_ns": 41173544282200,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 736.679,
+          "current_ram_mb": 0.528,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.007,
+          "end_ns": 41174280960800,
+          "details": {
+            "intent": "GET_RECEIVABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.029,
+          "current_ram_mb": 0.528,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41174280989900,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.009,
+          "current_ram_mb": 0.528,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41174280998400,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.032,
+          "current_ram_mb": 0.529,
+          "peak_ram_mb": 55.34,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41174281029900,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 130689.038,
+          "current_ram_mb": 0.496,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.033,
+          "end_ns": 41304970067700,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 7.409,
+          "current_ram_mb": 0.496,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.0,
+          "end_ns": 41304977476700,
+          "details": {
+            "output_len": 1333
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "original_query": "Payables till date",
+    "executed_query": "Payables till date",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_PAYABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "till_today"
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to None\n\n### Analytical Report: Payables - Bella Casa Data for User Activity (Port 9000)\n**Total Outstanding:** \u20b9 423,635,226.49\n\n| Date | Due Date | Bill Name | Party | Amount | Type | Age |\n| :--- | :--- | :--- | :--- | :--- | :---: | :--- |\n| 20170831 | 20170831 | HSN/COMM/GST/00864 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 9,997,577.14 | Cr (Payable) | 31d |\n| 20170731 | 20170731 | HSN/COMM/GST/0066 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 5,369,277.00 | Cr (Payable) | 62d |\n| 20170905 | 20170905 | JK175172 | INDIAN CUSTOMES | \u20b9 4,856,336.74 | Cr (Payable) | 26d |\n| 20170402 | 20170502 | 36 | GUPTA EXPORT (SALES) | \u20b9 2,339,571.00 | Cr (Payable) | 152d |\n| 20170402 | 20170502 | 25 | GUPTA EXPORT (SALES) | \u20b9 2,005,347.00 | Cr (Payable) | 152d |\n| 20170713 | 20170713 | GST/055/17-18 | MURUGAN TEXTILES | \u20b9 1,737,364.00 | Cr (Payable) | 80d |\n| 20170814 | 20170814 | GST/376/17-18 | MURUGAN TEXTILES | \u20b9 1,731,033.00 | Cr (Payable) | 48d |\n| 20170815 | 20170815 | 1932/17-18 | INDIAN CUSTOMES | \u20b9 1,698,745.00 | Cr (Payable) | 47d |\n| 20170403 | 20170702 | S 37/17-18 | MALCHAND & CO.FABRIC PVT.LTD | \u20b9 1,396,367.00 | Cr (Payable) | 91d |\n| 20170402 | 20170502 | 27 | GUPTA EXPORT (SALES) | \u20b9 1,336,897.00 | Cr (Payable) | 152d |\n| 20170721 | 20170721 | 79/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,261,056.00 | Cr (Payable) | 72d |\n| 20170721 | 20170721 | 80/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,260,302.00 | Cr (Payable) | 72d |\n| 20170818 | 20170818 | 780/17-18 | RADHAKISHAN TEXTILE MILLS | \u20b9 1,254,691.00 | Cr (Payable) | 44d |\n| 20170424 | 20170723 | S 71/17-18 | MALCHAND EXPORT | \u20b9 1,212,793.00 | Cr (Payable) | 70d |\n| 20170125 | 20170425 | S 287/16-17 | MALCHAND TEXTILE MILLS | \u20b9 1,200,320.00 | Cr (Payable) | 159d |\n| 20170801 | 20170801 | GST/242/17-18 | MURUGAN TEXTILES | \u20b9 1,190,586.00 | Cr (Payable) | 61d |\n| 20170731 | 20170731 | VPT-277/17-18 | V.P. TEX PRIVATE LIMITED | \u20b9 1,183,569.00 | Cr (Payable) | 62d |\n| 20170621 | 20170820 | 325/17-18 | Sri Krishna Textiles | \u20b9 1,181,510.00 | Cr (Payable) | 42d |\n| 20170804 | 20170804 | 2017-18/001 | MAUH CONSTRATION COMPANY | \u20b9 1,180,000.00 | Cr (Payable) | 58d |\n| 20130507 | 20130507 | OP | HANUNG TOYS & TEXTILES LTD. (Debtor) | \u20b9 1,166,472.00 | Cr (Payable) | 1608d |\n| 20170729 | 20170729 | 149/17-18 | HMBS TEXTILES | \u20b9 1,162,479.00 | Cr (Payable) | 64d |\n| 20170316 | 20170614 | S 361/16-17 | MALCHAND EXPORT | \u20b9 1,161,230.00 | Cr (Payable) | 109d |\n| 20170325 | 20170623 | S 372/16-17 | MALCHAND EXPORT | \u20b9 1,145,210.00 | Cr (Payable) | 100d |\n| 20170308 | 20170606 | S 317/16-17 | MALCHAND EXPORT | \u20b9 1,142,550.00 | Cr (Payable) | 117d |\n| 20170616 | 20170616 | 486/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,141,202.00 | Cr (Payable) | 107d |\n\n*(Showing 25 out of 47595 matching bills)*",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:40:56.357882",
+      "query": "Payables till date",
+      "total_time_ms": 116380.331,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.02,
+          "current_ram_mb": 0.496,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41305182087900,
+          "details": {
+            "query_len": 18
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1152.3,
+          "current_ram_mb": 0.533,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.037,
+          "end_ns": 41306334388000,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 600.56,
+          "current_ram_mb": 0.539,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.006,
+          "end_ns": 41306934948300,
+          "details": {
+            "intent": "GET_PAYABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.04,
+          "current_ram_mb": 0.539,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.0,
+          "end_ns": 41306934988200,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.016,
+          "current_ram_mb": 0.539,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41306935004000,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.044,
+          "current_ram_mb": 0.539,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41306935048200,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 114621.909,
+          "current_ram_mb": 0.518,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.021,
+          "end_ns": 41421556957200,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 5.413,
+          "current_ram_mb": 0.518,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41421562370400,
+          "details": {
+            "output_len": 2930
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "original_query": "Which vendors are due for payment this week?",
+    "executed_query": "Which vendors are due for payment this week?",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_PAYABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "this_week"
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to None\n\n### Analytical Report: Payables - Bella Casa Data for User Activity (Port 9000)\n**Total Outstanding:** \u20b9 423,635,226.49\n\n| Date | Due Date | Bill Name | Party | Amount | Type | Age |\n| :--- | :--- | :--- | :--- | :--- | :---: | :--- |\n| 20170831 | 20170831 | HSN/COMM/GST/00864 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 9,997,577.14 | Cr (Payable) | 31d |\n| 20170731 | 20170731 | HSN/COMM/GST/0066 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 5,369,277.00 | Cr (Payable) | 62d |\n| 20170905 | 20170905 | JK175172 | INDIAN CUSTOMES | \u20b9 4,856,336.74 | Cr (Payable) | 26d |\n| 20170402 | 20170502 | 36 | GUPTA EXPORT (SALES) | \u20b9 2,339,571.00 | Cr (Payable) | 152d |\n| 20170402 | 20170502 | 25 | GUPTA EXPORT (SALES) | \u20b9 2,005,347.00 | Cr (Payable) | 152d |\n| 20170713 | 20170713 | GST/055/17-18 | MURUGAN TEXTILES | \u20b9 1,737,364.00 | Cr (Payable) | 80d |\n| 20170814 | 20170814 | GST/376/17-18 | MURUGAN TEXTILES | \u20b9 1,731,033.00 | Cr (Payable) | 48d |\n| 20170815 | 20170815 | 1932/17-18 | INDIAN CUSTOMES | \u20b9 1,698,745.00 | Cr (Payable) | 47d |\n| 20170403 | 20170702 | S 37/17-18 | MALCHAND & CO.FABRIC PVT.LTD | \u20b9 1,396,367.00 | Cr (Payable) | 91d |\n| 20170402 | 20170502 | 27 | GUPTA EXPORT (SALES) | \u20b9 1,336,897.00 | Cr (Payable) | 152d |\n| 20170721 | 20170721 | 79/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,261,056.00 | Cr (Payable) | 72d |\n| 20170721 | 20170721 | 80/G/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,260,302.00 | Cr (Payable) | 72d |\n| 20170818 | 20170818 | 780/17-18 | RADHAKISHAN TEXTILE MILLS | \u20b9 1,254,691.00 | Cr (Payable) | 44d |\n| 20170424 | 20170723 | S 71/17-18 | MALCHAND EXPORT | \u20b9 1,212,793.00 | Cr (Payable) | 70d |\n| 20170125 | 20170425 | S 287/16-17 | MALCHAND TEXTILE MILLS | \u20b9 1,200,320.00 | Cr (Payable) | 159d |\n| 20170801 | 20170801 | GST/242/17-18 | MURUGAN TEXTILES | \u20b9 1,190,586.00 | Cr (Payable) | 61d |\n| 20170731 | 20170731 | VPT-277/17-18 | V.P. TEX PRIVATE LIMITED | \u20b9 1,183,569.00 | Cr (Payable) | 62d |\n| 20170621 | 20170820 | 325/17-18 | Sri Krishna Textiles | \u20b9 1,181,510.00 | Cr (Payable) | 42d |\n| 20170804 | 20170804 | 2017-18/001 | MAUH CONSTRATION COMPANY | \u20b9 1,180,000.00 | Cr (Payable) | 58d |\n| 20130507 | 20130507 | OP | HANUNG TOYS & TEXTILES LTD. (Debtor) | \u20b9 1,166,472.00 | Cr (Payable) | 1608d |\n| 20170729 | 20170729 | 149/17-18 | HMBS TEXTILES | \u20b9 1,162,479.00 | Cr (Payable) | 64d |\n| 20170316 | 20170614 | S 361/16-17 | MALCHAND EXPORT | \u20b9 1,161,230.00 | Cr (Payable) | 109d |\n| 20170325 | 20170623 | S 372/16-17 | MALCHAND EXPORT | \u20b9 1,145,210.00 | Cr (Payable) | 100d |\n| 20170308 | 20170606 | S 317/16-17 | MALCHAND EXPORT | \u20b9 1,142,550.00 | Cr (Payable) | 117d |\n| 20170616 | 20170616 | 486/17-18 | RANGA WEAVES INDIA (P) LTD | \u20b9 1,141,202.00 | Cr (Payable) | 107d |\n\n*(Showing 25 out of 47595 matching bills)*",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:43:00.093940",
+      "query": "Which vendors are due for payment this week?",
+      "total_time_ms": 123532.776,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.009,
+          "current_ram_mb": 0.519,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41421765691400,
+          "details": {
+            "query_len": 44
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1126.795,
+          "current_ram_mb": 0.552,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.033,
+          "end_ns": 41422892486900,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 671.684,
+          "current_ram_mb": 0.523,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.029,
+          "end_ns": 41423564170800,
+          "details": {
+            "intent": "GET_PAYABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.025,
+          "current_ram_mb": 0.523,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.0,
+          "end_ns": 41423564195700,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.007,
+          "current_ram_mb": 0.523,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41423564202900,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.04,
+          "current_ram_mb": 0.524,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41423564243000,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 121729.364,
+          "current_ram_mb": 0.525,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41545293607200,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 4.828,
+          "current_ram_mb": 0.525,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41545298435000,
+          "details": {
+            "output_len": 2930
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "original_query": "What\u2019s the total overdue payable beyond 30 days?",
+    "executed_query": "What\u2019s the total overdue payable beyond 30 days?",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_PAYABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": null
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to 01-Apr-2025\n\n[Bella Casa Data for User Activity] No bill details could be retrieved.",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:43:06.042549",
+      "query": "What\u2019s the total overdue payable beyond 30 days?",
+      "total_time_ms": 5744.377,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.018,
+          "current_ram_mb": 0.526,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41545502708100,
+          "details": {
+            "query_len": 48
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1091.961,
+          "current_ram_mb": 0.561,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.035,
+          "end_ns": 41546594669600,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 677.507,
+          "current_ram_mb": 0.567,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.006,
+          "end_ns": 41547272176400,
+          "details": {
+            "intent": "GET_PAYABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.023,
+          "current_ram_mb": 0.567,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41547272199400,
+          "details": {
+            "params_count": 27
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.006,
+          "current_ram_mb": 0.568,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41547272205700,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.023,
+          "current_ram_mb": 0.568,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41547272229000,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 3970.452,
+          "current_ram_mb": 0.576,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.008,
+          "end_ns": 41551242680800,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 4.36,
+          "current_ram_mb": 0.577,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41551247041100,
+          "details": {
+            "output_len": 218
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "original_query": "Identify the top 5 parties to whom the payment is pending for feb 2025",
+    "executed_query": "Identify the top 5 parties to whom the payment is pending for feb 2025",
+    "status": "SUCCESS",
+    "resolved_company": "Bella Casa Data for User Activity",
+    "resolved_ledger": null,
+    "resolved_intent": "GET_PAYABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "month_year",
+        "month": 2,
+        "year": 2025
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** 01-Feb-2025 to 28-Feb-2025\n\n[Bella Casa Data for User Activity] No bill details could be retrieved.",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:43:13.721833",
+      "query": "Identify the top 5 parties to whom the payment is pending for feb 2025",
+      "total_time_ms": 7474.649,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.015,
+          "current_ram_mb": 0.578,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41551451713300,
+          "details": {
+            "query_len": 70
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 1936.161,
+          "current_ram_mb": 0.613,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.035,
+          "end_ns": 41553387874300,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 1514.658,
+          "current_ram_mb": 0.62,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.007,
+          "end_ns": 41554902532600,
+          "details": {
+            "intent": "GET_PAYABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.029,
+          "current_ram_mb": 0.62,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41554902561300,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.012,
+          "current_ram_mb": 0.62,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41554902573200,
+          "details": {
+            "resolved_ledger": null,
+            "score": 27.586206896551722
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.079,
+          "current_ram_mb": 0.621,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41554902652600,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 4017.005,
+          "current_ram_mb": 0.629,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.008,
+          "end_ns": 41558919657100,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 6.613,
+          "current_ram_mb": 0.63,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41558926269900,
+          "details": {
+            "output_len": 227
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "original_query": "how many customers bills are due in the next 10 days and what is the total value?",
+    "executed_query": "how many customers bills are due in the next 10 days and what is the total value?",
+    "status": "SUCCESS",
+    "resolved_company": null,
+    "resolved_ledger": null,
+    "resolved_intent": "GET_RECEIVABLES",
+    "date_bounds": {
+      "reference_date": null,
+      "date_filter": {
+        "type": "next_days",
+        "days": 10
+      }
+    },
+    "output_response": "> **Company:** Bella Casa Data for User Activity | **Resolved Ledger:** None | **Tally Date:** 01-Apr-2025 | **Active Period:** up to None\n\n### Analytical Report: Receivables - Bella Casa Data for User Activity (Port 9000)\n**Total Outstanding:** \u20b9 967,601,106.44\n\n| Date | Due Date | Bill Name | Party | Amount | Type | Age |\n| :--- | :--- | :--- | :--- | :--- | :---: | :--- |\n| 20170831 | 20170831 | HSN/COMM/GST/00864 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 9,997,577.14 | Cr (Payable) | 38d |\n| 20170331 | 20170331 | To Be Received Upto Mar-2017 | TV18 HOME SHOPPING NETWORK LIMITED | \u20b9 7,267,598.64 | Dr (Receivable) | 191d |\n| 20170731 | 20170731 | HSN/COMM/GST/0066 | TV18 HOME SHOPPING NETWORK LIMITED (Creditor) | \u20b9 5,369,277.00 | Cr (Payable) | 69d |\n| 20151130 | 20160104 | 05296 | ORIEN EXPORTS | \u20b9 4,934,178.99 | Dr (Receivable) | 643d |\n| 20170905 | 20170905 | JK175172 | INDIAN CUSTOMES | \u20b9 4,856,336.74 | Cr (Payable) | 33d |\n| 20170401 | 20170531 | 026/17-18 | GOYAL CLOTH STORE | \u20b9 4,141,980.00 | Dr (Receivable) | 130d |\n| 20170331 | 20170331 | To Be Rcvd Upto 28-Feb-17 | TV18 HOME SHOPPING NETWORK LIMITED | \u20b9 3,537,276.92 | Dr (Receivable) | 191d |\n| 20170819 | 20171003 | GST\\35482\\17-18 | RELIANCE RETAIL LIMITED (30300017) | \u20b9 3,384,961.65 | Dr (Receivable) | 5d |\n| 20160121 | 20160225 | 06089 | ORIEN EXPORTS | \u20b9 3,073,320.00 | Dr (Receivable) | 591d |\n| 20160118 | 20160222 | 06017 | ORIEN EXPORTS | \u20b9 3,068,653.50 | Dr (Receivable) | 594d |\n| 20160119 | 20160223 | 06042 | ORIEN EXPORTS | \u20b9 2,988,003.60 | Dr (Receivable) | 593d |\n| 20160801 | 20160831 | 84540/16-17 | INDRA CREATIONS | \u20b9 2,983,005.00 | Dr (Receivable) | 403d |\n| 20170623 | 20170623 | JK175172 | JACK SEWING MACHINE | \u20b9 2,840,520.71 | Dr (Receivable) | 107d |\n| 20170425 | 20170425 | 18959 | NAAPTOL ONLINE SHOPPING PVT LTD | \u20b9 2,600,000.00 | Dr (Receivable) | 166d |\n| 20170131 | 20170302 | 256039/16-17 | INDRA CREATIONS | \u20b9 2,577,537.00 | Dr (Receivable) | 220d |\n| 20170402 | 20170502 | 36 | GUPTA EXPORT (SALES) | \u20b9 2,339,571.00 | Cr (Payable) | 159d |\n| 20160125 | 20160229 | 11171 | ORIEN EXPORTS | \u20b9 2,147,045.00 | Dr (Receivable) | 587d |\n| 20151031 | 20151205 | 04549 | ORIEN EXPORTS | \u20b9 2,136,937.20 | Dr (Receivable) | 673d |\n| 20170715 | 20170814 | GST\\10677\\17-18 | SHIVAM FABS (PANIPAT) | \u20b9 2,101,050.00 | Dr (Receivable) | 55d |\n| 20160810 | 20160909 | 102004/16-17 | INDRA CREATIONS | \u20b9 2,098,803.00 | Dr (Receivable) | 394d |\n| 20160121 | 20160225 | 06088 | ORIEN EXPORTS | \u20b9 2,019,336.30 | Dr (Receivable) | 591d |\n| 20170402 | 20170502 | 25 | GUPTA EXPORT (SALES) | \u20b9 2,005,347.00 | Cr (Payable) | 159d |\n| 20151106 | 20151211 | 4631 | ORIEN EXPORTS | \u20b9 2,000,001.00 | Dr (Receivable) | 667d |\n| 20160617 | 20160816 | 54283/16-17 | The Bombay Dyeing&Mfg Co.Ltd | \u20b9 1,975,856.81 | Dr (Receivable) | 418d |\n| 20160920 | 20161219 | 147782/16-17 | ADHYASAGAR (SALES) | \u20b9 1,959,190.00 | Dr (Receivable) | 293d |\n\n*(Showing 25 out of 159073 matching bills)*",
+    "telemetry": {
+      "timestamp": "2026-07-31T11:45:28.984893",
+      "query": "how many customers bills are due in the next 10 days and what is the total value?",
+      "total_time_ms": 135054.181,
+      "stages": [
+        {
+          "step": 1,
+          "stage_name": "Stage 1: Ingestion & Query Cleaning",
+          "delta_t_ms": 0.013,
+          "current_ram_mb": 0.631,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41559135241900,
+          "details": {
+            "query_len": 81
+          }
+        },
+        {
+          "step": 2,
+          "stage_name": "Stage 1.5: Multi-Port Concurrent Probing",
+          "delta_t_ms": 972.553,
+          "current_ram_mb": 0.572,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.059,
+          "end_ns": 41560107795100,
+          "details": {
+            "active_ports": [
+              9000,
+              9001
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "stage_name": "Stage 2: Parallel ONNX 11-Model Inference",
+          "delta_t_ms": 556.177,
+          "current_ram_mb": 0.543,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.029,
+          "end_ns": 41560663972500,
+          "details": {
+            "intent": "GET_RECEIVABLES"
+          }
+        },
+        {
+          "step": 4,
+          "stage_name": "Stage 3: 27-Entity Parameter & Bounds Extraction",
+          "delta_t_ms": 0.027,
+          "current_ram_mb": 0.544,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.001,
+          "end_ns": 41560663999300,
+          "details": {
+            "params_count": 26
+          }
+        },
+        {
+          "step": 5,
+          "stage_name": "Stage 4: 3-Tier N-Gram Fuzzy Ledger Matching",
+          "delta_t_ms": 0.007,
+          "current_ram_mb": 0.544,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": -0.0,
+          "end_ns": 41560664006500,
+          "details": {
+            "resolved_ledger": null,
+            "score": 0.0
+          }
+        },
+        {
+          "step": 6,
+          "stage_name": "Stage 5: TDL XML Construction & MasterAlterID Verification",
+          "delta_t_ms": 0.042,
+          "current_ram_mb": 0.544,
+          "peak_ram_mb": 162.682,
+          "delta_ram_mb": 0.0,
+          "end_ns": 41560664048700,
+          "details": {
+            "company": "Bella Casa Data for User Activity",
+            "port": 9000
+          }
+        },
+        {
+          "step": 7,
+          "stage_name": "Stage 6: Tally HTTP Socket Communication & Stream Parsing",
+          "delta_t_ms": 133521.609,
+          "current_ram_mb": 0.556,
+          "peak_ram_mb": 166.348,
+          "delta_ram_mb": 0.012,
+          "end_ns": 41694185657700,
+          "details": {
+            "socket": "http://localhost:9000"
+          }
+        },
+        {
+          "step": 8,
+          "stage_name": "Stage 7: Aggregation & Markdown Output Card Rendering",
+          "delta_t_ms": 3.729,
+          "current_ram_mb": 0.555,
+          "peak_ram_mb": 166.348,
+          "delta_ram_mb": -0.001,
+          "end_ns": 41694189386400,
+          "details": {
+            "output_len": 2980
+          }
+        }
+      ]
+    }
+  }
+]

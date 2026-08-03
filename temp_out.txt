@@ -1,0 +1,16 @@
+> **Company:** Modi Chemplast Materials Pvt Ltd | **Resolved Ledger:** ADINATH HARDWARE | **Tally Date:** 01-Apr-2025 | **Active Period:** up to 01-Apr-2025
+
+### Analytical Report: Ageing - Modi Chemplast Materials Pvt Ltd (Port 9000)
+| Ageing Bucket | Debit (Receivables) | Credit (Payables) | Net Outstanding |
+| :--- | :--- | :--- | :--- |
+| **0-30 days** | ₹ 0.00 | ₹ 0.00 | ₹ 0.00 |
+| **31-60 days** | ₹ 0.00 | ₹ 0.00 | ₹ 0.00 |
+| **61-90 days** | ₹ 0.00 | ₹ 0.00 | ₹ 0.00 |
+| **>90 days** | ₹ 0.00 | ₹ 0.00 | ₹ 0.00 |
+
+### Bill-wise Distribution by Ageing Bucket
+
+#### Bucket: >90 days
+| Date | Due Date | Bill Name | Party | Amount | Type | Age |
+| :--- | :--- | :--- | :--- | :--- | :---: | :--- |
+| 20251230 | 20251230 | Ref 109 - 16:17:36 | ADINATH HARDWARE | ₹ 0.00 | Cr (Payable) | 212d |

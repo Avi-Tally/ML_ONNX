@@ -1,0 +1,12 @@
+Error: No active TallyPrime instances detected on ports 9000 or 9001. Please ensure TallyPrime is running and HTTP server is enabled.
+
+<details>
+<summary>⏱️ <b>Chronological Pipeline Telemetry (Click to expand)</b></summary>
+
+**Total Query Duration:** `758.25 ms` | **Telemetry Logged:** `diagnostics/telemetry.jsonl`
+
+| Step | Pipeline Stage | Duration (Δt) | Heap RAM | Δ RAM | Details / Context |
+| :---: | :--- | :---: | :---: | :---: | :--- |
+| 1 | **Stage 1: Ingestion & Query Cleaning** | `0.005 ms` | `0.00 MB` | `+0.00 MB` | query_len: 26 |
+| 2 | **Stage 1.5: Multi-Port Concurrent Probing** | `758.221 ms` | `0.01 MB` | `+0.01 MB` | active_ports: [9999, 10089] |
+</details>

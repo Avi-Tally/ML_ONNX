@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1201,
+    "original_query": "List the bills with Excluded status for the party Om Stell Traders",
+    "executed_query": "List the bills with Excluded status for the party Om Stell Traders",
+    "status": "SUCCESS",
+    "latency_ms": 40992.84,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1202,
+    "original_query": "List the bills with Uncertain status for the party OM Stell Traders",
+    "executed_query": "List the bills with Uncertain status for the party OM Stell Traders",
+    "status": "SUCCESS",
+    "latency_ms": 40629.37,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1203,
+    "original_query": "What is the outstanding of Laxmi Traders and compare it with the company of 'Raj Company Pvt Ltd' .",
+    "executed_query": "What is the outstanding of Laxmi Traders and compare it with the company of 'Raj Company Pvt Ltd' .",
+    "status": "SUCCESS",
+    "latency_ms": 31892.08,
+    "response": "### Multi-Company Outstandings Comparison\n| Company Name | Port | Total Receivables | Total Payables | Net Position |\n| :--- | :---: | :--- | :--- | :--- |\n| **Modi Chemplast Materials Pvt Ltd** | `9000` | \u20b9 0.00 | \u20b9 0.00 | \u20b9 0.00 (Receivable) |"
+  },
+  {
+    "id": 1204,
+    "original_query": "List  only the bills pending in the next week for the party Lakshmi Traders",
+    "executed_query": "List  only the bills pending in the next week for the party Lakshmi Traders",
+    "status": "SUCCESS",
+    "latency_ms": 40587.31,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1205,
+    "original_query": "List all the advance receipts agains which the invoice is made, but the bills are yet pending ?",
+    "executed_query": "List all the advance receipts agains which the invoice is made, but the bills are yet pending ?",
+    "status": "SUCCESS",
+    "latency_ms": 40848.13,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1206,
+    "original_query": "When should we settle  Young India Stell corporation bill.",
+    "executed_query": "When should we settle  Young India Stell corporation bill.",
+    "status": "SUCCESS",
+    "latency_ms": 40631.78,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1207,
+    "original_query": "Analyze the payment behaviour of Sona Steel enterprises.",
+    "executed_query": "Analyze the payment behaviour of Sona Steel enterprises.",
+    "status": "SUCCESS",
+    "latency_ms": 40845.03,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1208,
+    "original_query": "Identify the parties who is  a buyer and a seller and what is the net value either payable or receivable.",
+    "executed_query": "Identify the parties who is  a buyer and a seller and what is the net value either payable or receivable.",
+    "status": "SUCCESS",
+    "latency_ms": 40565.93,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  },
+  {
+    "id": 1209,
+    "original_query": "Show me the bills of Mr Nirman Timbers  and for how long the bill are pending and what are the items which are sold to them?",
+    "executed_query": "Show me the bills of Mr Nirman Timbers  and for how long the bill are pending and what are the items which are sold to them?",
+    "status": "SUCCESS",
+    "latency_ms": 40994.39,
+    "response": "[Modi Chemplast Materials Pvt Ltd] No bill details could be retrieved."
+  }
+]

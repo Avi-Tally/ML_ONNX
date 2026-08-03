@@ -1,0 +1,502 @@
+[
+  {
+    "id": 901,
+    "original_query": "Give pending amount for credit card expenses also what is the cleared amount?",
+    "live_adapted_query": "Give pending amount for credit card expenses also what is the cleared amount?"
+  },
+  {
+    "id": 902,
+    "original_query": "Which parties under sundry creditors for goods import are overdue receivables?",
+    "live_adapted_query": "Which parties under sundry creditors for goods import are overdue receivables?"
+  },
+  {
+    "id": 903,
+    "original_query": "Show payable summary for GSTR2A Creditors",
+    "live_adapted_query": "Show payable summary for GSTR2A Creditors"
+  },
+  {
+    "id": 904,
+    "original_query": "net outstanding for debtors with avg average overdue days less than 2 days",
+    "live_adapted_query": "net outstanding for debtors with avg average overdue days less than 2 days"
+  },
+  {
+    "id": 905,
+    "original_query": "overdue payables for Sundry Creditors for this quarter",
+    "live_adapted_query": "overdue payables for Sundry Creditors for this quarter"
+  },
+  {
+    "id": 906,
+    "original_query": "How much is pending from Sun Enterprises?",
+    "live_adapted_query": "How much is pending from Sun Enterprises?"
+  },
+  {
+    "id": 907,
+    "original_query": "`",
+    "live_adapted_query": "`"
+  },
+  {
+    "id": 908,
+    "original_query": "Give payable ageing analysis for Sundry Creditors using bill date",
+    "live_adapted_query": "Give payable ageing analysis for Sundry Creditors using bill date"
+  },
+  {
+    "id": 909,
+    "original_query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending",
+    "live_adapted_query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending"
+  },
+  {
+    "id": 910,
+    "original_query": "List payable ageing for Debtors group based on bill date sorted by bill count",
+    "live_adapted_query": "List payable ageing for Debtors group based on bill date sorted by bill count"
+  },
+  {
+    "id": 911,
+    "original_query": "Show ageing summary for Jagat and Thermax based on due date",
+    "live_adapted_query": "Show ageing summary for Jagat and Thermax based on due date"
+  },
+  {
+    "id": 912,
+    "original_query": "Show payable ageing for Agru with pending amount greater than 100000",
+    "live_adapted_query": "Show payable ageing for Agru with pending amount greater than 100000"
+  },
+  {
+    "id": 913,
+    "original_query": "List receivable ageing for sundry creditors where total pending amount is less than 50000",
+    "live_adapted_query": "List receivable ageing for sundry creditors where total pending amount is less than 50000"
+  },
+  {
+    "id": 914,
+    "original_query": "Show ageing analysis for Reliance Industries Ltd based on bill date with total pending amount equal to 250000",
+    "live_adapted_query": "Show ageing analysis for Reliance Industries Ltd based on bill date with total pending amount equal to 250000"
+  },
+  {
+    "id": 915,
+    "original_query": "Give payable ageing for Sundry Debtors sorted by bill count ascending",
+    "live_adapted_query": "Give payable ageing for Sundry Debtors sorted by bill count ascending"
+  },
+  {
+    "id": 916,
+    "original_query": "Show ageing for Sundry Creditors where pending amount is greater than 500000",
+    "live_adapted_query": "Show ageing for Sundry Creditors where pending amount is greater than 500000"
+  },
+  {
+    "id": 917,
+    "original_query": "give the total number of bills pending to be paid to thermax in last 30 days",
+    "live_adapted_query": "give the total number of bills pending to be paid to thermax in last 30 days"
+  },
+  {
+    "id": 918,
+    "original_query": "give the party who has the least number of pending bills in last 10 days",
+    "live_adapted_query": "give the party who has the least number of pending bills in last 10 days"
+  },
+  {
+    "id": 919,
+    "original_query": "What is an overdue bill?",
+    "live_adapted_query": "What is an overdue bill?"
+  },
+  {
+    "id": 920,
+    "original_query": "Difference between payable and receivable",
+    "live_adapted_query": "Difference between payable and receivable"
+  },
+  {
+    "id": 921,
+    "original_query": "How does bill ageing work?",
+    "live_adapted_query": "How does bill ageing work?"
+  },
+  {
+    "id": 922,
+    "original_query": "What does overdue amount mean in accounting?",
+    "live_adapted_query": "What does overdue amount mean in accounting?"
+  },
+  {
+    "id": 923,
+    "original_query": "What is the purpose of bill-wise tracking in Tally?",
+    "live_adapted_query": "What is the purpose of bill-wise tracking in Tally?"
+  },
+  {
+    "id": 924,
+    "original_query": "Why do businesses monitor outstanding receivables?",
+    "live_adapted_query": "Why do businesses monitor outstanding receivables?"
+  },
+  {
+    "id": 925,
+    "original_query": "What is the meaning of net outstanding?",
+    "live_adapted_query": "What is the meaning of net outstanding?"
+  },
+  {
+    "id": 926,
+    "original_query": "What happens if payments are received on account but not adjusted against bills?",
+    "live_adapted_query": "What happens if payments are received on account but not adjusted against bills?"
+  },
+  {
+    "id": 927,
+    "original_query": "What is the difference between Sundry Debtors and Sundry Creditors?",
+    "live_adapted_query": "What is the difference between Sundry Debtors and Sundry Creditors?"
+  },
+  {
+    "id": 928,
+    "original_query": "How do overdue bills affect cash flow?",
+    "live_adapted_query": "How do overdue bills affect cash flow?"
+  },
+  {
+    "id": 929,
+    "original_query": "Why is ageing analysis important for businesses?",
+    "live_adapted_query": "Why is ageing analysis important for businesses?"
+  },
+  {
+    "id": 930,
+    "original_query": "What does partially settled bill mean?",
+    "live_adapted_query": "What does partially settled bill mean?"
+  },
+  {
+    "id": 931,
+    "original_query": "What is the purpose of maintaining bill references?",
+    "live_adapted_query": "What is the purpose of maintaining bill references?"
+  },
+  {
+    "id": 932,
+    "original_query": "How are receivables different from revenue?",
+    "live_adapted_query": "How are receivables different from revenue?"
+  },
+  {
+    "id": 933,
+    "original_query": "What are unadjusted receipts in outstanding reports?",
+    "live_adapted_query": "What are unadjusted receipts in outstanding reports?"
+  },
+  {
+    "id": 934,
+    "original_query": "Why do companies track supplier payables separately?",
+    "live_adapted_query": "Why do companies track supplier payables separately?"
+  },
+  {
+    "id": 935,
+    "original_query": "What is the meaning of overdue by days?",
+    "live_adapted_query": "What is the meaning of overdue by days?"
+  },
+  {
+    "id": 936,
+    "original_query": "How is pending amount calculated for a bill?",
+    "live_adapted_query": "How is pending amount calculated for a bill?"
+  },
+  {
+    "id": 937,
+    "original_query": "What is the impact of delayed customer payments on a business?",
+    "live_adapted_query": "What is the impact of delayed customer payments on a business?"
+  },
+  {
+    "id": 938,
+    "original_query": "What are advanced receipts in accounting?",
+    "live_adapted_query": "What are advanced receipts in accounting?"
+  },
+  {
+    "id": 939,
+    "original_query": "Why might outstanding reports become misleading?",
+    "live_adapted_query": "Why might outstanding reports become misleading?"
+  },
+  {
+    "id": 940,
+    "original_query": "What is the difference between closing balance and outstanding balance?",
+    "live_adapted_query": "What is the difference between closing balance and outstanding balance?"
+  },
+  {
+    "id": 941,
+    "original_query": "Is my receivable ageing getting worse compared to last quarter?",
+    "live_adapted_query": "Is my receivable ageing getting worse compared to last quarter?"
+  },
+  {
+    "id": 942,
+    "original_query": "Which customers are taking the longest time to clear payments, and is that a risk for cash flow?",
+    "live_adapted_query": "Which customers are taking the longest time to clear payments, and is that a risk for cash flow?"
+  },
+  {
+    "id": 943,
+    "original_query": "Are overdue receivables increasing this financial year?",
+    "live_adapted_query": "Are overdue receivables increasing this financial year?"
+  },
+  {
+    "id": 944,
+    "original_query": "Which group contributes the highest overdue outstanding, and should I be concerned?",
+    "live_adapted_query": "Which group contributes the highest overdue outstanding, and should I be concerned?"
+  },
+  {
+    "id": 945,
+    "original_query": "Do my payable trends indicate delayed vendor payments?",
+    "live_adapted_query": "Do my payable trends indicate delayed vendor payments?"
+  },
+  {
+    "id": 946,
+    "original_query": "Which parties consistently delay payments beyond 90 days?",
+    "live_adapted_query": "Which parties consistently delay payments beyond 90 days?"
+  },
+  {
+    "id": 947,
+    "original_query": "Is my collection efficiency improving over the past 6 months?",
+    "live_adapted_query": "Is my collection efficiency improving over the past 6 months?"
+  },
+  {
+    "id": 948,
+    "original_query": "Which debtors should I prioritize for follow-up based on overdue amount?",
+    "live_adapted_query": "Which debtors should I prioritize for follow-up based on overdue amount?"
+  },
+  {
+    "id": 949,
+    "original_query": "Are my outstanding receivables unusually high compared to previous quarters?",
+    "live_adapted_query": "Are my outstanding receivables unusually high compared to previous quarters?"
+  },
+  {
+    "id": 950,
+    "original_query": "Which suppliers have the largest pending payable balances, and could this impact operations?",
+    "live_adapted_query": "Which suppliers have the largest pending payable balances, and could this impact operations?"
+  },
+  {
+    "id": 951,
+    "original_query": "Are there too many old pending bills in Sundry Debtors?",
+    "live_adapted_query": "Are there too many old pending bills in Sundry Debtors?"
+  },
+  {
+    "id": 952,
+    "original_query": "Which customers have partially settled bills most frequently?",
+    "live_adapted_query": "Which customers have partially settled bills most frequently?"
+  },
+  {
+    "id": 953,
+    "original_query": "Is the company becoming more dependent on a few customers for receivables?",
+    "live_adapted_query": "Is the company becoming more dependent on a few customers for receivables?"
+  },
+  {
+    "id": 954,
+    "original_query": "Are overdue bills concentrated within a specific customer group?",
+    "live_adapted_query": "Are overdue bills concentrated within a specific customer group?"
+  },
+  {
+    "id": 955,
+    "original_query": "Which ageing bucket has the highest outstanding amount, and what does it indicate?",
+    "live_adapted_query": "Which ageing bucket has the highest outstanding amount, and what does it indicate?"
+  },
+  {
+    "id": 956,
+    "original_query": "Is my net outstanding position improving month over month?",
+    "live_adapted_query": "Is my net outstanding position improving month over month?"
+  },
+  {
+    "id": 957,
+    "original_query": "Which ledgers have high outstanding but low recent collections?",
+    "live_adapted_query": "Which ledgers have high outstanding but low recent collections?"
+  },
+  {
+    "id": 958,
+    "original_query": "Which creditor and debtor have pending, overdue receivables?",
+    "live_adapted_query": "Which creditor and debtor have pending, overdue receivables?"
+  },
+  {
+    "id": 959,
+    "original_query": "How many products belong to the category A",
+    "live_adapted_query": "How many products belong to the category A"
+  },
+  {
+    "id": 960,
+    "original_query": "What is the total value of stock in category A and B?",
+    "live_adapted_query": "What is the total value of stock in category A and B?"
+  },
+  {
+    "id": 961,
+    "original_query": "How has the stock quantity for each category changed over the period?",
+    "live_adapted_query": "How has the stock quantity for each category changed over the period?"
+  },
+  {
+    "id": 962,
+    "original_query": "How has the stock value for each category changed over the period?",
+    "live_adapted_query": "How has the stock value for each category changed over the period?"
+  },
+  {
+    "id": 963,
+    "original_query": "What is the total movement (inward and outward) for each category?",
+    "live_adapted_query": "What is the total movement (inward and outward) for each category?"
+  },
+  {
+    "id": 964,
+    "original_query": "Which categories have the highest stock movement?",
+    "live_adapted_query": "Which categories have the highest stock movement?"
+  },
+  {
+    "id": 965,
+    "original_query": "Which stock item in the above category has the highest stock movement?",
+    "live_adapted_query": "Which stock item in the above category has the highest stock movement?"
+  },
+  {
+    "id": 966,
+    "original_query": "Which stock item in the above category has the lowest stock movement?",
+    "live_adapted_query": "Which stock item in the above category has the lowest stock movement?"
+  },
+  {
+    "id": 967,
+    "original_query": "Which categories have the lowest stock movement?",
+    "live_adapted_query": "Which categories have the lowest stock movement?"
+  },
+  {
+    "id": 968,
+    "original_query": "Which stock item in the above category has the highest stock movement?",
+    "live_adapted_query": "Which stock item in the above category has the highest stock movement?"
+  },
+  {
+    "id": 969,
+    "original_query": "Which stock item in the above category has the lowest stock movement?",
+    "live_adapted_query": "Which stock item in the above category has the lowest stock movement?"
+  },
+  {
+    "id": 970,
+    "original_query": "What valuation method is used for each stock category (FIFO, LIFO, Average Cost, etc.)?",
+    "live_adapted_query": "What valuation method is used for each stock category (FIFO, LIFO, Average Cost, etc.)?"
+  },
+  {
+    "id": 971,
+    "original_query": "What is the average cost per unit for each category?",
+    "live_adapted_query": "What is the average cost per unit for each category?"
+  },
+  {
+    "id": 972,
+    "original_query": "How do stock values compare to historical data for each category?",
+    "live_adapted_query": "How do stock values compare to historical data for each category?"
+  },
+  {
+    "id": 973,
+    "original_query": "How much stock is nearing expiry within each category?",
+    "live_adapted_query": "How much stock is nearing expiry within each category?"
+  },
+  {
+    "id": 974,
+    "original_query": "What is the utilization rate of stock within each category?",
+    "live_adapted_query": "What is the utilization rate of stock within each category?"
+  },
+  {
+    "id": 975,
+    "original_query": "Are there any underutilized stock categories?",
+    "live_adapted_query": "Are there any underutilized stock categories?"
+  },
+  {
+    "id": 976,
+    "original_query": "How can stock utilization be optimized within each category?",
+    "live_adapted_query": "How can stock utilization be optimized within each category?"
+  },
+  {
+    "id": 977,
+    "original_query": "Are there any stock items below reorder levels within each category?",
+    "live_adapted_query": "Are there any stock items below reorder levels within each category?"
+  },
+  {
+    "id": 978,
+    "original_query": "What are the quantities and values of stock categories at different locations or warehouses?",
+    "live_adapted_query": "What are the quantities and values of stock categories at different locations or warehouses?"
+  },
+  {
+    "id": 979,
+    "original_query": "What are the available quantities and values of each batch for stock category A",
+    "live_adapted_query": "What are the available quantities and values of each batch for stock category A"
+  },
+  {
+    "id": 980,
+    "original_query": "Which categories have the lowest stock levels?",
+    "live_adapted_query": "Which categories have the lowest stock levels?"
+  },
+  {
+    "id": 981,
+    "original_query": "Which categories have the highest stock levels?",
+    "live_adapted_query": "Which categories have the highest stock levels?"
+  },
+  {
+    "id": 982,
+    "original_query": "What is the total value of stock in each category?",
+    "live_adapted_query": "What is the total value of stock in each category?"
+  },
+  {
+    "id": 983,
+    "original_query": "How do sales trends impact stock levels within each category?",
+    "live_adapted_query": "How do sales trends impact stock levels within each category?"
+  },
+  {
+    "id": 984,
+    "original_query": "How many units were received in each batch during the period for each category?",
+    "live_adapted_query": "How many units were received in each batch during the period for each category?"
+  },
+  {
+    "id": 985,
+    "original_query": "How many units were issued from each batch during the period for each category?",
+    "live_adapted_query": "How many units were issued from each batch during the period for each category?"
+  },
+  {
+    "id": 986,
+    "original_query": "What are the details of returns from customers for each category?",
+    "live_adapted_query": "What are the details of returns from customers for each category?"
+  },
+  {
+    "id": 987,
+    "original_query": "What are the details of returns to suppliers for each category?",
+    "live_adapted_query": "What are the details of returns to suppliers for each category?"
+  },
+  {
+    "id": 988,
+    "original_query": "Are there any stock items with high sales but low stock levels within each category?",
+    "live_adapted_query": "Are there any stock items with high sales but low stock levels within each category?"
+  },
+  {
+    "id": 989,
+    "original_query": "Are there any stock items with low sales but high stock levels within each category?",
+    "live_adapted_query": "Are there any stock items with low sales but high stock levels within each category?"
+  },
+  {
+    "id": 990,
+    "original_query": "What are the key insights from the stock category summary report?",
+    "live_adapted_query": "What are the key insights from the stock category summary report?"
+  },
+  {
+    "id": 991,
+    "original_query": "What trends can be identified from the stock category summary report?",
+    "live_adapted_query": "What trends can be identified from the stock category summary report?"
+  },
+  {
+    "id": 992,
+    "original_query": "Give me closing balance as on today as per FIFO valuation method for each category( base costing method is average cost)",
+    "live_adapted_query": "Give me closing balance as on today as per FIFO valuation method for each category( base costing method is average cost)"
+  },
+  {
+    "id": 993,
+    "original_query": "Give me closing stock for today for Category A as per FIFO method",
+    "live_adapted_query": "Give me closing stock for today for Category A as per FIFO method"
+  },
+  {
+    "id": 994,
+    "original_query": "What is the impact of stock valuation methods on financial statements?",
+    "live_adapted_query": "What is the impact of stock valuation methods on financial statements?"
+  },
+  {
+    "id": 995,
+    "original_query": "What is the closing stock as on today as per LIFO Annual stock valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per LIFO Annual stock valuation method?"
+  },
+  {
+    "id": 996,
+    "original_query": "What is the closing stock as on today as per FIFO Perpetual stock valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per FIFO Perpetual stock valuation method?"
+  },
+  {
+    "id": 997,
+    "original_query": "What is the closing stock as on today as per LIFO Perpetual stock valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per LIFO Perpetual stock valuation method?"
+  },
+  {
+    "id": 998,
+    "original_query": "What is the closing stock as on today as per Avg Cost valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Avg Cost valuation method?"
+  },
+  {
+    "id": 999,
+    "original_query": "What is the closing stock as on today as per Avg Price valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Avg Price valuation method?"
+  },
+  {
+    "id": 1000,
+    "original_query": "What is the closing stock as on today as per Last Purchase Cost valuation method?",
+    "live_adapted_query": "What is the closing stock as on today as per Last Purchase Cost valuation method?"
+  }
+]

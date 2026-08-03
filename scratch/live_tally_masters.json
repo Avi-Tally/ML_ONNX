@@ -1,0 +1,30 @@
+{
+  "company": "Modi Chemplast Materials Pvt Ltd",
+  "port": 9000,
+  "ledgers": [],
+  "bill_refs": [],
+  "stock_items": [
+    "Raw Materials",
+    "Finished Goods",
+    "Packaging Materials",
+    "Chemicals"
+  ],
+  "godowns": [
+    "Main Location",
+    "Bhiwandi Godown",
+    "Factory Warehouse"
+  ],
+  "cost_centers": [
+    "Reliance Job",
+    "Project Alpha",
+    "Marketing Expenses"
+  ],
+  "voucher_types": [
+    "Sales",
+    "Purchase",
+    "Receipt",
+    "Payment",
+    "Journal",
+    "Contra"
+  ]
+}

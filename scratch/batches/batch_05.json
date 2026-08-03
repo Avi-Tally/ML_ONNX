@@ -1,0 +1,502 @@
+[
+  {
+    "id": 401,
+    "original_query": "Oldest 10 purchase vouchers pending payment",
+    "live_adapted_query": "Oldest 10 purchase vouchers pending payment"
+  },
+  {
+    "id": 402,
+    "original_query": "List purchase bills for Schneider Electric last year",
+    "live_adapted_query": "List purchase bills for Schneider Electric last year"
+  },
+  {
+    "id": 403,
+    "original_query": "Show purchase invoices for Siemens India",
+    "live_adapted_query": "Show purchase invoices for Siemens India"
+  },
+  {
+    "id": 404,
+    "original_query": "Purchase vouchers in June 2025 above 100000",
+    "live_adapted_query": "Purchase vouchers in June 2025 above 100000"
+  },
+  {
+    "id": 405,
+    "original_query": "Get total count of purchase invoices from Bosch",
+    "live_adapted_query": "Get total count of purchase invoices from Bosch"
+  },
+  {
+    "id": 406,
+    "original_query": "List payment receipts from Reliance above 100000",
+    "live_adapted_query": "List payment receipts from Reliance above 100000"
+  },
+  {
+    "id": 407,
+    "original_query": "Show all receipt vouchers for Tata Consultancy",
+    "live_adapted_query": "Show all receipt vouchers for Tata Consultancy"
+  },
+  {
+    "id": 408,
+    "original_query": "Recent 5 Receipt transactions from ICICI Bank",
+    "live_adapted_query": "Recent 5 Receipt transactions from ICICI Bank"
+  },
+  {
+    "id": 409,
+    "original_query": "Receipt vouchers recorded last month",
+    "live_adapted_query": "Receipt vouchers recorded last month"
+  },
+  {
+    "id": 410,
+    "original_query": "Total receipt sum from Infosys this week",
+    "live_adapted_query": "Total receipt sum from Infosys this week"
+  },
+  {
+    "id": 411,
+    "original_query": "Receipt voucher details for reference RCT-409",
+    "live_adapted_query": "Receipt voucher details for reference RCT-409"
+  },
+  {
+    "id": 412,
+    "original_query": "How many receipt vouchers were entered today?",
+    "live_adapted_query": "How many receipt vouchers were entered today?"
+  },
+  {
+    "id": 413,
+    "original_query": "Receipt entries for HDFC Bank in March 2025",
+    "live_adapted_query": "Receipt entries for HDFC Bank in March 2025"
+  },
+  {
+    "id": 414,
+    "original_query": "Cleared receipt vouchers for Delta Logistics",
+    "live_adapted_query": "Cleared receipt vouchers for Delta Logistics"
+  },
+  {
+    "id": 415,
+    "original_query": "Receipt voucher reference 882 details",
+    "live_adapted_query": "Receipt voucher reference 882 details"
+  },
+  {
+    "id": 416,
+    "original_query": "Latest receipt from Adani Enterprises",
+    "live_adapted_query": "Latest receipt from Adani Enterprises"
+  },
+  {
+    "id": 417,
+    "original_query": "Top 5 largest receipt transactions this year",
+    "live_adapted_query": "Top 5 largest receipt transactions this year"
+  },
+  {
+    "id": 418,
+    "original_query": "Receipt vouchers exceeding 500000",
+    "live_adapted_query": "Receipt vouchers exceeding 500000"
+  },
+  {
+    "id": 419,
+    "original_query": "Show receipt voucher reference REC-102",
+    "live_adapted_query": "Show receipt voucher reference REC-102"
+  },
+  {
+    "id": 420,
+    "original_query": "Receipt entries from State Bank of India yesterday",
+    "live_adapted_query": "Receipt entries from State Bank of India yesterday"
+  },
+  {
+    "id": 421,
+    "original_query": "Count of receipt vouchers in Q3",
+    "live_adapted_query": "Count of receipt vouchers in Q3"
+  },
+  {
+    "id": 422,
+    "original_query": "Receipt vouchers for Sun Pharma above 50000",
+    "live_adapted_query": "Receipt vouchers for Sun Pharma above 50000"
+  },
+  {
+    "id": 423,
+    "original_query": "Show payment receipt 305 for Mahindra Finance",
+    "live_adapted_query": "Show payment receipt 305 for Mahindra Finance"
+  },
+  {
+    "id": 424,
+    "original_query": "Sum of receipt vouchers received last week",
+    "live_adapted_query": "Sum of receipt vouchers received last week"
+  },
+  {
+    "id": 425,
+    "original_query": "All receipt vouchers under Customer Cash",
+    "live_adapted_query": "All receipt vouchers under Customer Cash"
+  },
+  {
+    "id": 426,
+    "original_query": "Show payment vouchers to Axis Bank",
+    "live_adapted_query": "Show payment vouchers to Axis Bank"
+  },
+  {
+    "id": 427,
+    "original_query": "Recent 5 payment entries for Electricity Board",
+    "live_adapted_query": "Recent 5 payment entries for Electricity Board"
+  },
+  {
+    "id": 428,
+    "original_query": "Payment vouchers above 25000 in last month",
+    "live_adapted_query": "Payment vouchers above 25000 in last month"
+  },
+  {
+    "id": 429,
+    "original_query": "List payment entries to Rent Account in May 2025",
+    "live_adapted_query": "List payment entries to Rent Account in May 2025"
+  },
+  {
+    "id": 430,
+    "original_query": "Details of payment voucher reference PAY-551",
+    "live_adapted_query": "Details of payment voucher reference PAY-551"
+  },
+  {
+    "id": 431,
+    "original_query": "How many payment vouchers were recorded this month?",
+    "live_adapted_query": "How many payment vouchers were recorded this month?"
+  },
+  {
+    "id": 432,
+    "original_query": "Total payment amount to Vendor General this week",
+    "live_adapted_query": "Total payment amount to Vendor General this week"
+  },
+  {
+    "id": 433,
+    "original_query": "Check payment voucher 912 details",
+    "live_adapted_query": "Check payment voucher 912 details"
+  },
+  {
+    "id": 434,
+    "original_query": "Cleared payment entries for Petty Cash",
+    "live_adapted_query": "Cleared payment entries for Petty Cash"
+  },
+  {
+    "id": 435,
+    "original_query": "Latest payment voucher to Larsen & Toubro",
+    "live_adapted_query": "Latest payment voucher to Larsen & Toubro"
+  },
+  {
+    "id": 436,
+    "original_query": "Payment vouchers exceeding 100000 today",
+    "live_adapted_query": "Payment vouchers exceeding 100000 today"
+  },
+  {
+    "id": 437,
+    "original_query": "Show payment reference PV-2025-14",
+    "live_adapted_query": "Show payment reference PV-2025-14"
+  },
+  {
+    "id": 438,
+    "original_query": "Top 10 highest payment vouchers this year",
+    "live_adapted_query": "Top 10 highest payment vouchers this year"
+  },
+  {
+    "id": 439,
+    "original_query": "Payment entries to Salary Account yesterday",
+    "live_adapted_query": "Payment entries to Salary Account yesterday"
+  },
+  {
+    "id": 440,
+    "original_query": "Count of payment vouchers in Q4",
+    "live_adapted_query": "Count of payment vouchers in Q4"
+  },
+  {
+    "id": 441,
+    "original_query": "Payment vouchers under 5000 rupees",
+    "live_adapted_query": "Payment vouchers under 5000 rupees"
+  },
+  {
+    "id": 442,
+    "original_query": "Details of payment voucher reference 667",
+    "live_adapted_query": "Details of payment voucher reference 667"
+  },
+  {
+    "id": 443,
+    "original_query": "Sum of payment vouchers to Airtel Telecom",
+    "live_adapted_query": "Sum of payment vouchers to Airtel Telecom"
+  },
+  {
+    "id": 444,
+    "original_query": "Payment vouchers to Municipal Tax Dept from last week",
+    "live_adapted_query": "Payment vouchers to Municipal Tax Dept from last week"
+  },
+  {
+    "id": 445,
+    "original_query": "Pending payment vouchers for Freight Express",
+    "live_adapted_query": "Pending payment vouchers for Freight Express"
+  },
+  {
+    "id": 446,
+    "original_query": "Journal vouchers in April 2025",
+    "live_adapted_query": "Journal vouchers in April 2025"
+  },
+  {
+    "id": 447,
+    "original_query": "Show all Journal vouchers for Depreciation Account",
+    "live_adapted_query": "Show all Journal vouchers for Depreciation Account"
+  },
+  {
+    "id": 448,
+    "original_query": "Recent 5 Journal entries recorded this month",
+    "live_adapted_query": "Recent 5 Journal entries recorded this month"
+  },
+  {
+    "id": 449,
+    "original_query": "Journal adjustment vouchers above 50000",
+    "live_adapted_query": "Journal adjustment vouchers above 50000"
+  },
+  {
+    "id": 450,
+    "original_query": "Get journal voucher JV-2025-09 details",
+    "live_adapted_query": "Get journal voucher JV-2025-09 details"
+  },
+  {
+    "id": 451,
+    "original_query": "How many Journal vouchers were posted yesterday?",
+    "live_adapted_query": "How many Journal vouchers were posted yesterday?"
+  },
+  {
+    "id": 452,
+    "original_query": "Total amount in Journal vouchers for Provision Expenses",
+    "live_adapted_query": "Total amount in Journal vouchers for Provision Expenses"
+  },
+  {
+    "id": 453,
+    "original_query": "Journal voucher reference 441 details",
+    "live_adapted_query": "Journal voucher reference 441 details"
+  },
+  {
+    "id": 454,
+    "original_query": "Journal entries for GST Adjustment last month",
+    "live_adapted_query": "Journal entries for GST Adjustment last month"
+  },
+  {
+    "id": 455,
+    "original_query": "Latest Journal voucher posted",
+    "live_adapted_query": "Latest Journal voucher posted"
+  },
+  {
+    "id": 456,
+    "original_query": "Journal vouchers exceeding 100000 in Q1",
+    "live_adapted_query": "Journal vouchers exceeding 100000 in Q1"
+  },
+  {
+    "id": 457,
+    "original_query": "Show journal voucher reference JRN-703",
+    "live_adapted_query": "Show journal voucher reference JRN-703"
+  },
+  {
+    "id": 458,
+    "original_query": "Journal entries for Audit Fee Provision",
+    "live_adapted_query": "Journal entries for Audit Fee Provision"
+  },
+  {
+    "id": 459,
+    "original_query": "Count of journal vouchers this year",
+    "live_adapted_query": "Count of journal vouchers this year"
+  },
+  {
+    "id": 460,
+    "original_query": "Journal vouchers with amount under 10000",
+    "live_adapted_query": "Journal vouchers with amount under 10000"
+  },
+  {
+    "id": 461,
+    "original_query": "Journal entries for TDS Payable account today",
+    "live_adapted_query": "Journal entries for TDS Payable account today"
+  },
+  {
+    "id": 462,
+    "original_query": "Show details for Journal voucher 512",
+    "live_adapted_query": "Show details for Journal voucher 512"
+  },
+  {
+    "id": 463,
+    "original_query": "List journal vouchers from last week",
+    "live_adapted_query": "List journal vouchers from last week"
+  },
+  {
+    "id": 464,
+    "original_query": "Contra transactions for last month",
+    "live_adapted_query": "Contra transactions for last month"
+  },
+  {
+    "id": 465,
+    "original_query": "Show all Contra vouchers between HDFC and ICICI",
+    "live_adapted_query": "Show all Contra vouchers between HDFC and ICICI"
+  },
+  {
+    "id": 466,
+    "original_query": "Recent 5 Contra vouchers for Cash Account",
+    "live_adapted_query": "Recent 5 Contra vouchers for Cash Account"
+  },
+  {
+    "id": 467,
+    "original_query": "Contra entries above 100000 recorded this week",
+    "live_adapted_query": "Contra entries above 100000 recorded this week"
+  },
+  {
+    "id": 468,
+    "original_query": "Get contra voucher CTR-2025-04 details",
+    "live_adapted_query": "Get contra voucher CTR-2025-04 details"
+  },
+  {
+    "id": 469,
+    "original_query": "How many Contra transactions were created yesterday?",
+    "live_adapted_query": "How many Contra transactions were created yesterday?"
+  },
+  {
+    "id": 470,
+    "original_query": "Total contra sum between Bank and Petty Cash",
+    "live_adapted_query": "Total contra sum between Bank and Petty Cash"
+  },
+  {
+    "id": 471,
+    "original_query": "Contra voucher reference 208 details",
+    "live_adapted_query": "Contra voucher reference 208 details"
+  },
+  {
+    "id": 472,
+    "original_query": "Contra entries in April 2025",
+    "live_adapted_query": "Contra entries in April 2025"
+  },
+  {
+    "id": 473,
+    "original_query": "Latest Contra voucher recorded",
+    "live_adapted_query": "Latest Contra voucher recorded"
+  },
+  {
+    "id": 474,
+    "original_query": "Contra transactions exceeding 500000",
+    "live_adapted_query": "Contra transactions exceeding 500000"
+  },
+  {
+    "id": 475,
+    "original_query": "Show contra voucher reference CON-101",
+    "live_adapted_query": "Show contra voucher reference CON-101"
+  },
+  {
+    "id": 476,
+    "original_query": "Contra vouchers recorded today",
+    "live_adapted_query": "Contra vouchers recorded today"
+  },
+  {
+    "id": 477,
+    "original_query": "Count of contra vouchers this month",
+    "live_adapted_query": "Count of contra vouchers this month"
+  },
+  {
+    "id": 478,
+    "original_query": "Contra entries for SBI Bank last year",
+    "live_adapted_query": "Contra entries for SBI Bank last year"
+  },
+  {
+    "id": 479,
+    "original_query": "Details of contra voucher 901",
+    "live_adapted_query": "Details of contra voucher 901"
+  },
+  {
+    "id": 480,
+    "original_query": "Contra transfers under 20000 rupees",
+    "live_adapted_query": "Contra transfers under 20000 rupees"
+  },
+  {
+    "id": 481,
+    "original_query": "Show pending bills",
+    "live_adapted_query": "Show pending bills"
+  },
+  {
+    "id": 482,
+    "original_query": "What is the total overdue amount?",
+    "live_adapted_query": "What is the total overdue amount?"
+  },
+  {
+    "id": 483,
+    "original_query": "List all unpaid items for last month",
+    "live_adapted_query": "List all unpaid items for last month"
+  },
+  {
+    "id": 484,
+    "original_query": "Show outstanding balance",
+    "live_adapted_query": "Show outstanding balance"
+  },
+  {
+    "id": 485,
+    "original_query": "Get pending bills list",
+    "live_adapted_query": "Get pending bills list"
+  },
+  {
+    "id": 486,
+    "original_query": "How much total amount is pending?",
+    "live_adapted_query": "How much total amount is pending?"
+  },
+  {
+    "id": 487,
+    "original_query": "Show pending bills for Zenith Traders",
+    "live_adapted_query": "Show pending bills for Zenith Traders"
+  },
+  {
+    "id": 488,
+    "original_query": "List unpaid invoices of Apex Enterprises",
+    "live_adapted_query": "List unpaid invoices of Apex Enterprises"
+  },
+  {
+    "id": 489,
+    "original_query": "What is the overdue balance for Global Solutions?",
+    "live_adapted_query": "What is the overdue balance for Global Solutions?"
+  },
+  {
+    "id": 490,
+    "original_query": "Pending bills count",
+    "live_adapted_query": "Pending bills count"
+  },
+  {
+    "id": 491,
+    "original_query": "Show me all overdue items",
+    "live_adapted_query": "Show me all overdue items"
+  },
+  {
+    "id": 492,
+    "original_query": "Total pending amount as of today",
+    "live_adapted_query": "Total pending amount as of today"
+  },
+  {
+    "id": 493,
+    "original_query": "Overdue bills list for this month",
+    "live_adapted_query": "Overdue bills list for this month"
+  },
+  {
+    "id": 494,
+    "original_query": "Outstanding summary for last quarter",
+    "live_adapted_query": "Outstanding summary for last quarter"
+  },
+  {
+    "id": 495,
+    "original_query": "Show pending bills greater than 50000",
+    "live_adapted_query": "Show pending bills greater than 50000"
+  },
+  {
+    "id": 496,
+    "original_query": "Top 5 overdue invoices by amount",
+    "live_adapted_query": "Top 5 overdue invoices by amount"
+  },
+  {
+    "id": 497,
+    "original_query": "List pending bills overdue by more than 30 days",
+    "live_adapted_query": "List pending bills overdue by more than 30 days"
+  },
+  {
+    "id": 498,
+    "original_query": "Count of unpaid bills older than 60 days",
+    "live_adapted_query": "Count of unpaid bills older than 60 days"
+  },
+  {
+    "id": 499,
+    "original_query": "Show oldest 10 pending bills",
+    "live_adapted_query": "Show oldest 10 pending bills"
+  },
+  {
+    "id": 500,
+    "original_query": "Bills pending clearance",
+    "live_adapted_query": "Bills pending clearance"
+  }
+]

@@ -1,0 +1,502 @@
+[
+  {
+    "id": 101,
+    "original_query": "net outstanding payables?",
+    "live_adapted_query": "net outstanding payables?"
+  },
+  {
+    "id": 102,
+    "original_query": "outstanding?",
+    "live_adapted_query": "outstanding?"
+  },
+  {
+    "id": 103,
+    "original_query": "payment that is late?",
+    "live_adapted_query": "payment that is late?"
+  },
+  {
+    "id": 104,
+    "original_query": "Till date payable ?",
+    "live_adapted_query": "Till date payable ?"
+  },
+  {
+    "id": 105,
+    "original_query": "todays outstanding",
+    "live_adapted_query": "todays outstanding"
+  },
+  {
+    "id": 106,
+    "original_query": "what are my outstanding's?",
+    "live_adapted_query": "what are my outstanding's?"
+  },
+  {
+    "id": 107,
+    "original_query": "what are my payables and receivables?",
+    "live_adapted_query": "what are my payables and receivables?"
+  },
+  {
+    "id": 108,
+    "original_query": "what do i owe and how much i should get as of today?",
+    "live_adapted_query": "what do i owe and how much i should get as of today?"
+  },
+  {
+    "id": 109,
+    "original_query": "what do i owe as of today?",
+    "live_adapted_query": "what do i owe as of today?"
+  },
+  {
+    "id": 110,
+    "original_query": "What is the overdue payable amount?",
+    "live_adapted_query": "What is the overdue payable amount?"
+  },
+  {
+    "id": 111,
+    "original_query": "what money i should get?",
+    "live_adapted_query": "what money i should get?"
+  },
+  {
+    "id": 112,
+    "original_query": "What\u2019s the total overdue payable beyond 30 days?",
+    "live_adapted_query": "What\u2019s the total overdue payable beyond 30 days?"
+  },
+  {
+    "id": 113,
+    "original_query": "Total Receivables amount",
+    "live_adapted_query": "Total Receivables amount"
+  },
+  {
+    "id": 114,
+    "original_query": "Total unadjusted payments",
+    "live_adapted_query": "Total unadjusted payments"
+  },
+  {
+    "id": 115,
+    "original_query": "Total payables as of today",
+    "live_adapted_query": "Total payables as of today"
+  },
+  {
+    "id": 116,
+    "original_query": "What will be my payables by next month?",
+    "live_adapted_query": "What will be my payables by next month?"
+  },
+  {
+    "id": 117,
+    "original_query": "What will be my payables by next HY?",
+    "live_adapted_query": "What will be my payables by next HY?"
+  },
+  {
+    "id": 118,
+    "original_query": "Give me the outstanding amount for FY 2025-26 and also show how much is overdue beyond 90 days.",
+    "live_adapted_query": "Give me the outstanding amount for FY 2025-26 and also show how much is overdue beyond 90 days."
+  },
+  {
+    "id": 119,
+    "original_query": "Show receivable outstanding",
+    "live_adapted_query": "Show receivable outstanding"
+  },
+  {
+    "id": 120,
+    "original_query": "Show advanced received",
+    "live_adapted_query": "Show advanced received"
+  },
+  {
+    "id": 121,
+    "original_query": "Overdue receivables ?",
+    "live_adapted_query": "Overdue receivables ?"
+  },
+  {
+    "id": 122,
+    "original_query": "Overdue payables",
+    "live_adapted_query": "Overdue payables"
+  },
+  {
+    "id": 123,
+    "original_query": "Total unadjusted receipts",
+    "live_adapted_query": "Total unadjusted receipts"
+  },
+  {
+    "id": 124,
+    "original_query": "Display outstanding balances and also show monthly trend for the past 6 months.",
+    "live_adapted_query": "Display outstanding balances and also show monthly trend for the past 6 months."
+  },
+  {
+    "id": 125,
+    "original_query": "Net Outstanding",
+    "live_adapted_query": "Net Outstanding"
+  },
+  {
+    "id": 126,
+    "original_query": "Display receivable outstanding between October 2024 and February 2025",
+    "live_adapted_query": "Display receivable outstanding between October 2024 and February 2025"
+  },
+  {
+    "id": 127,
+    "original_query": "Show company-wise outstanding and also identify whether the balance is receivable, payable, or net.",
+    "live_adapted_query": "Show company-wise outstanding and also identify whether the balance is receivable, payable, or net."
+  },
+  {
+    "id": 128,
+    "original_query": "Show company-wise outstanding for ModiChem company and also identify whether the balance is receivable, payable, or net.",
+    "live_adapted_query": "Show company-wise outstanding for ModiChem company and also identify whether the balance is receivable, payable, or net."
+  },
+  {
+    "id": 129,
+    "original_query": "Show net outstanding company-wise and list parties with both receivable and payable balances.",
+    "live_adapted_query": "Show net outstanding company-wise and list parties with both receivable and payable balances."
+  },
+  {
+    "id": 130,
+    "original_query": "how much am i owed?",
+    "live_adapted_query": "how much am i owed?"
+  },
+  {
+    "id": 131,
+    "original_query": "Give payable outstanding company-wise and list bills nearing due date within 7 days.",
+    "live_adapted_query": "Give payable outstanding company-wise and list bills nearing due date within 7 days."
+  },
+  {
+    "id": 132,
+    "original_query": "Debtors Bills expected to pay today only and which are settled yesterday?",
+    "live_adapted_query": "Debtors Bills expected to pay today only and which are settled yesterday?"
+  },
+  {
+    "id": 133,
+    "original_query": "creditor's Bills which are due today for collections with overdue amount equal to 60000",
+    "live_adapted_query": "creditor's Bills which are due today for collections with overdue amount equal to 60000"
+  },
+  {
+    "id": 134,
+    "original_query": "latests 5 Bills which are due today for payments to Jagat?",
+    "live_adapted_query": "latests 5 Bills which are due today for payments to Jagat?"
+  },
+  {
+    "id": 135,
+    "original_query": "Oldest 10 Bills which are pending to receive today only above 1L",
+    "live_adapted_query": "Oldest 10 Bills which are pending to receive today only above 1L"
+  },
+  {
+    "id": 136,
+    "original_query": "Bills which are pending today starting with oldest billdate first for which the amount is less than 1L?",
+    "live_adapted_query": "Bills which are pending today starting with oldest billdate first for which the amount is less than 1L?"
+  },
+  {
+    "id": 137,
+    "original_query": "Customer dues and settled bills with over due amount less than 55000",
+    "live_adapted_query": "Customer dues and settled bills with over due amount less than 55000"
+  },
+  {
+    "id": 138,
+    "original_query": "Display the Opening Amount, pending and final balance of payables as on 02-03-2025",
+    "live_adapted_query": "Display the Opening Amount, pending and final balance of payables as on 02-03-2025"
+  },
+  {
+    "id": 139,
+    "original_query": "For Aquatech system, how many overdue bills are available till date that crossed 60 days and what is the total value of it. Which bill has the highest overdue bills?",
+    "live_adapted_query": "For Aquatech system, how many overdue bills are available till date that crossed 60 days and what is the total value of it. Which bill has the highest overdue bills?"
+  },
+  {
+    "id": 140,
+    "original_query": "highest receivable amount for creditors with avg overdue days less than a month",
+    "live_adapted_query": "highest receivable amount for creditors with avg overdue days less than a month"
+  },
+  {
+    "id": 141,
+    "original_query": "highest receivable bill amount for debtors that has pending amount equal to 2L",
+    "live_adapted_query": "highest receivable bill amount for debtors that has pending amount equal to 2L"
+  },
+  {
+    "id": 142,
+    "original_query": "how many bills are due to receive in next 7 days.list in ascending order of bill date",
+    "live_adapted_query": "how many bills are due to receive in next 7 days.list in ascending order of bill date"
+  },
+  {
+    "id": 143,
+    "original_query": "how many customers bills are due in the next 10 days and what is the total value? Which bill has the least overdue days",
+    "live_adapted_query": "how many customers bills are due in the next 10 days and what is the total value? Which bill has the least overdue days"
+  },
+  {
+    "id": 144,
+    "original_query": "How much does Anand Cargo owe me along with overdue date and how much is cleared?",
+    "live_adapted_query": "How much does Anand Cargo owe me along with overdue date and how much is cleared?"
+  },
+  {
+    "id": 145,
+    "original_query": "List due payable bills as on today with most overdue days on top?",
+    "live_adapted_query": "List due payable bills as on today with most overdue days on top?"
+  },
+  {
+    "id": 146,
+    "original_query": "list the bills with new billdates on top due for payments and how much is cleared?",
+    "live_adapted_query": "list the bills with new billdates on top due for payments and how much is cleared?"
+  },
+  {
+    "id": 147,
+    "original_query": "lowest receivable amount only for gstr 2a creditors",
+    "live_adapted_query": "lowest receivable amount only for gstr 2a creditors"
+  },
+  {
+    "id": 148,
+    "original_query": "top 5 parties with overdue receivables with maximum overdue days which have settled bills as well.",
+    "live_adapted_query": "top 5 parties with overdue receivables with maximum overdue days which have settled bills as well."
+  },
+  {
+    "id": 149,
+    "original_query": "Receivable > 90 days ?",
+    "live_adapted_query": "Receivable > 90 days ?"
+  },
+  {
+    "id": 150,
+    "original_query": "Show highest pending and cleared receivables bill amount for sundry debtors?",
+    "live_adapted_query": "Show highest pending and cleared receivables bill amount for sundry debtors?"
+  },
+  {
+    "id": 151,
+    "original_query": "Total Receivables amount less than 90 days",
+    "live_adapted_query": "Total Receivables amount less than 90 days"
+  },
+  {
+    "id": 152,
+    "original_query": "What is the outstanding amount for Mr Raj?",
+    "live_adapted_query": "What is the outstanding amount for Mr Raj?"
+  },
+  {
+    "id": 153,
+    "original_query": "whats the most overdue date bill that i need to pay and that are cleared?",
+    "live_adapted_query": "whats the most overdue date bill that i need to pay and that are cleared?"
+  },
+  {
+    "id": 154,
+    "original_query": "which bill is highest amount among the pending ones?",
+    "live_adapted_query": "which bill is highest amount among the pending ones?"
+  },
+  {
+    "id": 155,
+    "original_query": "What is the pending and cleared amount for Thermax Ltd",
+    "live_adapted_query": "What is the pending and cleared amount for Thermax Ltd"
+  },
+  {
+    "id": 156,
+    "original_query": "What was the rate applied for Agru in Bill Number 049/24-25?",
+    "live_adapted_query": "What was the rate applied for Agru in Bill Number 049/24-25?"
+  },
+  {
+    "id": 157,
+    "original_query": "What\u2019s the oldest unpaid bill in my books?",
+    "live_adapted_query": "What\u2019s the oldest unpaid bill in my books?"
+  },
+  {
+    "id": 158,
+    "original_query": "How many customers owe me money right now?",
+    "live_adapted_query": "How many customers owe me money right now?"
+  },
+  {
+    "id": 159,
+    "original_query": "Identify the top 5 parties to whom the payment is pending for feb 2025 with highest average overdue days.",
+    "live_adapted_query": "Identify the top 5 parties to whom the payment is pending for feb 2025 with highest average overdue days."
+  },
+  {
+    "id": 160,
+    "original_query": "Identify the parties to whom the payment is pending with their total value in decreasing avg overdue days",
+    "live_adapted_query": "Identify the parties to whom the payment is pending with their total value in decreasing avg overdue days"
+  },
+  {
+    "id": 161,
+    "original_query": "List the parties to whom I need to make the payment this week in decreasing pending amount",
+    "live_adapted_query": "List the parties to whom I need to make the payment this week in decreasing pending amount"
+  },
+  {
+    "id": 162,
+    "original_query": "what amount should i get from debtors this week?",
+    "live_adapted_query": "what amount should i get from debtors this week?"
+  },
+  {
+    "id": 163,
+    "original_query": "Which customers have not paid for more than 60 days?",
+    "live_adapted_query": "Which customers have not paid for more than 60 days?"
+  },
+  {
+    "id": 164,
+    "original_query": "Which vendors are due for payment this week?",
+    "live_adapted_query": "Which vendors are due for payment this week?"
+  },
+  {
+    "id": 165,
+    "original_query": "Who are my top 10 debtors based on pending bills ?",
+    "live_adapted_query": "Who are my top 10 debtors based on pending bills ?"
+  },
+  {
+    "id": 166,
+    "original_query": "Who should I follow up",
+    "live_adapted_query": "Who should I follow up"
+  },
+  {
+    "id": 167,
+    "original_query": "Total cleared bills for Reliance Industries Ltd",
+    "live_adapted_query": "Total cleared bills for Reliance Industries Ltd"
+  },
+  {
+    "id": 168,
+    "original_query": "Total bills for Infosys Ltd including cleared bill",
+    "live_adapted_query": "Total bills for Infosys Ltd including cleared bill"
+  },
+  {
+    "id": 169,
+    "original_query": "How much is pending from Sundry Creditors?",
+    "live_adapted_query": "How much is pending from Sundry Creditors?"
+  },
+  {
+    "id": 170,
+    "original_query": "How much is cleared from Sundry Creditors?",
+    "live_adapted_query": "How much is cleared from Sundry Creditors?"
+  },
+  {
+    "id": 171,
+    "original_query": "Which party has the highest amount of cleared bills?",
+    "live_adapted_query": "Which party has the highest amount of cleared bills?"
+  },
+  {
+    "id": 172,
+    "original_query": "Which party has cleared bill amount more than 50000",
+    "live_adapted_query": "Which party has cleared bill amount more than 50000"
+  },
+  {
+    "id": 173,
+    "original_query": "List suppliers who has both Overdue and cleared Payables in increasing order?",
+    "live_adapted_query": "List suppliers who has both Overdue and cleared Payables in increasing order?"
+  },
+  {
+    "id": 174,
+    "original_query": "Give pending amount for credit card expenses also what is the cleared amount?",
+    "live_adapted_query": "Give pending amount for credit card expenses also what is the cleared amount?"
+  },
+  {
+    "id": 175,
+    "original_query": "Which parties under sundry creditors for goods import are overdue receivables?",
+    "live_adapted_query": "Which parties under sundry creditors for goods import are overdue receivables?"
+  },
+  {
+    "id": 176,
+    "original_query": "Show payable summary for GSTR2A Creditors",
+    "live_adapted_query": "Show payable summary for GSTR2A Creditors"
+  },
+  {
+    "id": 177,
+    "original_query": "net outstanding for debtors with avg average overdue days less than 2 days",
+    "live_adapted_query": "net outstanding for debtors with avg average overdue days less than 2 days"
+  },
+  {
+    "id": 178,
+    "original_query": "overdue payables for Sundry Creditors for this quarter",
+    "live_adapted_query": "overdue payables for Sundry Creditors for this quarter"
+  },
+  {
+    "id": 179,
+    "original_query": "How much is pending from Sun Enterprises?",
+    "live_adapted_query": "How much is pending from Sun Enterprises?"
+  },
+  {
+    "id": 180,
+    "original_query": "Give payable ageing analysis for Sundry Creditors using bill date",
+    "live_adapted_query": "Give payable ageing analysis for Sundry Creditors using bill date"
+  },
+  {
+    "id": 181,
+    "original_query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending",
+    "live_adapted_query": "Show ageing for Infosys Ltd for overdue receivables sorted by total pending amount ascending"
+  },
+  {
+    "id": 182,
+    "original_query": "List payable ageing for Debtors group based on bill date sorted by bill count",
+    "live_adapted_query": "List payable ageing for Debtors group based on bill date sorted by bill count"
+  },
+  {
+    "id": 183,
+    "original_query": "Show ageing summary for Jagat and Thermax based on due date",
+    "live_adapted_query": "Show ageing summary for Jagat and Thermax based on due date"
+  },
+  {
+    "id": 184,
+    "original_query": "Show payable ageing for Agru with pending amount greater than 100000",
+    "live_adapted_query": "Show payable ageing for Agru with pending amount greater than 100000"
+  },
+  {
+    "id": 185,
+    "original_query": "List receivable ageing for sundry creditors where total pending amount is less than 50000",
+    "live_adapted_query": "List receivable ageing for sundry creditors where total pending amount is less than 50000"
+  },
+  {
+    "id": 186,
+    "original_query": "Show ageing analysis for Reliance Industries Ltd based on bill date with total pending amount equal to 250000",
+    "live_adapted_query": "Show ageing analysis for Reliance Industries Ltd based on bill date with total pending amount equal to 250000"
+  },
+  {
+    "id": 187,
+    "original_query": "Give payable ageing for Sundry Debtors sorted by bill count ascending",
+    "live_adapted_query": "Give payable ageing for Sundry Debtors sorted by bill count ascending"
+  },
+  {
+    "id": 188,
+    "original_query": "Show ageing for Sundry Creditors where pending amount is greater than 500000",
+    "live_adapted_query": "Show ageing for Sundry Creditors where pending amount is greater than 500000"
+  },
+  {
+    "id": 189,
+    "original_query": "give the total number of bills pending to be paid to thermax in last 30 days",
+    "live_adapted_query": "give the total number of bills pending to be paid to thermax in last 30 days"
+  },
+  {
+    "id": 190,
+    "original_query": "give the party who has the least number of pending bills in last 10 days",
+    "live_adapted_query": "give the party who has the least number of pending bills in last 10 days"
+  },
+  {
+    "id": 191,
+    "original_query": "What is an overdue bill?",
+    "live_adapted_query": "What is an overdue bill?"
+  },
+  {
+    "id": 192,
+    "original_query": "Difference between payable and receivable",
+    "live_adapted_query": "Difference between payable and receivable"
+  },
+  {
+    "id": 193,
+    "original_query": "How does bill ageing work?",
+    "live_adapted_query": "How does bill ageing work?"
+  },
+  {
+    "id": 194,
+    "original_query": "What does overdue amount mean in accounting?",
+    "live_adapted_query": "What does overdue amount mean in accounting?"
+  },
+  {
+    "id": 195,
+    "original_query": "What is the purpose of bill-wise tracking in Tally?",
+    "live_adapted_query": "What is the purpose of bill-wise tracking in Tally?"
+  },
+  {
+    "id": 196,
+    "original_query": "Why do businesses monitor outstanding receivables?",
+    "live_adapted_query": "Why do businesses monitor outstanding receivables?"
+  },
+  {
+    "id": 197,
+    "original_query": "What is the meaning of net outstanding?",
+    "live_adapted_query": "What is the meaning of net outstanding?"
+  },
+  {
+    "id": 198,
+    "original_query": "What happens if payments are received on account but not adjusted against bills?",
+    "live_adapted_query": "What happens if payments are received on account but not adjusted against bills?"
+  },
+  {
+    "id": 199,
+    "original_query": "What is the difference between Sundry Debtors and Sundry Creditors?",
+    "live_adapted_query": "What is the difference between Sundry Debtors and Sundry Creditors?"
+  },
+  {
+    "id": 200,
+    "original_query": "How do overdue bills affect cash flow?",
+    "live_adapted_query": "How do overdue bills affect cash flow?"
+  }
+]
