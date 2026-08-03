@@ -89,8 +89,8 @@ def retrain_models(data_path):
     """
     print("\n--- Retraining Intent Model ---")
     # Load and execute the intent model training script
-    import train_27_param_models
-    train_27_param_models.train_and_export(data_path)
+    import train_intent_model
+    train_intent_model.train_and_export(data_path)
     
     print("\n--- Retraining Parameter Models ---")
     # Note: train_param_models might still be missing in the workspace, wrapping in try/except
