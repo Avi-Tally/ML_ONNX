@@ -82,7 +82,7 @@ class TallyClient:
 
     def __init__(self, ports=None):
         if ports is None:
-            ports = [9000, 9001]
+            ports = list(range(8000, 11001))
         self.ports = ports
         self.routing_table = {}  # Cache mapping company_name.lower() -> {name, port, context}
         
@@ -193,11 +193,12 @@ class TallyClient:
                             company_name = company_elem.attrib.get("NAME").strip()
                             found[company_name.lower()] = {"name": company_name, "port": port}
                     return found
-            except requests.exceptions.RequestException:
+            except Exception:
                 pass
             return {}
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=len(self.ports)) as executor:
+        workers = min(200, len(self.ports)) if self.ports else 1
+        with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
             results = list(executor.map(probe_port, self.ports))
 
         for res in results:

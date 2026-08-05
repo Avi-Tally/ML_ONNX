@@ -31,6 +31,7 @@ class NLPEngine:
     Coordinates ONNX inference sessions, regex entity extraction, and fuzzy ledger matching.
     """
     def __init__(self, tally_client=None):
+
         """
         ========================================================================
         FUNCTION: __init__(tally_client)
@@ -107,6 +108,8 @@ class NLPEngine:
             
             for intent, phrases in self.INTENT_BENCHMARKS.items():
                 self.intent_embeddings[intent] = [self.get_embedding(p) for p in phrases]
+
+
                 
         except Exception as e:
             print(f"Warning: Failed to load ONNX model ({e}). Intents may fallback to GET_LEDGER_BALANCE.")
@@ -909,16 +912,6 @@ class NLPEngine:
             elif len(words) == 1:
                 dynamic_identifiers[words[0]] = key
                 
-        # Add common explicit aliases for robustness
-        explicit_aliases = {
-            "modi chem": "modi chemplast materials pvt ltd",
-            "bella casa": "bella casa data for user activity",
-            "bella": "bella casa data for user activity"
-        }
-        for alias, key in explicit_aliases.items():
-            if key in self.tally_client.routing_table:
-                dynamic_identifiers[alias] = key
-                
         # Sort identifiers by length desc to match longest first
         for identifier, full_key in sorted(dynamic_identifiers.items(), key=lambda x: len(x[0]), reverse=True):
             if identifier in query_lower:
@@ -1152,45 +1145,28 @@ class NLPEngine:
             elif any(k in q_dir_lower for k in ["parties", "all", "which"]):
                 detected_intent = "GET_RECEIVABLES"
                 
-        # Correct intent based on resolved ledger's role
-        PARTY_ROLES = {
-            "acme corp": "creditor",
-            "delta cargo": "creditor",
-            "global traders": "creditor",
-            "john doe": "debtor",
-            "sunrise industries": "debtor",
-            "tech solutions": "debtor",
-            "chemical process pvt ltd": "debtor",
-            "reliance industries": "creditor",
-            "tcs": "creditor",
-            "wipro": "creditor",
-            "thermax ltd": "creditor",
-            "jagat": "creditor",
-            "aquatech system": "debtor",
-            "v trans (india) ltd.": "creditor",
-            "sukan engineering": "debtor",
-            "dew cargo": "debtor",
-            "sundry creditors": "creditor",
-            "sundry debtors": "debtor",
-            "creditors": "creditor",
-            "debtors": "debtor",
-            "retailers": "debtor",
-            "wholesalers": "debtor",
-            "hardware suppliers": "creditor",
-            "group expenses": "creditor",
-            "key vendors": "creditor",
-            "local suppliers": "creditor",
-            "south region debtors": "debtor",
-            "east zone dealers": "creditor",
-            "north zone customers": "debtor",
-            "vip clients": "creditor",
-            "marketing expenses": "creditor"
-        }
-        
         is_group_ledger = False
+        role = None
         if resolved_ledger:
             rl_lower = resolved_ledger.lower()
-            role = PARTY_ROLES.get(rl_lower)
+            try:
+                port, company_name, ctx = self.tally_client.get_port_for_company(detected_company_key)
+                group_map = self.tally_client.get_group_hierarchy_map(company_name, port)
+                is_group_ledger = rl_lower in [g.lower() for g in group_map.values()] or rl_lower in ["sundry creditors", "sundry debtors", "creditors", "debtors", "suppliers", "customers", "vendors", "dealers"]
+                
+                parent = group_map.get(rl_lower, rl_lower)
+                if self.tally_client.is_group_under(rl_lower, "sundry creditors", group_map) or \
+                   self.tally_client.is_group_under(rl_lower, "trade payables", group_map) or \
+                   self.tally_client.is_group_under(parent, "sundry creditors", group_map) or \
+                   self.tally_client.is_group_under(parent, "trade payables", group_map):
+                    role = "creditor"
+                elif self.tally_client.is_group_under(rl_lower, "sundry debtors", group_map) or \
+                     self.tally_client.is_group_under(rl_lower, "trade receivables", group_map) or \
+                     self.tally_client.is_group_under(parent, "sundry debtors", group_map) or \
+                     self.tally_client.is_group_under(parent, "trade receivables", group_map):
+                    role = "debtor"
+            except Exception:
+                pass
             
             # Explicit nested targets override resolved ledger role
             if any(w in query_without_company.lower() for w in ["debtors from", "debtor from", "customers from", "customer from", "debtors in", "debtor in", "customers in", "customer in"]):
@@ -1202,9 +1178,6 @@ class NLPEngine:
             has_transaction_keyword = any(w in query_without_company.lower() for w in ["advance", "advances", "adjustment", "adjustments", "receipt", "receipts", "credit note", "credit notes", "unallocated", "unadjusted", "transaction", "transactions"])
             if has_transaction_keyword:
                 role = None
-            GROUP_NAMES = ["local suppliers", "sundry creditors", "hardware suppliers", "key vendors", "retailers", "wholesalers", "sundry debtors", "south region debtors", "east zone dealers", "north zone customers", "vip clients", "dealers", "customers", "suppliers", "vendors", "creditors", "debtors"]
-            is_group_ledger = rl_lower in GROUP_NAMES
-            
             # Explicit direction keywords in query bypass role-based intent correction ONLY for individual parties (not groups) in real-world queries
             if not is_group_ledger and detected_company_key:
                 has_explicit_direction = any(w in query_without_company.lower() for w in [
