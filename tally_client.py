@@ -84,6 +84,7 @@ class TallyClient:
         if ports is None:
             ports = list(range(8000, 11001))
         self.ports = ports
+        self.active_ports = set() # Track known active ports to avoid sweeping 3000 ports on every query
         self.routing_table = {}  # Cache mapping company_name.lower() -> {name, port, context}
         
         # Tier 1 & Tier 3 Cache & Alteration Trackers
@@ -92,7 +93,7 @@ class TallyClient:
         self._group_cache_timestamps = {}# (company, port) -> timestamp
         self.ttl_seconds = 10.0          # 10-Second Time-To-Live expiration window
         
-        self.update_routing_table()
+        self.update_routing_table(full_scan=True)
 
     def clean_xml(self, xml_str):
         """
@@ -134,24 +135,18 @@ class TallyClient:
         cleaned = [c for c in xml_str if ord(c) in [9, 10, 13] or ord(c) >= 32]
         return "".join(cleaned)
 
-    def update_routing_table(self):
+    def update_routing_table(self, full_scan=False):
         """
         ========================================================================
         FUNCTION: update_routing_table()
         PURPOSE:
-            Concurrently probes all configured ports to discover active loaded Tally companies.
-        
-        WHY IT IS PRESENT:
-            Allows zero-configuration auto-discovery. Users can switch companies or open multiple
-            instances without manually changing configuration files.
-
-        IMPORTANCE OF THREADPOOLEXECUTOR:
-            Probing closed ports sequentially causes HTTP connection timeouts (~1.5s per closed port).
-            `ThreadPoolExecutor` probes all ports in parallel, reducing discovery time from ~4.5s to ~120ms.
+            Concurrently probes ports to discover active loaded Tally companies.
+            If active_ports are known and full_scan is False, ONLY probes those active ports!
         ========================================================================
         """
-        new_routing = {}
         import concurrent.futures
+
+        ports_to_probe = self.ports if (full_scan or not self.active_ports) else list(self.active_ports)
 
         def probe_port(port):
             url = f"http://localhost:{port}"
@@ -179,7 +174,7 @@ class TallyClient:
     </BODY>
 </ENVELOPE>"""
             try:
-                response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(0.2, 0.5))
+                response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(0.5, 1.5))
                 if response.status_code == 200:
                     cleaned_xml = self.clean_xml(response.text)
                     root = ET.fromstring(cleaned_xml)
@@ -197,12 +192,22 @@ class TallyClient:
                 pass
             return {}
 
-        workers = min(200, len(self.ports)) if self.ports else 1
+        workers = min(200, len(ports_to_probe)) if ports_to_probe else 1
         with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as executor:
-            results = list(executor.map(probe_port, self.ports))
+            results = list(executor.map(probe_port, ports_to_probe))
 
+        new_routing = {}
+        new_active = set()
         for res in results:
             new_routing.update(res)
+            for item in res.values():
+                new_active.add(item["port"])
+
+        # If quick probe returned nothing but we had active ports, fall back to full scan
+        if not new_routing and not full_scan and self.active_ports:
+            return self.update_routing_table(full_scan=True)
+
+        self.active_ports = new_active
 
         # Fetch context for the active companies (also concurrently to save more time)
         def fetch_ctx(k, v):
@@ -236,16 +241,16 @@ class TallyClient:
             # 1. Exact key match
             if query in self.routing_table:
                 info = self.routing_table[query]
-                return info["port"], info["name"], info["context"]
+                return info["port"], info["name"], info.get("context", {})
             # 2. Substring match (either query in key or key in query)
             for k, info in self.routing_table.items():
                 if query in k or k in query:
-                    return info["port"], info["name"], info["context"]
+                    return info["port"], info["name"], info.get("context", {})
 
         # Default fallback to first company in the routing table
         first_key = list(self.routing_table.keys())[0]
         first_info = self.routing_table[first_key]
-        return first_info["port"], first_info["name"], first_info["context"]
+        return first_info["port"], first_info["name"], first_info.get("context", {})
 
     def execute_xml_request(self, port, payload):
         """Sends an XML request to TallyPrime and returns the response text."""
@@ -382,7 +387,12 @@ class TallyClient:
         return False
 
     def fetch_company_context(self, company_name, port):
-        """Fetches the current working date and period for the specified company."""
+        """
+        Fetches the active financial year range (from_date, to_date) and current working date from Tally
+        for the given company. Returns a dictionary context.
+        """
+        if not port or not company_name:
+            return {}
         payload = f"""<ENVELOPE>
     <HEADER>
         <VERSION>1</VERSION>
@@ -630,25 +640,73 @@ class TallyClient:
                 })
         return stock_data
 
-    def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None):
-        """Fetches recent vouchers (transactions) from the Day Book."""
+    def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None, voucher_type=None):
+        """Fetches recent vouchers (transactions) from Tally using a targeted TDL Collection."""
+        def _to_tally_date(d_str):
+            if not d_str: return d_str
+            p = self._parse_date(d_str)
+            return p.strftime("%Y%m%d") if p != datetime.min else d_str
+
+        filter_tags = []
+        filter_defs = []
+
+        if voucher_type:
+            vtype_lower = voucher_type.lower()
+            if "sales" in vtype_lower:
+                func = "$$IsSales:$VoucherTypeName"
+            elif "purchase" in vtype_lower:
+                func = "$$IsPurchase:$VoucherTypeName"
+            elif "receipt" in vtype_lower:
+                func = "$$IsReceipt:$VoucherTypeName"
+            elif "payment" in vtype_lower:
+                func = "$$IsPayment:$VoucherTypeName"
+            elif "journal" in vtype_lower:
+                func = "$$IsJournal:$VoucherTypeName"
+            elif "contra" in vtype_lower:
+                func = "$$IsContra:$VoucherTypeName"
+            else:
+                func = f'$VoucherTypeName = "{voucher_type}"'
+                
+            filter_tags.append("<FILTER>VtypeFilter</FILTER>")
+            filter_defs.append(f'<SYSTEM TYPE="Formulae" UMANAME="VtypeFilter">{func}</SYSTEM>')
+
         sv_dates = ""
-        if from_date: sv_dates += f"\n                <SVFROMDATE>{from_date}</SVFROMDATE>"
-        if to_date: sv_dates += f"\n                <SVTODATE>{to_date}</SVTODATE>"
-        
+        if from_date or to_date:
+            f_date_clean = _to_tally_date(from_date) if from_date else "19000101"
+            t_date_clean = _to_tally_date(to_date) if to_date else "20991231"
+            sv_dates += f"\n                <SVFROMDATE>{f_date_clean}</SVFROMDATE>\n                <SVTODATE>{t_date_clean}</SVTODATE>"
+            filter_tags.append("<FILTER>DateFilter</FILTER>")
+            filter_defs.append(f'<SYSTEM TYPE="Formulae" UMANAME="DateFilter">$Date &gt;= $$Date:"{f_date_clean}" AND $Date &lt;= $$Date:"{t_date_clean}"</SYSTEM>')
+
+        filter_tag_str = "\n                        ".join(filter_tags)
+        filter_def_str = "\n                    ".join(filter_defs)
+
         payload = f"""<ENVELOPE>
     <HEADER>
         <VERSION>1</VERSION>
         <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Data</TYPE>
-        <ID>Day Book</ID>
+        <TYPE>Collection</TYPE>
+        <ID>VchCollection</ID>
     </HEADER>
     <BODY>
         <DESC>
             <STATICVARIABLES>
                 <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+                <SVCOMPANY>{company_name}</SVCOMPANY>
                 <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>{sv_dates}
             </STATICVARIABLES>
+            <TDL>
+                <TDLMESSAGE>
+                    <COLLECTION NAME="VchCollection" ISINITIALISE="Yes">
+                        <TYPE>Voucher</TYPE>
+                        <SORT>Default : -$Date</SORT>
+                        <MAX>50</MAX>
+                        <FETCH>Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Narration, Amount, AllLedgerEntries.List, LedgerEntries.List</FETCH>
+                        {filter_tag_str}
+                    </COLLECTION>
+                    {filter_def_str}
+                </TDLMESSAGE>
+            </TDL>
         </DESC>
     </BODY>
 </ENVELOPE>"""
@@ -693,7 +751,7 @@ class TallyClient:
                 "party": party if party else "N/A",
                 "amount": total_amount if total_amount != "0.00" else (ledger_entries[0]["amount"].lstrip("-") if ledger_entries else "0.00"),
                 "narration": narration if narration else "",
-                "entries": ledger_entries
+                "ledger_entries": ledger_entries
             })
             
         return vouchers
@@ -711,11 +769,16 @@ class TallyClient:
         filter_defs = []
         
         if from_date or to_date:
-            f_date = from_date if from_date else "19000101"
-            t_date = to_date if to_date else "20991231"
+            def _to_tdl_date(d_str, default_val):
+                if not d_str: return default_val
+                p = self._parse_date(d_str)
+                return p.strftime("%Y%m%d") if p != datetime.min else d_str
+            
+            f_date_clean = _to_tdl_date(from_date, "19000101")
+            t_date_clean = _to_tdl_date(to_date, "20991231")
             filter_names.append("DateFilter")
             filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="DateFilter">
-                        $BillDate &gt;= $$Date:"{f_date}" AND $BillDate &lt;= $$Date:"{t_date}"
+                        $BillDate &gt;= $$Date:"{f_date_clean}" AND $BillDate &lt;= $$Date:"{t_date_clean}"
                     </SYSTEM>""")
                     
         if status_filter == "pending":
@@ -745,6 +808,7 @@ class TallyClient:
         <DESC>
             <STATICVARIABLES>
                 <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+                <SVCOMPANY>{company_name}</SVCOMPANY>
                 <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
                 {f'<SVCURRENTDATE>{ref_date_formatted}</SVCURRENTDATE>' if ref_date_formatted else ''}{pdc_vars}
             </STATICVARIABLES>

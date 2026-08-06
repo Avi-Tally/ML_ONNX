@@ -955,21 +955,35 @@ class NLPEngine:
         fuzzy_score = 0.0
         ambiguous_candidates = []
         final_company_key = detected_company_key
-        
-        if detected_intent in ["GET_LEDGER_BALANCE", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_BILL_DETAILS", "GET_RECENT_VOUCHERS", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "AMBIGUOUS_OUTSTANDINGS"] and detected_intent != "GET_STOCK_SUMMARY":
-            # Rewrite group expenses to expenses for real-world companies
-            if "under group expenses" in query_without_company.lower():
-                query_without_company = re.sub(r'\bunder group expenses\b', 'under expenses', query_without_company, flags=re.IGNORECASE)
-            
-            # For debugging, construct a rough extracted_ledger
-            temp_query = query_without_company.lower()
-            for phrase in sorted(self.stop_phrases, key=len, reverse=True):
-                temp_query = re.sub(r'\b' + re.escape(phrase) + r'\b', ' ', temp_query)
-            extracted_ledger = re.sub(r'\s+', ' ', temp_query).strip(",.!? ").strip()
-            
-            # If company is explicitly detected, match only in that company
-            if detected_company_key:
-                port, resolved_company, context = self.tally_client.get_port_for_company(detected_company_key)
+        missing_company = False
+        company_options = []
+
+        # Checkpoint 1: Company Resolution
+        if not detected_company_key:
+            if len(self.tally_client.routing_table) > 1:
+                missing_company = True
+                company_options = [info["name"] for info in self.tally_client.routing_table.values()]
+                final_company_key = None
+            elif len(self.tally_client.routing_table) == 1:
+                final_company_key = list(self.tally_client.routing_table.keys())[0]
+            else:
+                final_company_key = None
+        else:
+            final_company_key = detected_company_key
+
+        if not missing_company and final_company_key:
+            if detected_intent in ["GET_LEDGER_BALANCE", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_BILL_DETAILS", "GET_RECENT_VOUCHERS", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "AMBIGUOUS_OUTSTANDINGS"] and detected_intent != "GET_STOCK_SUMMARY":
+                # Rewrite group expenses to expenses for real-world companies
+                if "under group expenses" in query_without_company.lower():
+                    query_without_company = re.sub(r'\bunder group expenses\b', 'under expenses', query_without_company, flags=re.IGNORECASE)
+                
+                # For debugging, construct a rough extracted_ledger
+                temp_query = query_without_company.lower()
+                for phrase in sorted(self.stop_phrases, key=len, reverse=True):
+                    temp_query = re.sub(r'\b' + re.escape(phrase) + r'\b', ' ', temp_query)
+                extracted_ledger = re.sub(r'\s+', ' ', temp_query).strip(",.!? ").strip()
+                
+                port, resolved_company, context = self.tally_client.get_port_for_company(final_company_key)
                 try:
                     ledgers = self.tally_client.fetch_ledgers(resolved_company, port)
                     res, score, amb, _tier = self.resolve_ledger(query_without_company, ledgers)
@@ -980,120 +994,6 @@ class NLPEngine:
                         ledger_balance = ledgers[res]
                 except Exception as e:
                     print(f"Error fetching ledgers: {e}")
-            else:
-                # Search across ALL running companies to find the best match!
-                company_matches = []
-                for comp_key, info in self.tally_client.routing_table.items():
-                    try:
-                        full_name, port = info["name"], info["port"]
-                        ledgers = self.tally_client.fetch_ledgers(full_name, port)
-                        res, score, amb, match_tier = self.resolve_ledger(query_without_company, ledgers)
-                        if res and score >= 70.0:
-                            company_matches.append({
-                                "company_key": comp_key,
-                                "company_name": full_name,
-                                "port": port,
-                                "ledger": res,
-                                "score": score,
-                                "balance": ledgers[res],
-                                "ambiguous": amb,
-                                "match_tier": match_tier
-                            })
-                    except Exception as e:
-                        print(f"Error matching across companies: {e}")
-                
-                # Sort company matches: tier ascending (1=exact beats 3=fuzzy), then score descending
-                company_matches.sort(key=lambda x: (x.get("match_tier", 3), -x["score"]))
-                
-                if company_matches:
-                    best = company_matches[0]
-                    best_match_score = best["score"]
-                    best_tier = best.get("match_tier", 3)
-                    
-                    # Cross-company ambiguity: only when SAME match tier AND close scores
-                    equal_top_matches = [m for m in company_matches if m.get("match_tier", 3) == best_tier and abs(m["score"] - best_match_score) < 2.0]
-                    
-                    if len(equal_top_matches) > 1:
-                        # Cross-company ambiguity! Combine candidates formatted as "Ledger (Company)"
-                        ambiguous_candidates = [f"{m['ledger']} ({m['company_name']})" for m in equal_top_matches]
-                        final_company_key = best["company_key"]
-                        extracted_ledger = query_without_company
-                    elif best_match_score >= 85.0:
-                        final_company_key = best["company_key"]
-                        resolved_ledger = best["ledger"]
-                        ledger_balance = best["balance"]
-                        fuzzy_score = best_match_score
-                        ambiguous_candidates = best["ambiguous"]
-                    else:
-                        final_company_key = None
-                else:
-                    final_company_key = None
-                    
-        # For non-ledger queries, default to detected company or first company based on date matching
-        if not final_company_key:
-            matched_company = None
-            
-            # Extract target year/month if possible
-            tgt_year = None
-            tgt_month = None
-            
-            p_date_filter = parameters.get("date_filter")
-            if p_date_filter:
-                if p_date_filter["type"] == "month_year":
-                    tgt_year = p_date_filter["year"]
-                    tgt_month = p_date_filter["month"]
-                elif p_date_filter["type"] == "explicit_range":
-                    tgt_year = p_date_filter["start_year"]
-                    tgt_month = p_date_filter["start_month"]
-            
-            if parameters.get("reference_date"):
-                try:
-                    import datetime
-                    ref_dt = datetime.datetime.strptime(parameters["reference_date"], "%d-%b-%Y")
-                    tgt_year = ref_dt.year
-                    tgt_month = ref_dt.month
-                except: pass
-                
-            if tgt_year is not None:
-                # Find which company's active period is closest to the target date
-                best_distance = None
-                for k, info in self.tally_client.routing_table.items():
-                    ctx = info.get("context", {})
-                    fd = ctx.get("from_date", "")
-                    td = ctx.get("to_date", "")
-                    try:
-                        import datetime
-                        fd_dt = datetime.datetime.strptime(fd, "%d-%b-%Y")
-                        td_dt = datetime.datetime.strptime(td, "%d-%b-%Y")
-                        mid_dt = fd_dt + (td_dt - fd_dt) / 2
-                        
-                        test_month = tgt_month if tgt_month is not None else 6
-                        test_dt = datetime.datetime(tgt_year, test_month, 15)
-                        
-                        dist = abs((test_dt - mid_dt).total_seconds())
-                        if best_distance is None or dist < best_distance:
-                            best_distance = dist
-                            matched_company = k
-                    except:
-                        pass
-            if matched_company:
-                final_company_key = matched_company
-            else:
-                final_company_key = list(self.tally_client.routing_table.keys())[0] if self.tally_client.routing_table else None
-                
-            # Now resolve ledger for this determined fallback company
-            if final_company_key and not resolved_ledger:
-                port, resolved_company, context = self.tally_client.get_port_for_company(final_company_key)
-                try:
-                    ledgers = self.tally_client.fetch_ledgers(resolved_company, port)
-                    res, score, amb, _tier = self.resolve_ledger(query_without_company, ledgers)
-                    fuzzy_score = score
-                    resolved_ledger = res
-                    ambiguous_candidates = amb
-                    if res:
-                        ledger_balance = ledgers[res]
-                except Exception:
-                    pass
             
         # Clear generic ledger names for top level / generic list queries
         if resolved_ledger and resolved_ledger.lower() in self.generic_ledgers:
@@ -1218,8 +1118,27 @@ class NLPEngine:
         # Yes/No FAQ queries override removed to allow conceptual/analytical report mapping
         pass
             
-        # Override top debtors/creditors with receivables/payables if they explicitly ask for bills/invoices/amounts and not parties
-        if detected_intent in ["GET_TOP_DEBTORS", "GET_TOP_CREDITORS"] and not is_group_ledger:
+        # Route sales/purchase/voucher queries to GET_RECENT_VOUCHERS with voucher_type
+        q_clean_lower = query_without_company.lower()
+        if any(w in q_clean_lower for w in ["sales bill", "sales bills", "sales invoice", "sales invoices", "sales voucher", "sales vouchers"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Sales"
+        elif any(w in q_clean_lower for w in ["purchase bill", "purchase bills", "purchase invoice", "purchase invoices", "purchase voucher", "purchase vouchers"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Purchase"
+        elif any(w in q_clean_lower for w in ["journal voucher", "journal vouchers", "journal entry", "journal entries"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Journal"
+        elif any(w in q_clean_lower for w in ["receipt voucher", "receipt vouchers", "receipt entry", "receipt entries"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Receipt"
+        elif any(w in q_clean_lower for w in ["payment voucher", "payment vouchers", "payment entry", "payment entries"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Payment"
+        elif any(w in q_clean_lower for w in ["contra voucher", "contra vouchers"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Contra"
+        elif detected_intent in ["GET_TOP_DEBTORS", "GET_TOP_CREDITORS"] and not is_group_ledger:
             has_bill_target = any(w in query_without_company.lower() for w in ["top 5 bills", "top 5 invoices", "top bills", "top invoices", "highest bills", "largest bills", "oldest bills", "latest bills", "top 10 bills", "top 3 bills", "due", "dues", "overdue", "amount", "amounts", "invoice", "invoices", "how much", "what is the pending", "what is the cleared", "total sum", "total outstanding", "net outstanding", "sum of", "count of", "average", "avg", "how many", "tax amount", "payment to me"]) or ("bill" in query_without_company.lower() and not any(p in query_without_company.lower() for p in ["party", "parties", "debtor", "creditor", "customer", "supplier", "vendor"]))
             if has_bill_target:
                 if detected_intent == "GET_TOP_CREDITORS":
@@ -1278,5 +1197,7 @@ class NLPEngine:
             "ledger_balance": ledger_balance,
             "entity_score": fuzzy_score,
             "ambiguous_candidates": ambiguous_candidates,
-            "parameters": parameters
+            "parameters": parameters,
+            "missing_company": missing_company,
+            "company_options": company_options
         }

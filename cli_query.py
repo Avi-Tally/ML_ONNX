@@ -1,7 +1,55 @@
 import os
 import sys
+import json
 from mcp_server import query_tally
 from tally_client import TallyClient
+
+def execute_with_interactivity(query: str) -> str:
+    """
+    Executes a query via query_tally and intercepts __AMBIGUITY__: responses.
+    Presents an interactive numbered menu in CLI to get user clarification and re-submits automatically.
+    """
+    current_query = query
+    while True:
+        response = query_tally(current_query)
+        if isinstance(response, str) and response.startswith("__AMBIGUITY__:"):
+            raw_json = response[len("__AMBIGUITY__:"):]
+            try:
+                payload = json.loads(raw_json)
+                amb_type = payload.get("type")
+                prompt = payload.get("prompt")
+                options = payload.get("options", [])
+                
+                print(f"\n[CLARIFICATION REQUIRED] {prompt}")
+                for idx, opt in enumerate(options, 1):
+                    print(f"  [{idx}] {opt}")
+                print("  [c] Cancel query")
+                
+                choice = input("\nSelection > ").strip()
+                if choice.lower() == 'c':
+                    return "Query cancelled by user."
+                
+                if choice.isdigit():
+                    idx = int(choice) - 1
+                    if 0 <= idx < len(options):
+                        selected = options[idx]
+                        if amb_type == "COMPANY_SELECTION":
+                            current_query = f"{current_query} for {selected}"
+                        elif amb_type == "LEDGER_SELECTION":
+                            current_query = f"{current_query} for {selected}"
+                        elif amb_type == "DIRECTIONAL_SELECTION":
+                            if "payable" in selected.lower():
+                                current_query = f"{current_query} payables"
+                            else:
+                                current_query = f"{current_query} receivables"
+                        print(f"--> Re-submitting query: '{current_query}'")
+                        continue
+                print("Invalid selection. Please try again.")
+                continue
+            except Exception as e:
+                return response
+        else:
+            return response
 
 def main():
     print("=" * 65)
@@ -33,8 +81,8 @@ def main():
                 print("Goodbye!")
                 break
                 
-            # Execute the same tool method that the MCP server exposes
-            response = query_tally(query)
+            # Execute with interactive disambiguation menu handler
+            response = execute_with_interactivity(query)
             print("\nResponse:")
             print(response)
             print("-" * 65)

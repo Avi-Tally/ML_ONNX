@@ -17,6 +17,7 @@
 import sys                      # IMPORT RATIONALE: Access to system paths and standard output channels.
 import time                     # IMPORT RATIONALE: High-precision execution micro-benchmarking (`time.time()`).
 import datetime                 # IMPORT RATIONALE: Date calculations for relative date filters (e.g. last 30 days, this week).
+import json                     # IMPORT RATIONALE: Actionable JSON handoff payloads for interactive CLI menus.
 from mcp.server.fastmcp import FastMCP # IMPORT RATIONALE: High-performance Anthropic FastMCP server framework.
 from tally_client import TallyClient   # IMPORT RATIONALE: Low-level TDL socket transport instance.
 from nlp_engine import NLPEngine       # IMPORT RATIONALE: Hybrid ONNX/Regex NLU engine instance.
@@ -47,6 +48,9 @@ def query_tally(query: str) -> str:
     
     res = _query_tally_internal(query, profiler)
     
+    if isinstance(res, str) and res.startswith("__AMBIGUITY__:"):
+        return res
+
     telemetry_data = profiler.stop_pipeline(query)
     telemetry_footer = profiler.render_markdown_telemetry(telemetry_data)
     
@@ -144,7 +148,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         # Re-probe ports concurrently via ThreadPoolExecutor before EVERY query
         tally_client.update_routing_table()
         if profiler:
-            profiler.record_stage("Stage 1.5: Multi-Port Concurrent Probing", {"active_ports": list(tally_client.ports)})
+            profiler.record_stage("Stage 1.5: Multi-Port Concurrent Probing", {"active_ports": list(tally_client.active_ports)})
     except Exception as e:
         return f"Error: Could not establish connection to TallyPrime. Details: {e}"
 
@@ -164,7 +168,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
     intent = parsed["intent"]
     port = parsed["port"]
     company_name = parsed["resolved_company"]
-    context_dict = parsed.get("context", {})
+    context_dict = parsed.get("context") or {}
     
     # Overwrite today_str if reference_date is parsed (helps with aging relative to a historical date)
     ref_date = parsed.get("parameters", {}).get("reference_date")
@@ -176,16 +180,35 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         if profiler:
             profiler.record_stage("Stage 5: TDL XML Construction & MasterAlterID Verification", {"company": company_name, "port": port})
         # ======================================================================
+        # INTERCEPTOR 0: Missing Company Guardrail
+        # PURPOSE:
+        #   If multiple companies are open and no company was specified in the query,
+        #   halt execution and prompt the CLI user to select a company first.
+        # ======================================================================
+        if parsed.get("missing_company"):
+            payload = {
+                "type": "COMPANY_SELECTION",
+                "prompt": "Multiple companies are currently open. Which company would you like to run this query for?",
+                "options": parsed.get("company_options", []),
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
+
+        # ======================================================================
         # INTERCEPTOR 1: Multi-Ledger Ambiguity Guardrail
         # PURPOSE:
         #   If a query contains a short or generic party name (e.g., 'Reliance'),
-        #   and Tally contains 80+ matching ledgers, selecting one at random is dangerous.
-        #   This guardrail halts execution and returns a candidate menu to the user.
+        #   and Tally contains matching ledgers, halt execution and return candidate options.
         # ======================================================================
         if parsed.get("ambiguous_candidates"):
             extracted = parsed.get("extracted_ledger", "the requested party")
-            candidates_str = "\n".join([f"   - **{c}**" for c in parsed["ambiguous_candidates"]])
-            return f"[{company_name}] I found multiple accounts matching '{extracted}'. Did you mean:\n{candidates_str}"
+            payload = {
+                "type": "LEDGER_SELECTION",
+                "prompt": f"[{company_name}] I found multiple accounts matching '{extracted}'. Did you mean:",
+                "options": parsed["ambiguous_candidates"],
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # ======================================================================
         # INTERCEPTOR 2: Directional Ambiguity Guardrail (AMBIGUOUS_OUTSTANDINGS)
@@ -194,7 +217,16 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         #   to clarify whether they want Bills Payable (Suppliers) or Bills Receivable (Customers).
         # ======================================================================
         if intent == "AMBIGUOUS_OUTSTANDINGS":
-            return f"[{company_name}] Your query is directionally ambiguous. Are you looking for **Bills Payable** (money you owe to suppliers) or **Bills Receivable** (money owed to you by customers)?"
+            payload = {
+                "type": "DIRECTIONAL_SELECTION",
+                "prompt": f"[{company_name}] Your query is directionally ambiguous. Are you looking for:",
+                "options": [
+                    "Bills Payable (Money you owe to suppliers)",
+                    "Bills Receivable (Money owed to you by customers)"
+                ],
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # ======================================================================
         # INTENT RENDERER: GET_LEDGER_360 (Multi-Section Party View Card)
@@ -412,12 +444,12 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         elif intent == "GET_RECENT_VOUCHERS":
             try:
                 vt_filter = parsed.get("parameters", {}).get("voucher_type")
-                vouchers = tally_client.fetch_recent_vouchers(company_name, port, from_date=f_date, to_date=t_date)
+                vouchers = tally_client.fetch_recent_vouchers(company_name, port, from_date=f_date, to_date=t_date, voucher_type=vt_filter)
                 if vt_filter:
-                    vouchers = [v for v in vouchers if str(v.get("type", "")).lower() == vt_filter.lower()]
+                    vouchers = [v for v in vouchers if str(v.get("type", "")).lower() == vt_filter.lower() or vt_filter.lower() in str(v.get("type", "")).lower()]
                 if not vouchers:
                     filter_msg = f"{vt_filter} " if vt_filter else ""
-                    return f"[{company_name}] No recent {filter_msg}transactions found in the Day Book."
+                    return f"[{company_name}] No recent {filter_msg}transactions found."
 
                 # Format as Markdown Table
                 md = [
@@ -745,6 +777,9 @@ def _query_tally_internal(query: str, profiler=None) -> str:
 
     
     result = _execute()
+    if isinstance(result, str) and result.startswith("__AMBIGUITY__:"):
+        return result
+
     if profiler:
         profiler.record_stage("Stage 6: Tally HTTP Socket Communication & Stream Parsing", {"socket": f"http://localhost:{port}"})
 
