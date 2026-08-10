@@ -549,9 +549,22 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 date_target = parsed.get("parameters", {}).get("date_target", "bill_date")
                 tdl_f_date = None if date_target == "due_date" else f_date
                 tdl_t_date = None if date_target == "due_date" else (params.get("reference_date") or t_date)
-                
                 if is_party_summary:
-                    r_type = "Payables" if intent in ["GET_PAYABLES", "GET_TOP_CREDITORS"] or "payable" in query.lower() or "creditor" in query.lower() or "supplier" in query.lower() else "Receivables"
+                    q_lower = query.lower()
+                    has_rec = any(w in q_lower for w in ["receivable", "debtor", "customer", "client"])
+                    has_pay = any(w in q_lower for w in ["payable", "creditor", "vendor", "supplier"])
+                    
+                    if has_pay and not has_rec:
+                        r_type = "Payables"
+                    elif has_rec and not has_pay:
+                        r_type = "Receivables"
+                    elif intent in ["GET_PAYABLES", "GET_TOP_CREDITORS"]:
+                        r_type = "Payables"
+                    elif intent in ["GET_TOP_DEBTORS"]:
+                        r_type = "Receivables"
+                    else:
+                        r_type = "Outstandings"
+
                     party_data = tally_client.fetch_party_outstandings(company_name, port, report_type=r_type, from_date=tdl_f_date, to_date=tdl_t_date, max_limit=200)
                     tot_out = party_data.get("total_outstanding", 0.0)
                     tot_parties = party_data.get("total_party_count", 0)

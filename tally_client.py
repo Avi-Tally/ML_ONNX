@@ -838,9 +838,24 @@ class TallyClient:
         Sub-50ms Party-Wise Outstandings query using Tally C++ native Ledger Collection.
         Computes grand total outstanding in C++ memory AS OF the specified SVTODATE and streams top 200 parties over HTTP in ~46 ms.
         """
-        group_name = "Sundry Debtors" if report_type in ["Receivable", "Receivables"] else "Sundry Creditors"
-        filter_name = "ReceivableFilter" if report_type in ["Receivable", "Receivables"] else "PayableFilter"
-        filter_formula = "$$IsDebit:$ClosingBalance" if report_type in ["Receivable", "Receivables"] else "$$IsCredit:$ClosingBalance"
+        is_all = report_type in ["All", "Outstandings", "Both", "Party-Wise Outstandings"]
+        is_rec = report_type in ["Receivable", "Receivables"]
+        
+        if is_all:
+            group_name = "Sundry Debtors"
+            filter_name = "AllOutstandingsFilter"
+            filter_formula = "$ClosingBalance != 0"
+            group_belongs_formula = "$$IsBelongsTo:$$GroupSundryDebtors OR $$IsBelongsTo:$$GroupSundryCreditors"
+        elif is_rec:
+            group_name = "Sundry Debtors"
+            filter_name = "ReceivableFilter"
+            filter_formula = "$$IsDebit:$ClosingBalance"
+            group_belongs_formula = "$$IsBelongsTo:$$GroupSundryDebtors"
+        else:
+            group_name = "Sundry Creditors"
+            filter_name = "PayableFilter"
+            filter_formula = "$$IsCredit:$ClosingBalance"
+            group_belongs_formula = "$$IsBelongsTo:$$GroupSundryCreditors"
         
         date_vars = ""
         if to_date:
@@ -863,8 +878,6 @@ class TallyClient:
                 <TDLMESSAGE>
                     <COLLECTION NAME="PartyOutstandingsColl" ISINITIALISE="Yes">
                         <TYPE>Ledger</TYPE>
-                        <CHILDNAME>{group_name}</CHILDNAME>
-                        <BELONGSTO>Yes</BELONGSTO>
                         <FETCH>Name, ClosingBalance, Parent</FETCH>
                         <TOTAL>ClosingBalance</TOTAL>
                         <SORT>Default : -$ClosingBalance</SORT>
@@ -874,7 +887,7 @@ class TallyClient:
 
                     <SYSTEM TYPE="Formulae" NAME="{filter_name}">{filter_formula}</SYSTEM>
                     <SYSTEM TYPE="Formulae" NAME="NonZeroFilter">$ClosingBalance != 0</SYSTEM>
-                    <SYSTEM TYPE="Formulae" NAME="GroupBelongsFilter">$$IsBelongsTo:"{group_name}"</SYSTEM>
+                    <SYSTEM TYPE="Formulae" NAME="GroupBelongsFilter">{group_belongs_formula}</SYSTEM>
                 </TDLMESSAGE>
             </TDL>
         </DESC>
@@ -894,10 +907,12 @@ class TallyClient:
                 tot_float = 0.0
                 
             group_map = self.get_group_hierarchy_map(company_name, port)
-            is_rec = report_type in ["Receivable", "Receivables"]
-            target_group = "sundry debtors" if is_rec else "sundry creditors"
-            alt_group = "trade receivables" if is_rec else "trade payables"
-            keywords = ["debtor", "receivable", "customer", "client"] if is_rec else ["creditor", "payable", "vendor", "supplier"]
+            if is_all:
+                keywords = ["debtor", "receivable", "customer", "client", "creditor", "payable", "vendor", "supplier"]
+            elif is_rec:
+                keywords = ["debtor", "receivable", "customer", "client"]
+            else:
+                keywords = ["creditor", "payable", "vendor", "supplier"]
 
             party_list = []
             for l in ledgers:
@@ -907,12 +922,24 @@ class TallyClient:
                 parent_grp_lower = parent_grp.lower()
                 party_lower = p_name.strip().lower()
                 
-                is_trade = (
-                    self.is_group_under(parent_grp_lower, target_group, group_map) or
-                    self.is_group_under(parent_grp_lower, alt_group, group_map) or
-                    any(w in parent_grp_lower for w in keywords) or
-                    any(w in party_lower for w in keywords)
-                )
+                if is_all:
+                    is_trade = (
+                        self.is_group_under(parent_grp_lower, "sundry debtors", group_map) or
+                        self.is_group_under(parent_grp_lower, "sundry creditors", group_map) or
+                        self.is_group_under(parent_grp_lower, "trade receivables", group_map) or
+                        self.is_group_under(parent_grp_lower, "trade payables", group_map) or
+                        any(w in parent_grp_lower for w in keywords) or
+                        any(w in party_lower for w in keywords)
+                    )
+                else:
+                    target_group = "sundry debtors" if is_rec else "sundry creditors"
+                    alt_group = "trade receivables" if is_rec else "trade payables"
+                    is_trade = (
+                        self.is_group_under(parent_grp_lower, target_group, group_map) or
+                        self.is_group_under(parent_grp_lower, alt_group, group_map) or
+                        any(w in parent_grp_lower for w in keywords) or
+                        any(w in party_lower for w in keywords)
+                    )
                 if not is_trade:
                     continue
 
@@ -923,7 +950,12 @@ class TallyClient:
                 except:
                     bal_float = 0.0
                 if bal_float > 0:
-                    party_type = "Dr" if is_rec else "Cr"
+                    if is_all:
+                        is_dr = self.is_group_under(parent_grp_lower, "sundry debtors", group_map) or self.is_group_under(parent_grp_lower, "trade receivables", group_map) or any(w in parent_grp_lower for w in ["debtor", "receivable", "customer", "client"])
+                        party_type = "Dr" if is_dr else "Cr"
+                    else:
+                        party_type = "Dr" if is_rec else "Cr"
+                        
                     party_list.append({
                         "party": p_name,
                         "parent": parent_grp or group_name,
