@@ -809,8 +809,8 @@ class NLPEngine:
                     if not bool(re.search(r'\b(list|show|all).*bills\b', q_lower)) and not bool(re.search(r'oldest.*bill', q_lower)) and "bill amount" not in q_lower:
                         params["is_bill_query"] = False
                         
-        # 3. Explicit Reference Dates (Still easier with regex since it's rigid)
-        ref_match = re.search(r"(?:on|as of|as on|till)\s+(\d{1,2})[-/\s]+(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]+(\d{2,4})", q_lower)
+        # 3. Explicit Reference Dates (Supports spaced, hyphenated, and unspaced formats like '1 apr17' or '10aug17')
+        ref_match = re.search(r"(?:on|as of|as on|till)\s+(\d{1,2})[-/\s]*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*(\d{2,4})", q_lower)
         numeric_ref_match = re.search(r"(?:on|as of|as on|till)\s+(\d{1,2})[-/\s]+(\d{1,2})[-/\s]+(\d{2,4})", q_lower)
         if ref_match:
             try:
@@ -1138,6 +1138,19 @@ class NLPEngine:
         elif any(w in q_clean_lower for w in ["contra voucher", "contra vouchers"]):
             detected_intent = "GET_RECENT_VOUCHERS"
             parameters["voucher_type"] = "Contra"
+        elif any(w in q_clean_lower for w in ["credit note", "credit notes", "sales return", "sales returns"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Credit Note"
+        elif any(w in q_clean_lower for w in ["debit note", "debit notes", "purchase return", "purchase returns"]):
+            detected_intent = "GET_RECENT_VOUCHERS"
+            parameters["voucher_type"] = "Debit Note"
+            
+        if detected_intent == "GET_RECENT_VOUCHERS" and parameters.get("voucher_type"):
+            # Clear ledger ambiguity if extracted ledger was just matching the voucher type name
+            resolved_ledger = None
+            extracted_ledger = None
+            ambiguous_candidates = []
+            entity_score = 0.0
         elif detected_intent in ["GET_TOP_DEBTORS", "GET_TOP_CREDITORS"] and not is_group_ledger:
             has_bill_target = any(w in query_without_company.lower() for w in ["top 5 bills", "top 5 invoices", "top bills", "top invoices", "highest bills", "largest bills", "oldest bills", "latest bills", "top 10 bills", "top 3 bills", "due", "dues", "overdue", "amount", "amounts", "invoice", "invoices", "how much", "what is the pending", "what is the cleared", "total sum", "total outstanding", "net outstanding", "sum of", "count of", "average", "avg", "how many", "tax amount", "payment to me"]) or ("bill" in query_without_company.lower() and not any(p in query_without_company.lower() for p in ["party", "parties", "debtor", "creditor", "customer", "supplier", "vendor"]))
             if has_bill_target:

@@ -84,7 +84,7 @@ class TallyClient:
 
     def __init__(self, ports=None):
         if ports is None:
-            ports = list(range(8000, 11001))
+            ports = list(range(9000, 9011))
         self.ports = ports
         self.active_ports = set() # Track known active ports to avoid sweeping 3000 ports on every query
         self.routing_table = {}  # Cache mapping company_name.lower() -> {name, port, context}
@@ -658,7 +658,13 @@ class TallyClient:
         vtype_cat = "general"
         if voucher_type:
             vtype_lower = voucher_type.lower()
-            if "sales" in vtype_lower:
+            if "credit note" in vtype_lower or "sales return" in vtype_lower:
+                childof_tag = "<CHILDOF>$$VchTypeCreditNote</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "sales_purchase"
+            elif "debit note" in vtype_lower or "purchase return" in vtype_lower:
+                childof_tag = "<CHILDOF>$$VchTypeDebitNote</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "sales_purchase"
+            elif "sales" in vtype_lower:
                 childof_tag = "<CHILDOF>$$VchTypeSales</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
                 vtype_cat = "sales_purchase"
             elif "purchase" in vtype_lower:
