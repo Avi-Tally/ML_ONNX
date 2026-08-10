@@ -59,17 +59,19 @@ class TallyClient:
             except Exception:
                 pass
         
-        # 2. Try Display Date format (e.g., '20-Sep-2025')
-        try:
-            return datetime.strptime(date_str, "%d-%b-%Y")
-        except Exception:
-            pass
+        # 2. Try Display Date format with hyphens or spaces (e.g., '20-Sep-2025', '20 Sep 2025')
+        for fmt in ("%d-%b-%Y", "%d %b %Y", "%d-%B-%Y", "%d %B %Y"):
+            try:
+                return datetime.strptime(date_str, fmt)
+            except Exception:
+                pass
             
-        # 3. Try Short Year format (e.g., '20-Sep-25')
-        try:
-            return datetime.strptime(date_str, "%d-%b-%y")
-        except Exception:
-            pass
+        # 3. Try Short Year format with hyphens or spaces (e.g., '20-Sep-25', '20 Sep 25')
+        for fmt in ("%d-%b-%y", "%d %b %y", "%d-%B-%y", "%d %B %y"):
+            try:
+                return datetime.strptime(date_str, fmt)
+            except Exception:
+                pass
             
         # 4. Try ISO Date format (e.g., '2025-09-20')
         try:
@@ -133,7 +135,11 @@ class TallyClient:
         
         # Filter raw non-printable control characters
         cleaned = [c for c in xml_str if ord(c) in [9, 10, 13] or ord(c) >= 32]
-        return "".join(cleaned)
+        res_str = "".join(cleaned)
+        
+        # Strip XML namespace prefixes (e.g. <UOM:UNIT> -> <UOM_UNIT> or </UOM:UNIT> -> </UOM_UNIT>) to prevent unbound prefix ParseError
+        res_str = re.sub(r'<(/)?([a-zA-Z0-9_\-]+):([a-zA-Z0-9_\.\-]+)', r'<\1\2_\3', res_str)
+        return res_str
 
     def update_routing_table(self, full_scan=False):
         """
@@ -640,46 +646,63 @@ class TallyClient:
                 })
         return stock_data
 
-    def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None, voucher_type=None):
-        """Fetches recent vouchers (transactions) from Tally using a targeted TDL Collection."""
+    def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None, voucher_type=None, limit=200):
+        """Fetches recent vouchers (transactions) from Tally using an indexed CHILDOF + BELONGSTO TDL Collection."""
         def _to_tally_date(d_str):
             if not d_str: return d_str
             p = self._parse_date(d_str)
             return p.strftime("%Y%m%d") if p != datetime.min else d_str
 
-        filter_tags = []
-        filter_defs = []
-
+        # 1. Determine Voucher Type Index (CHILDOF + BELONGSTO)
+        childof_tag = ""
+        vtype_cat = "general"
         if voucher_type:
             vtype_lower = voucher_type.lower()
             if "sales" in vtype_lower:
-                func = "$$IsSales:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypeSales</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "sales_purchase"
             elif "purchase" in vtype_lower:
-                func = "$$IsPurchase:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "sales_purchase"
             elif "receipt" in vtype_lower:
-                func = "$$IsReceipt:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypeReceipt</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "receipt_payment"
             elif "payment" in vtype_lower:
-                func = "$$IsPayment:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypePayment</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "receipt_payment"
             elif "journal" in vtype_lower:
-                func = "$$IsJournal:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypeJournal</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "journal_contra"
             elif "contra" in vtype_lower:
-                func = "$$IsContra:$VoucherTypeName"
+                childof_tag = "<CHILDOF>$$VchTypeContra</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
+                vtype_cat = "journal_contra"
             else:
-                func = f'$VoucherTypeName = "{voucher_type}"'
-                
-            filter_tags.append("<FILTER>VtypeFilter</FILTER>")
-            filter_defs.append(f'<SYSTEM TYPE="Formulae" UMANAME="VtypeFilter">{func}</SYSTEM>')
+                childof_tag = f"<CHILDOF>{voucher_type}</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
 
+        # 2. Determine Conditional FETCH Projections based on Voucher Category
+        if vtype_cat == "sales_purchase":
+            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Amount, Narration"
+        elif vtype_cat == "receipt_payment":
+            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Amount, Narration, AllLedgerEntries.List, LedgerEntries.List"
+        else:
+            # journal_contra or general
+            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Narration, Amount, AllLedgerEntries.List, LedgerEntries.List"
+
+        # 3. Static Variable Dates & Bounds Configuration
         sv_dates = ""
+        max_limit = limit if (limit and isinstance(limit, int) and limit > 0) else 200
+        sort_tag = "\n                        <SORT>Default : -$Date</SORT>"
+        date_filter_decl = ""
+        date_formula_decl = ""
+        
         if from_date or to_date:
             f_date_clean = _to_tally_date(from_date) if from_date else "19000101"
             t_date_clean = _to_tally_date(to_date) if to_date else "20991231"
             sv_dates += f"\n                <SVFROMDATE>{f_date_clean}</SVFROMDATE>\n                <SVTODATE>{t_date_clean}</SVTODATE>"
-            filter_tags.append("<FILTER>DateFilter</FILTER>")
-            filter_defs.append(f'<SYSTEM TYPE="Formulae" UMANAME="DateFilter">$Date &gt;= $$Date:"{f_date_clean}" AND $Date &lt;= $$Date:"{t_date_clean}"</SYSTEM>')
-
-        filter_tag_str = "\n                        ".join(filter_tags)
-        filter_def_str = "\n                    ".join(filter_defs)
+            sort_tag = ""
+            if from_date == to_date and from_date:
+                date_filter_decl = "\n                        <FILTER>DateFilter</FILTER>"
+                date_formula_decl = f"\n                    <SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date = $$Date:\"{from_date}\"</SYSTEM>"
 
         payload = f"""<ENVELOPE>
     <HEADER>
@@ -698,62 +721,109 @@ class TallyClient:
             <TDL>
                 <TDLMESSAGE>
                     <COLLECTION NAME="VchCollection" ISINITIALISE="Yes">
-                        <TYPE>Voucher</TYPE>
-                        <SORT>Default : -$Date</SORT>
-                        <MAX>50</MAX>
-                        <FETCH>Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Narration, Amount, AllLedgerEntries.List, LedgerEntries.List</FETCH>
-                        {filter_tag_str}
-                    </COLLECTION>
-                    {filter_def_str}
+                        <TYPE>Vouchers:VoucherType</TYPE>
+                        {childof_tag}{sort_tag}{date_filter_decl}
+                        <MAX>{max_limit}</MAX>
+                        <FETCH>{fetch_fields}</FETCH>
+                    </COLLECTION>{date_formula_decl}
                 </TDLMESSAGE>
             </TDL>
         </DESC>
     </BODY>
 </ENVELOPE>"""
+
         response_xml = self.execute_xml_request(port, payload)
-        root = ET.fromstring(response_xml)
+        cleaned_xml = self.clean_xml(response_xml)
+        root = ET.fromstring(cleaned_xml)
         
         vouchers = []
         for v in root.findall(".//VOUCHER"):
+            date_raw = v.findtext("DATE")
             v_type = v.findtext("VOUCHERTYPENAME")
             v_num = v.findtext("VOUCHERNUMBER")
-            date_raw = v.findtext("DATE")
             party = v.findtext("PARTYLEDGERNAME")
             narration = v.findtext("NARRATION")
             
+            # Skip root schema/header nodes that don't contain valid transaction data
+            if not date_raw and not v_type:
+                continue
+
             # Format date: 20171008 -> 2017-10-08
             formatted_date = date_raw
             if date_raw and len(date_raw) == 8:
                 formatted_date = f"{date_raw[:4]}-{date_raw[4:6]}-{date_raw[6:]}"
                 
-            # Extract ledger entries
+            # Extract ledger entries and smart party/amount determination
             ledger_entries = []
             entries = v.findall(".//ALLLEDGERENTRIES.LIST") + v.findall(".//LEDGERENTRIES.LIST")
             total_amount = "0.00"
+            debit_party = None
+
             for entry in entries:
                 lname = entry.findtext("LEDGERNAME")
                 amount = entry.findtext("AMOUNT")
+                is_debit = entry.findtext("ISDEEMEDPOSITIVE") == "Yes"
+                
                 if lname or amount:
                     lname_clean = lname.strip() if lname else ""
                     amount_clean = amount.strip() if amount else "0.00"
+                    amt_abs = amount_clean.lstrip("-")
+                    
                     ledger_entries.append({
                         "ledger": lname_clean,
-                        "amount": amount_clean
+                        "amount": amount_clean,
+                        "is_debit": is_debit
                     })
-                    # Use the party's ledger entry to determine the voucher net total
+                    
+                    # Capture first non-bank/cash ledger as party fallback for expense vouchers
+                    if not debit_party and lname_clean.lower() not in ["cash in hand a/c", "cash", "bank"]:
+                        debit_party = lname_clean
+                        if total_amount == "0.00":
+                            total_amount = amt_abs
+
+                    # Match party ledger for total amount
                     if party and lname_clean.lower() == party.lower():
-                        total_amount = amount_clean.lstrip("-")
-            
+                        total_amount = amt_abs
+
+            # Fallback for empty or generic PARTYLEDGERNAME (e.g. expense payments)
+            p_strip = party.strip() if party else ""
+            if p_strip and p_strip.lower() not in ["cash in hand a/c", "cash"] and debit_party:
+                resolved_party = p_strip
+            else:
+                resolved_party = debit_party if debit_party else (p_strip if p_strip else "N/A")
+
+            # Fallback for amount if root Amount is available
+            root_amount = v.findtext("AMOUNT")
+            if root_amount:
+                root_amount_clean = root_amount.strip().lstrip("-")
+                if root_amount_clean and total_amount == "0.00":
+                    total_amount = root_amount_clean
+
             vouchers.append({
                 "date": formatted_date,
-                "type": v_type if v_type else "Journal",
+                "type": v_type if v_type else "Voucher",
                 "number": v_num if v_num else "N/A",
-                "party": party if party else "N/A",
+                "party": resolved_party if resolved_party else "N/A",
                 "amount": total_amount if total_amount != "0.00" else (ledger_entries[0]["amount"].lstrip("-") if ledger_entries else "0.00"),
                 "narration": narration if narration else "",
                 "ledger_entries": ledger_entries
             })
             
+        # Post-filter by date range if specified (Tally TDL collections may return start-of-year vouchers)
+        if from_date or to_date:
+            start_dt = self._parse_date(from_date) if from_date else datetime.min
+            end_dt = self._parse_date(to_date) if to_date else datetime.max
+            if start_dt != datetime.min or end_dt != datetime.max:
+                filtered_vchs = []
+                for v in vouchers:
+                    v_dt = self._parse_date(v["date"])
+                    if v_dt != datetime.min:
+                        if start_dt <= v_dt <= end_dt:
+                            filtered_vchs.append(v)
+                    else:
+                        filtered_vchs.append(v)
+                vouchers = filtered_vchs
+
         return vouchers
 
     def fetch_bills(self, company_name, port, report_type="All", from_date=None, to_date=None, status_filter=None, reference_date=None, exclude_pdc=True, ledger_filter=None):

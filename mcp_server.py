@@ -65,6 +65,10 @@ def resolve_date_range(params, context):
     from_date = context.get("from_date")
     to_date = context.get("to_date")
     
+    if ref_date and not params.get("date_filter"):
+        from_date = ref_date
+        to_date = ref_date
+
     date_filter = params.get("date_filter")
     date_target = params.get("date_target", "bill_date")
     if date_filter:
