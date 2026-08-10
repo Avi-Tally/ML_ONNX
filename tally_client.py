@@ -894,8 +894,10 @@ class TallyClient:
                 tot_float = 0.0
                 
             group_map = self.get_group_hierarchy_map(company_name, port)
-            target_group = "sundry debtors" if report_type in ["Receivable", "Receivables"] else "sundry creditors"
-            alt_group = "trade receivables" if report_type in ["Receivable", "Receivables"] else "trade payables"
+            is_rec = report_type in ["Receivable", "Receivables"]
+            target_group = "sundry debtors" if is_rec else "sundry creditors"
+            alt_group = "trade receivables" if is_rec else "trade payables"
+            keywords = ["debtor", "receivable", "customer", "client"] if is_rec else ["creditor", "payable", "vendor", "supplier"]
 
             party_list = []
             for l in ledgers:
@@ -908,22 +910,25 @@ class TallyClient:
                 is_trade = (
                     self.is_group_under(parent_grp_lower, target_group, group_map) or
                     self.is_group_under(parent_grp_lower, alt_group, group_map) or
-                    any(w in parent_grp_lower for w in ["debtor", "receivable", "creditor", "payable", "customer", "client", "vendor", "supplier"]) or
-                    any(w in party_lower for w in ["debtor", "creditor", "customer", "vendor", "supplier"])
+                    any(w in parent_grp_lower for w in keywords) or
+                    any(w in party_lower for w in keywords)
                 )
                 if not is_trade:
                     continue
 
                 bal_str = l.findtext("CLOSINGBALANCE") or "0"
                 try:
-                    bal_float = abs(float(bal_str))
+                    bal_raw = float(bal_str)
+                    bal_float = abs(bal_raw)
                 except:
                     bal_float = 0.0
                 if bal_float > 0:
+                    party_type = "Dr" if is_rec else "Cr"
                     party_list.append({
                         "party": p_name,
                         "parent": parent_grp or group_name,
-                        "amount": bal_float
+                        "amount": bal_float,
+                        "type": party_type
                     })
                     
             party_list.sort(key=lambda x: x["amount"], reverse=True)

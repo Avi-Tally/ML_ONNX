@@ -563,12 +563,12 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                     md = [
                         f"### Analytical Report: Party-Wise {r_type} - {company_name} (Port {port})",
                         f"**Total Outstanding:** ₹ {tot_out:,.2f} | **Total Parties Count:** {tot_parties:,}\n",
-                        "| Party Name | Group Lineage | Outstanding Balance |",
-                        "| :--- | :--- | :--- |"
+                        "| Party Name | Group Lineage | Outstanding Balance | Type |",
+                        "| :--- | :--- | :--- | :---: |"
                     ]
                     disp_limit = params.get("limit") if params.get("limit") else 25
                     for p in parties[:disp_limit]:
-                        md.append(f"| {p['party']} | {p['parent']} | ₹ {p['amount']:,.2f} |")
+                        md.append(f"| {p['party']} | {p['parent']} | ₹ {p['amount']:,.2f} | {p['type']} |")
                         
                     if len(parties) > disp_limit:
                         md.append(f"\n*(Showing top {disp_limit} out of {tot_parties} parties)*")
