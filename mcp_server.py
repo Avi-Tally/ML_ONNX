@@ -255,7 +255,8 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                     return 0
 
             # Fetch outstandings for this ledger
-            bills = tally_client.fetch_bills(company_name, port, report_type="All", from_date=f_date, to_date=t_date)
+            res_bills = tally_client.fetch_bills(company_name, port, report_type="All", from_date=f_date, to_date=t_date)
+            bills = res_bills[0] if isinstance(res_bills, tuple) else res_bills
             party_bills = [b for b in bills if b.get('party', '').lower() == resolved.lower() or resolved.lower() in b.get('party', '').lower()]
             
             total_pending = sum(get_amt(b) for b in party_bills)
@@ -297,12 +298,16 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 except:
                     return 0.0
 
+            def _fetch(comp, p, r_type, fd, td):
+                res = tally_client.fetch_bills(comp, p, report_type=r_type, from_date=fd, to_date=td)
+                return res[0] if isinstance(res, tuple) else res
+
             comp_results = []
             for c_key, c_info in tally_client.routing_table.items():
                 c_name = c_info['name']
                 c_port = c_info['port']
-                rec = tally_client.fetch_bills(c_name, c_port, report_type="Receivables", from_date=f_date, to_date=t_date)
-                pay = tally_client.fetch_bills(c_name, c_port, report_type="Payables", from_date=f_date, to_date=t_date)
+                rec = _fetch(c_name, c_port, "Receivables", f_date, t_date)
+                pay = _fetch(c_name, c_port, "Payables", f_date, t_date)
                 tot_rec = sum(get_amt(b) for b in rec)
                 tot_pay = sum(get_amt(b) for b in pay)
                 comp_results.append({
@@ -481,7 +486,8 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 # Always keep post-dated bills visible as pending (exclude_pdc = True)
                 # Only net them out if the user explicitly asks for "net" balances
                 exclude_pdc = not any(k in query.lower() for k in ["net outstanding", "net payable", "net receivable", "netting", "after pdc"])
-                bills = tally_client.fetch_bills(company_name, port, "All", from_date=None, to_date=None, exclude_pdc=exclude_pdc, ledger_filter=document_ref)
+                doc_res = tally_client.fetch_bills(company_name, port, "All", from_date=None, to_date=None, exclude_pdc=exclude_pdc, ledger_filter=document_ref)
+                bills = doc_res[0] if isinstance(doc_res, tuple) else doc_res
                 if not bills:
                     return f"[{company_name}] No bills could be retrieved."
 
@@ -535,7 +541,38 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         # 7. ANALYTICAL INTENTS
         elif intent in ["GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS"]:
             try:
+                params = parsed.get("parameters", {})
                 resolved_ledger = parsed.get("resolved_ledger")
+                is_party_summary = (not resolved_ledger) and ("bill" not in query.lower()) and ("invoice" not in query.lower()) and (intent in ["GET_RECEIVABLES", "GET_PAYABLES", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS"])
+                
+                # If target is due_date, we pull all bills and filter in python, so we don't pass f_date and t_date to TDL
+                date_target = parsed.get("parameters", {}).get("date_target", "bill_date")
+                tdl_f_date = None if date_target == "due_date" else f_date
+                tdl_t_date = None if date_target == "due_date" else (params.get("reference_date") or t_date)
+                
+                if is_party_summary:
+                    r_type = "Payables" if intent in ["GET_PAYABLES", "GET_TOP_CREDITORS"] or "payable" in query.lower() or "creditor" in query.lower() or "supplier" in query.lower() else "Receivables"
+                    party_data = tally_client.fetch_party_outstandings(company_name, port, report_type=r_type, from_date=tdl_f_date, to_date=tdl_t_date, max_limit=200)
+                    tot_out = party_data.get("total_outstanding", 0.0)
+                    tot_parties = party_data.get("total_party_count", 0)
+                    parties = party_data.get("parties", [])
+                    
+                    if not parties:
+                        return f"[{company_name}] No party outstandings details could be retrieved."
+                        
+                    md = [
+                        f"### Analytical Report: Party-Wise {r_type} - {company_name} (Port {port})",
+                        f"**Total Outstanding:** ₹ {tot_out:,.2f} | **Total Parties Count:** {tot_parties:,}\n",
+                        "| Party Name | Group Lineage | Outstanding Balance |",
+                        "| :--- | :--- | :--- |"
+                    ]
+                    disp_limit = params.get("limit") if params.get("limit") else 25
+                    for p in parties[:disp_limit]:
+                        md.append(f"| {p['party']} | {p['parent']} | ₹ {p['amount']:,.2f} |")
+                        
+                    if len(parties) > disp_limit:
+                        md.append(f"\n*(Showing top {disp_limit} out of {tot_parties} parties)*")
+                    return "\n".join(md)
                 
                 if resolved_ledger or intent == "GET_AGEING" or "bill" in query.lower() or "invoice" in query.lower():
                     report_type = "All"
@@ -550,7 +587,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 # Always keep post-dated bills visible as pending (exclude_pdc = True)
                 # Only net them out if the user explicitly asks for "net" balances
                 exclude_pdc = not any(k in query.lower() for k in ["net outstanding", "net payable", "net receivable", "netting", "after pdc"])
-                bills = tally_client.fetch_bills(
+                raw_res = tally_client.fetch_bills(
                     company_name, 
                     port, 
                     report_type, 
@@ -561,6 +598,11 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                     exclude_pdc=exclude_pdc,
                     ledger_filter=resolved_ledger
                 )
+                if isinstance(raw_res, tuple):
+                    bills, bills_summary = raw_res
+                else:
+                    bills, bills_summary = raw_res, {}
+
                 if not bills:
                     return f"[{company_name}] No bill details could be retrieved."
 
@@ -707,24 +749,33 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                         if len(sorted_parties) > display_limit:
                             md.append(f"\n*(Showing top {display_limit} out of {len(sorted_parties)} parties)*")
                     else:
+                        tot_count = len(final_bills)
                         net_total = 0.0
-                        for b in final_bills:
+                        if isinstance(bills_summary, dict) and bills_summary.get("total_count", 0) > 0:
+                            tot_count = bills_summary.get("total_count", len(final_bills))
                             if intent == "GET_RECEIVABLES":
-                                net_total += b.get("normalized_receivables_amount", 0.0)
-                            else: # GET_PAYABLES
-                                net_total += b.get("normalized_payables_amount", 0.0)
-
+                                net_total = bills_summary.get("total_receivables_sum", 0.0)
+                            elif intent == "GET_PAYABLES":
+                                net_total = bills_summary.get("total_payables_sum", 0.0)
+                            else:
+                                net_total = sum(b.get("normalized_receivables_amount", 0.0) + b.get("normalized_payables_amount", 0.0) for b in final_bills)
+                        else:
+                            for b in final_bills:
+                                if intent == "GET_RECEIVABLES":
+                                    net_total += b.get("normalized_receivables_amount", 0.0)
+                                else:
+                                    net_total += b.get("normalized_payables_amount", 0.0)
 
                         if params.get("count_only") or params.get("sum_only"):
                             if params.get("count_only") and params.get("sum_only"):
-                                md.append(f"**Total Bills:** {len(final_bills)}  |  **Total Value:** ₹ {net_total:,.2f}\n")
+                                md.append(f"**Total Bills Count:** {tot_count:,}  |  **Total Outstanding Value:** ₹ {net_total:,.2f}\n")
                             elif params.get("sum_only"):
-                                md.append(f"**Total Value:** ₹ {net_total:,.2f}\n")
+                                md.append(f"**Total Outstanding Value:** ₹ {net_total:,.2f}\n")
                             else:
-                                md.append(f"**Total Bills:** {len(final_bills)}\n")
+                                md.append(f"**Total Bills Count:** {tot_count:,}\n")
                             return "\n".join(md)
                         else:
-                            md.append(f"**Total Outstanding:** ₹ {net_total:,.2f}\n")
+                            md.append(f"**Total Outstanding:** ₹ {net_total:,.2f} | **Total Bills Count:** {tot_count:,}\n")
 
                         # Check for dynamic column requests
                         show_gst = "gst" in query.lower()
