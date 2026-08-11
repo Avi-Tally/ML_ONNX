@@ -150,7 +150,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
     """
     try:
         # Re-probe ports concurrently via ThreadPoolExecutor before EVERY query
-        tally_client.update_routing_table()
+        tally_client.update_routing_table(full_scan=not tally_client.active_ports)
         if profiler:
             profiler.record_stage("Stage 1.5: Multi-Port Concurrent Probing", {"active_ports": list(tally_client.active_ports)})
     except Exception as e:
