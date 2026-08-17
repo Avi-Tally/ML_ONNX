@@ -43,14 +43,20 @@ def execute_with_interactivity(query: str) -> str:
                     if 0 <= idx < len(options):
                         selected = options[idx]
                         if amb_type == "COMPANY_SELECTION":
-                            current_query = f"{current_query} $C({selected})"
-                        elif amb_type == "LEDGER_SELECTION":
-                            extracted = payload.get("extracted") or ""
-                            if extracted and extracted.lower() in current_query.lower():
-                                pattern = re.compile(re.escape(extracted), re.IGNORECASE)
-                                current_query = pattern.sub(f"$L({selected})", current_query, count=1)
+                            if re.search(r'\$C\(((?:[^()]|\([^()]*\))+)\)', current_query, re.IGNORECASE):
+                                current_query = re.sub(r'\$C\(((?:[^()]|\([^()]*\))+)\)', f"$C({selected})", current_query, count=1, flags=re.IGNORECASE)
                             else:
-                                current_query = f"{current_query} $L({selected})"
+                                current_query = f"{current_query} $C({selected})"
+                        elif amb_type == "LEDGER_SELECTION":
+                            if re.search(r'\$L\(((?:[^()]|\([^()]*\))+)\)', current_query, re.IGNORECASE):
+                                current_query = re.sub(r'\$L\(((?:[^()]|\([^()]*\))+)\)', f"$L({selected})", current_query, count=1, flags=re.IGNORECASE)
+                            else:
+                                extracted = payload.get("extracted") or ""
+                                if extracted and extracted.lower() in current_query.lower():
+                                    pattern = re.compile(re.escape(extracted), re.IGNORECASE)
+                                    current_query = pattern.sub(f"$L({selected})", current_query, count=1)
+                                else:
+                                    current_query = f"{current_query} $L({selected})"
                         elif amb_type == "DIRECTIONAL_SELECTION":
                             if "payable" in selected.lower():
                                 current_query = f"{current_query} payables"

@@ -256,28 +256,32 @@ class NLPEngine:
         
         ledger_best = {} # idx -> (score, w_len, window)
         for window in windows:
-            w_tokens = set(window.split())
-            w_len = len(w_tokens)
+            w_clean_tokens = set(re.findall(r'[a-zA-Z0-9]+', window.lower()))
+            w_len = len(w_clean_tokens)
+            if w_len == 0:
+                continue
             matches = process.extract(window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=10)
             if matches:
                 for m in matches:
                     matched_name_lower = m[0]
-                    raw_score = m[1]
                     idx = original_indices[m[2]]
-                    m_tokens = set(matched_name_lower.split())
+                    m_clean_tokens = set(re.findall(r'[a-zA-Z0-9]+', matched_name_lower.lower()))
+                    if not m_clean_tokens:
+                        continue
                     
-                    overlap = len(w_tokens.intersection(m_tokens))
+                    overlap = sum(1 for wt in w_clean_tokens if any(fuzz.ratio(wt, mt) >= 75.0 for mt in m_clean_tokens))
                     if overlap == 0:
                         continue
                         
                     coverage = overlap / w_len
+                    clean_m = " ".join(re.findall(r'[a-zA-Z0-9]+', matched_name_lower))
+                    raw_score = max(fuzz.WRatio(window.lower(), clean_m), max([fuzz.ratio(window.lower(), mt) for mt in m_clean_tokens]))
                     score = raw_score * coverage
                     
                     if idx not in ledger_best:
                         ledger_best[idx] = (score, w_len, window)
                     else:
                         prev_score, prev_w_len, prev_w = ledger_best[idx]
-                        # Primary: higher score wins. Tiebreaker: longer window.
                         if score > prev_score or (score == prev_score and w_len > prev_w_len):
                             ledger_best[idx] = (score, w_len, window)
 
@@ -908,15 +912,17 @@ class NLPEngine:
         detected_company_key = None
         detected_identifier = None
         explicit_ledger = None
-        
-        c_match = re.search(r'\$C\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
-        if c_match:
-            raw_c = c_match.group(1).strip().lower()
+        c_matches = re.findall(r'\$C\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if c_matches:
             if self.tally_client.routing_table:
-                matches = process.extract(raw_c, list(self.tally_client.routing_table.keys()), scorer=fuzz.token_set_ratio, limit=1)
-                if matches and matches[0][1] >= 65:
-                    detected_company_key = matches[0][0]
-                    detected_identifier = c_match.group(0)
+                company_keys = list(self.tally_client.routing_table.keys())
+                for raw_c_match in reversed(c_matches):
+                    raw_c = raw_c_match.strip().lower()
+                    matches = process.extract(raw_c, company_keys, scorer=fuzz.WRatio, limit=1)
+                    if matches and matches[0][1] >= 60.0:
+                        detected_company_key = matches[0][0]
+                        detected_identifier = f"$C({raw_c_match})"
+                        break
             query_clean = re.sub(r'\$C\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
             
         l_match = re.search(r'\$L\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
@@ -974,7 +980,7 @@ class NLPEngine:
                 
         # Cleanly strip matched company from query
         query_without_company = query_clean
-        if detected_identifier and not c_match:
+        if detected_identifier and not c_matches:
             pattern = re.compile(r'\b' + re.escape(detected_identifier) + r'\b', re.IGNORECASE)
             query_without_company = pattern.sub("", query_without_company).strip()
             query_without_company = re.sub(r'\b(?:for|in|from|of|at|comp|company)\s*$', '', query_without_company, flags=re.IGNORECASE).strip()
@@ -1043,8 +1049,21 @@ class NLPEngine:
                     ledgers = self.tally_client.fetch_ledgers(resolved_company, port)
                     if explicit_ledger:
                         res, score, amb, _tier = self.resolve_ledger(explicit_ledger, ledgers)
-                        fuzzy_score = score if res else 100.0
-                        resolved_ledger = res if res else explicit_ledger
+                        if not res and isinstance(ledgers, dict) and ledgers:
+                            f_matches = process.extract(explicit_ledger.lower(), list(ledgers.keys()), scorer=fuzz.WRatio, limit=4)
+                            f_high = [m for m in f_matches if m[1] >= 65.0]
+                            if len(f_high) == 1:
+                                res = f_high[0][0]
+                                score = f_high[0][1]
+                            elif len(f_high) > 1:
+                                if f_high[0][1] - f_high[1][1] >= 15.0:
+                                    res = f_high[0][0]
+                                    score = f_high[0][1]
+                                else:
+                                    amb = [m[0] for m in f_high]
+                                    score = f_high[0][1]
+                        fuzzy_score = score if res else (score if amb else 100.0)
+                        resolved_ledger = res if res else (None if amb else explicit_ledger)
                         extracted_ledger = explicit_ledger
                         ambiguous_candidates = amb
                     else:

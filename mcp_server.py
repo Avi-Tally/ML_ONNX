@@ -200,6 +200,23 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # ======================================================================
+        # INTERCEPTOR 1: Multi-Ledger Ambiguity Guardrail
+        # PURPOSE:
+        #   If a query contains a short or generic party name (e.g., 'Reliance'),
+        #   and Tally contains matching ledgers, halt execution and return candidate options.
+        # ======================================================================
+        if parsed.get("ambiguous_candidates"):
+            extracted = parsed.get("extracted_ledger", "the requested party")
+            payload = {
+                "type": "LEDGER_SELECTION",
+                "prompt": f"[{company_name}] I found multiple accounts matching '{extracted}'. Did you mean:",
+                "options": parsed["ambiguous_candidates"],
+                "extracted": extracted,
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
+
+        # ======================================================================
         # INTERCEPTOR 0.5: Mandatory Date Clarification Guardrail
         # PURPOSE:
         #   A date or reporting period is mandatory for all accounting queries.
@@ -221,23 +238,6 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                     "For Custom Date Range (e.g. 'from 01-Apr-2017 to 11-Aug-2017')",
                     "As of Today (Live Balance snapshot)"
                 ],
-                "original_query": query
-            }
-            return f"__AMBIGUITY__:{json.dumps(payload)}"
-
-        # ======================================================================
-        # INTERCEPTOR 1: Multi-Ledger Ambiguity Guardrail
-        # PURPOSE:
-        #   If a query contains a short or generic party name (e.g., 'Reliance'),
-        #   and Tally contains matching ledgers, halt execution and return candidate options.
-        # ======================================================================
-        if parsed.get("ambiguous_candidates"):
-            extracted = parsed.get("extracted_ledger", "the requested party")
-            payload = {
-                "type": "LEDGER_SELECTION",
-                "prompt": f"[{company_name}] I found multiple accounts matching '{extracted}'. Did you mean:",
-                "options": parsed["ambiguous_candidates"],
-                "extracted": extracted,
                 "original_query": query
             }
             return f"__AMBIGUITY__:{json.dumps(payload)}"

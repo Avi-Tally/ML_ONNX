@@ -596,6 +596,40 @@ class TallyClient:
         to_disp = to_p.strftime("%d-%b-%Y") if to_p != datetime.min else reference_date
         escaped_party = ledger_name.replace("&", "&amp;").replace('"', '&quot;')
         
+        # 1. Fetch full ledger master collection to accurately find parent group and master closing balance
+        payload_all_ledgers = f"""<ENVELOPE>
+  <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Collection</TYPE><ID>LedMasterAll</ID></HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY></STATICVARIABLES>
+      <TDL><TDLMESSAGE>
+        <COLLECTION NAME="LedMasterAll">
+          <TYPE>Ledger</TYPE>
+          <FETCH>Name, Parent, ClosingBalance, OpeningBalance, IsBillWiseOn</FETCH>
+        </COLLECTION>
+      </TDLMESSAGE></TDL>
+    </DESC>
+  </BODY>
+</ENVELOPE>"""
+        parent_group = None
+        master_cl = 0.0
+        try:
+            res_l = self.execute_xml_request(port, payload_all_ledgers, timeout=6)
+            root_l = ET.fromstring(self.clean_xml(res_l))
+            for l_elem in root_l.findall(".//LEDGER"):
+                name = l_elem.findtext("NAME") or l_elem.attrib.get("NAME") or ""
+                if name.lower().strip() == ledger_name.lower().strip():
+                    parent_group = (l_elem.findtext("PARENT") or "").strip()
+                    cl_str = l_elem.findtext("CLOSINGBALANCE") or "0.00"
+                    try:
+                        master_cl = float(cl_str)
+                    except:
+                        master_cl = 0.0
+                    break
+        except Exception:
+            pass
+
+        # 2. Check if party has dated bills
         payload = f"""<ENVELOPE>
   <HEADER>
     <VERSION>1</VERSION>
@@ -627,29 +661,87 @@ class TallyClient:
   </BODY>
 </ENVELOPE>"""
         try:
-            resp = self.execute_xml_request(port, payload, timeout=10)
+            resp = self.execute_xml_request(port, payload, timeout=6)
             cleaned = self.clean_xml(resp)
             root = ET.fromstring(cleaned)
             bills = root.findall(".//BILL")
             
-            total_val = 0.0
-            for b in bills:
-                b_cl = b.findtext("CLOSINGBALANCE") or "0.00"
-                try:
-                    total_val += float(b_cl)
-                except:
-                    pass
-                    
+            if len(bills) > 0:
+                total_val = 0.0
+                for b in bills:
+                    b_cl = b.findtext("CLOSINGBALANCE") or "0.00"
+                    try:
+                        total_val += float(b_cl)
+                    except:
+                        pass
+                        
+                return {
+                    "name": ledger_name,
+                    "raw_balance": str(total_val),
+                    "val": total_val,
+                    "abs_val": abs(total_val),
+                    "drcr": "Dr" if total_val < 0 else ("Cr" if total_val > 0 else ""),
+                    "is_nil": (total_val == 0.0),
+                    "is_dated": True,
+                    "as_of_date": to_disp,
+                    "bills_count": len(bills)
+                }
+
+            # 3. Fallback to Parent Group Summary for voucher-based, non-bill, or on-account accounts
+            if parent_group:
+                escaped_grp = parent_group.replace("&", "&amp;")
+                payload_grp = f"""<ENVELOPE>
+  <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Data</TYPE><ID>Group Summary</ID></HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+        <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
+        <GROUPNAME>{escaped_grp}</GROUPNAME>
+        <EXPLODEFLAG>Yes</EXPLODEFLAG>
+        <ISITEMWISE>Yes</ISITEMWISE>
+        <SVFROMDATE>19000101</SVFROMDATE>
+        <SVTODATE>{to_str}</SVTODATE>
+      </STATICVARIABLES>
+    </DESC>
+  </BODY>
+</ENVELOPE>"""
+                res_grp = self.execute_xml_request(port, payload_grp, timeout=6)
+                root_grp = ET.fromstring(self.clean_xml(res_grp))
+                acc_names = root_grp.findall(".//DSPACCNAME/DSPDISPNAME")
+                acc_infos = root_grp.findall(".//DSPACCINFO")
+                
+                for n_el, info_el in zip(acc_names, acc_infos):
+                    name = (n_el.text or "").strip()
+                    if name.lower().strip() == ledger_name.lower().strip():
+                        dr_el = info_el.find(".//DSPCLDRAMTA")
+                        cr_el = info_el.find(".//DSPCLCRAMTA")
+                        dr_val = abs(float(dr_el.text)) if (dr_el is not None and dr_el.text) else 0.0
+                        cr_val = abs(float(cr_el.text)) if (cr_el is not None and cr_el.text) else 0.0
+                        net_val = dr_val - cr_val
+                        return {
+                            "name": ledger_name,
+                            "raw_balance": str(-net_val if net_val > 0 else (net_val if net_val < 0 else 0.0)),
+                            "val": -net_val if net_val > 0 else (net_val if net_val < 0 else 0.0),
+                            "abs_val": abs(net_val),
+                            "drcr": "Dr" if net_val > 0 else ("Cr" if net_val < 0 else ""),
+                            "is_nil": (net_val == 0.0),
+                            "is_dated": True,
+                            "as_of_date": to_disp,
+                            "bills_count": 0
+                        }
+
+            # If not in Group Summary, check master closing balance
             return {
                 "name": ledger_name,
-                "raw_balance": str(total_val),
-                "val": total_val,
-                "abs_val": abs(total_val),
-                "drcr": "Dr" if total_val < 0 else ("Cr" if total_val > 0 else ""),
-                "is_nil": (total_val == 0.0),
+                "raw_balance": str(master_cl),
+                "val": master_cl,
+                "abs_val": abs(master_cl),
+                "drcr": "Dr" if master_cl < 0 else ("Cr" if master_cl > 0 else ""),
+                "is_nil": (master_cl == 0.0),
                 "is_dated": True,
                 "as_of_date": to_disp,
-                "bills_count": len(bills)
+                "bills_count": 0
             }
         except Exception:
             ledgers = self.fetch_ledgers(company_name, port)
