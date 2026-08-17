@@ -24,9 +24,9 @@ import urllib3                  # IMPORT RATIONALE: Catch chunk-level protocol a
 import xml.etree.ElementTree as ET # IMPORT RATIONALE: Python's standard library XML parser. Used in streaming `iterparse` mode to avoid DOM memory leaks.
 from datetime import datetime, timedelta # IMPORT RATIONALE: Critical for relative date math, historical reference date calculations, and age calculations.
 
-DEFAULT_HTTP_TIMEOUT = (0.5, 4.0)   # (connect_timeout_sec, read_timeout_sec) for localhost IPC
-DEFAULT_STREAM_TIMEOUT = (0.5, 6.0) # (connect_timeout_sec, read_timeout_sec) for streaming
-CHUNK_SOCKET_TIMEOUT = 3.5          # Max wait per 8KB chunk during XML stream reading
+DEFAULT_HTTP_TIMEOUT = (0.5, 6.0)   # (connect_timeout_sec, read_timeout_sec) for localhost IPC
+DEFAULT_STREAM_TIMEOUT = (0.5, 25.0) # (connect_timeout_sec, read_timeout_sec) for heavy global bill streaming
+CHUNK_SOCKET_TIMEOUT = 5.0          # Max wait per 8KB chunk during XML stream reading
 
 class TallyConnectionError(ConnectionError):
     """Raised when TallyPrime crashes, closes socket unexpectedly, or fails to respond."""
@@ -859,14 +859,124 @@ class TallyClient:
 
         return vouchers
 
-    def fetch_party_outstandings(self, company_name: str, port: int, report_type: str = "Receivables", from_date: str = None, to_date: str = None, max_limit: int = 200) -> dict:
+    def fetch_party_outstandings(self, company_name: str, port: int, report_type: str = "Receivables", from_date: str = None, to_date: str = None, max_limit: int = 200, party_filter: str = None) -> dict:
         """
-        Sub-50ms Party-Wise Outstandings query using Tally C++ native Ledger Collection.
-        Computes grand total outstanding in C++ memory AS OF the specified SVTODATE and streams top 200 parties over HTTP in ~46 ms.
+        Party-Wise Outstandings & Historical Balance query.
+        When to_date is provided, uses Tally C++ native 'Group Summary' engine to calculate
+        exact point-in-time opening + debit/credit voucher movements strictly up to to_date.
+        When to_date is None, uses fast in-memory Ledger collection for instant live balances.
         """
         is_all = report_type in ["All", "Outstandings", "Both", "Party-Wise Outstandings"]
         is_rec = report_type in ["Receivable", "Receivables"]
+        is_pay = not is_all and not is_rec
         
+        group_map = self.get_group_hierarchy_map(company_name, port)
+        known_groups = {g.lower().strip() for g in group_map.keys()}
+
+        # ----------------------------------------------------------------------
+        # BRANCH A: DATED POINT-IN-TIME CALCULATION VIA GROUP SUMMARY ENGINE
+        # ----------------------------------------------------------------------
+        if to_date:
+            to_p = self._parse_date(to_date)
+            t_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else to_date
+            from_p = self._parse_date(from_date) if from_date else datetime(1900, 1, 1)
+            f_str = from_p.strftime("%Y%m%d") if from_p != datetime.min else "19000101"
+            
+            target_groups = []
+            if is_rec or is_all:
+                target_groups.append("Sundry Debtors")
+                for g in group_map.keys():
+                    if self.is_group_under(g.lower(), "sundry debtors", group_map) or self.is_group_under(g.lower(), "trade receivables", group_map):
+                        if g not in target_groups:
+                            target_groups.append(g)
+                            
+            if is_pay or is_all:
+                target_groups.append("Sundry Creditors")
+                for g in group_map.keys():
+                    if self.is_group_under(g.lower(), "sundry creditors", group_map) or self.is_group_under(g.lower(), "trade payables", group_map):
+                        if g not in target_groups:
+                            target_groups.append(g)
+                            
+            party_dict = {}
+            scanned_groups = set()
+            
+            for grp in target_groups:
+                grp_clean = grp.strip()
+                if grp_clean.lower() in scanned_groups:
+                    continue
+                scanned_groups.add(grp_clean.lower())
+                
+                escaped_grp = grp_clean.replace("&", "&amp;")
+                payload = f"""<ENVELOPE>
+    <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Data</TYPE><ID>Group Summary</ID></HEADER>
+    <BODY>
+        <DESC>
+            <STATICVARIABLES>
+                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
+                <GROUPNAME>{escaped_grp}</GROUPNAME>
+                <EXPLODEFLAG>Yes</EXPLODEFLAG>
+                <ISITEMWISE>Yes</ISITEMWISE>
+                <SVFROMDATE>{f_str}</SVFROMDATE>
+                <SVTODATE>{t_str}</SVTODATE>
+            </STATICVARIABLES>
+        </DESC>
+    </BODY>
+</ENVELOPE>"""
+                try:
+                    raw = self.execute_xml_request(port, payload, timeout=(0.5, 6.0))
+                    cleaned = self.clean_xml(raw)
+                    root = ET.fromstring(cleaned)
+                    acc_names = root.findall(".//DSPACCNAME/DSPDISPNAME")
+                    acc_infos = root.findall(".//DSPACCINFO")
+                    
+                    for name_elem, info_elem in zip(acc_names, acc_infos):
+                        p_name = name_elem.text.strip() if name_elem.text else ""
+                        if not p_name:
+                            continue
+                        # Skip if the item is a sub-group (not an individual party ledger)
+                        if p_name.lower() in known_groups:
+                            continue
+                        if party_filter and party_filter.lower() != p_name.lower():
+                            continue
+                        
+                        dr_elem = info_elem.find(".//DSPCLDRAMTA")
+                        cr_elem = info_elem.find(".//DSPCLCRAMTA")
+                        dr_val = abs(float(dr_elem.text)) if (dr_elem is not None and dr_elem.text) else 0.0
+                        cr_val = abs(float(cr_elem.text)) if (cr_elem is not None and cr_elem.text) else 0.0
+                        
+                        if dr_val > 0:
+                            if is_pay and not is_all:
+                                continue
+                            party_dict[p_name] = {
+                                "party": p_name,
+                                "parent": grp_clean,
+                                "amount": dr_val,
+                                "type": "Dr"
+                            }
+                        elif cr_val > 0:
+                            if is_rec and not is_all:
+                                continue
+                            party_dict[p_name] = {
+                                "party": p_name,
+                                "parent": grp_clean,
+                                "amount": cr_val,
+                                "type": "Cr"
+                            }
+                except Exception:
+                    pass
+                    
+            party_list = list(party_dict.values())
+            party_list.sort(key=lambda x: x["amount"], reverse=True)
+            return {
+                "total_outstanding": sum(p["amount"] for p in party_list),
+                "total_party_count": len(party_list),
+                "parties": party_list[:max_limit]
+            }
+
+        # ----------------------------------------------------------------------
+        # BRANCH B: FAST LIVE MASTER LEDGER COLLECTION (NON-DATED)
+        # ----------------------------------------------------------------------
         if is_all:
             group_name = "Sundry Debtors"
             filter_name = "AllOutstandingsFilter"
@@ -882,14 +992,6 @@ class TallyClient:
             filter_name = "PayableFilter"
             filter_formula = "$$IsCredit:$ClosingBalance"
             group_belongs_formula = "$$IsBelongsTo:$$GroupSundryCreditors"
-        
-        date_vars = ""
-        if to_date:
-            to_p = self._parse_date(to_date)
-            t_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else to_date
-            from_p = self._parse_date(from_date) if from_date else datetime(1900, 1, 1)
-            f_str = from_p.strftime("%Y%m%d") if from_p != datetime.min else "19000101"
-            date_vars = f"\n                <SVFROMDATE>{f_str}</SVFROMDATE>\n                <SVTODATE>{t_str}</SVTODATE>"
 
         payload = f"""<ENVELOPE>
     <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Collection</TYPE><ID>PartyOutstandingsColl</ID></HEADER>
@@ -898,7 +1000,7 @@ class TallyClient:
             <STATICVARIABLES>
                 <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
                 <SVCOMPANY>{company_name}</SVCOMPANY>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>{date_vars}
+                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
             </STATICVARIABLES>
             <TDL>
                 <TDLMESSAGE>
@@ -924,15 +1026,7 @@ class TallyClient:
             cleaned = self.clean_xml(raw)
             root = ET.fromstring(cleaned)
             ledgers = root.findall(".//LEDGER")
-            
-            tot_elem = root.find(".//CLOSINGBALANCE")
-            tot_val = tot_elem.text if tot_elem is not None else "0"
-            try:
-                tot_float = abs(float(tot_val))
-            except:
-                tot_float = 0.0
-                
-            group_map = self.get_group_hierarchy_map(company_name, port)
+
             if is_all:
                 keywords = ["debtor", "receivable", "customer", "client", "creditor", "payable", "vendor", "supplier"]
             elif is_rec:
@@ -944,6 +1038,8 @@ class TallyClient:
             for l in ledgers:
                 p_name = l.attrib.get("NAME") or l.findtext("NAME") or ""
                 if not p_name: continue
+                if party_filter and party_filter.lower() != p_name.lower():
+                    continue
                 parent_grp = (l.findtext("PARENT") or "").strip()
                 parent_grp_lower = parent_grp.lower()
                 party_lower = p_name.strip().lower()

@@ -544,12 +544,14 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             try:
                 params = parsed.get("parameters", {})
                 resolved_ledger = parsed.get("resolved_ledger")
+                
+                # Route 1: Fast Master Ledger Summary Route
+                # Evaluates party balances when no specific single ledger or bill allocation is requested
                 is_party_summary = (not resolved_ledger) and ("bill" not in query.lower()) and ("invoice" not in query.lower()) and (intent in ["GET_RECEIVABLES", "GET_PAYABLES", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS"])
                 
-                # If target is due_date, we pull all bills and filter in python, so we don't pass f_date and t_date to TDL
-                date_target = parsed.get("parameters", {}).get("date_target", "bill_date")
-                tdl_f_date = None if date_target == "due_date" else f_date
-                tdl_t_date = None if date_target == "due_date" else (params.get("reference_date") or t_date)
+                # For party summary, ensure explicit reference_date or t_date is passed as cutoff
+                tdl_f_date = f_date
+                tdl_t_date = params.get("reference_date") or t_date
                 if is_party_summary:
                     q_lower = query.lower()
                     has_rec = any(w in q_lower for w in ["receivable", "debtor", "customer", "client"])
@@ -729,10 +731,42 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                         md.append("")
 
                 else: # GET_RECEIVABLES or GET_PAYABLES
-                    # Check for party summary report request
-                    is_party_summary = ("party" in query.lower() or "each" in query.lower() or "opening" in query.lower() or "balance" in query.lower()) and resolved_ledger and resolved_ledger.lower() in ["sundry creditors", "sundry debtors"]
+                    # Check for party summary report request (either group-level or dated general query without 'bill'/'invoice')
+                    is_party_dated_summary = (not resolved_ledger) and ("bill" not in query.lower()) and ("invoice" not in query.lower())
+                    is_group_party_summary = ("party" in query.lower() or "each" in query.lower() or "opening" in query.lower() or "balance" in query.lower()) and resolved_ledger and resolved_ledger.lower() in ["sundry creditors", "sundry debtors"]
                     
-                    if is_party_summary:
+                    if is_party_dated_summary:
+                        party_groups = {}
+                        for b in final_bills:
+                            p = b["party"]
+                            if p not in party_groups:
+                                party_groups[p] = {"pending": 0.0, "parent": b.get("parent_group", ""), "type": "Dr" if intent == "GET_RECEIVABLES" else "Cr"}
+                            try:
+                                p_val = abs(float(b.get("amount", 0) or 0.0))
+                                party_groups[p]["pending"] += p_val
+                            except:
+                                pass
+                        
+                        total_pending = sum(v["pending"] for v in party_groups.values())
+                        tot_parties = len(party_groups)
+                        r_label = "Receivables" if intent == "GET_RECEIVABLES" else "Payables"
+                        
+                        md = [
+                            f"### Analytical Report: Party-Wise {r_label} - {company_name} (Port {port})",
+                            f"**Total Outstanding:** ₹ {total_pending:,.2f} | **Total Parties Count:** {tot_parties:,}\n",
+                            "| Party Name | Group Lineage | Outstanding Balance | Type |",
+                            "| :--- | :--- | :--- | :---: |"
+                        ]
+                        display_limit = params.get("limit") if params.get("limit") else 25
+                        sorted_parties = sorted(party_groups.items(), key=lambda x: x[1]["pending"], reverse=True)
+                        for p, vals in sorted_parties[:display_limit]:
+                            md.append(f"| {p} | {vals['parent']} | ₹ {vals['pending']:,.2f} | {vals['type']} |")
+                            
+                        if len(sorted_parties) > display_limit:
+                            md.append(f"\n*(Showing top {display_limit} out of {tot_parties} parties)*")
+                        return "\n".join(md)
+                    
+                    elif is_group_party_summary:
                         party_groups = {}
                         for b in final_bills:
                             p = b["party"]
@@ -762,6 +796,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                             
                         if len(sorted_parties) > display_limit:
                             md.append(f"\n*(Showing top {display_limit} out of {len(sorted_parties)} parties)*")
+                        return "\n".join(md)
                     else:
                         tot_count = len(final_bills)
                         net_total = 0.0
