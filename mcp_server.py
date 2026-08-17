@@ -19,7 +19,7 @@ import time                     # IMPORT RATIONALE: High-precision execution mic
 import datetime                 # IMPORT RATIONALE: Date calculations for relative date filters (e.g. last 30 days, this week).
 import json                     # IMPORT RATIONALE: Actionable JSON handoff payloads for interactive CLI menus.
 from mcp.server.fastmcp import FastMCP # IMPORT RATIONALE: High-performance Anthropic FastMCP server framework.
-from tally_client import TallyClient   # IMPORT RATIONALE: Low-level TDL socket transport instance.
+from tally_client import TallyClient, TallyConnectionError   # IMPORT RATIONALE: Low-level TDL socket transport instance and crash exception.
 from nlp_engine import NLPEngine       # IMPORT RATIONALE: Hybrid ONNX/Regex NLU engine instance.
 from analytics_engine import AnalyticsEngine # IMPORT RATIONALE: Advanced financial analytics and delay scoring utilities.
 
@@ -157,7 +157,8 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         return f"Error: Could not establish connection to TallyPrime. Details: {e}"
 
     if not tally_client.routing_table:
-        return "Error: No active TallyPrime instances detected on ports 9000 or 9001. Please ensure TallyPrime is running and HTTP server is enabled."
+        port_range_str = f"{min(tally_client.ports)}-{max(tally_client.ports)}" if tally_client.ports else "configured ports"
+        return f"Error: No active TallyPrime instances detected on ports {port_range_str}. Please ensure TallyPrime is running and HTTP server is enabled."
 
     # Parse query through NLP engine
     try:
@@ -838,13 +839,21 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                             md.append(f"\n*(Showing {display_limit} out of {len(final_bills)} matching bills)*")
 
                 return "\n".join(md)
+            except TallyConnectionError as e:
+                return f"> ❌ **TallyPrime Connection Failed (Port {e.port})**\n> **Details**: {e.message}\n> **Action**: TallyPrime process appears to have crashed, closed its socket, or timed out. Please verify TallyPrime is running."
             except Exception as e:
                 return f"Error retrieving analytical data for {company_name}: {e}"
 
         return f"I understood the query but could not resolve an actionable intent. (Detected: {intent})"
 
     
-    result = _execute()
+    try:
+        result = _execute()
+    except TallyConnectionError as e:
+        return f"> ❌ **TallyPrime Connection Failed (Port {e.port})**\n> **Details**: {e.message}\n> **Action**: TallyPrime process appears to have crashed, closed its socket, or timed out. Please verify TallyPrime is running."
+    except Exception as e:
+        return f"Error executing query against Tally: {e}"
+
     if isinstance(result, str) and result.startswith("__AMBIGUITY__:"):
         return result
 

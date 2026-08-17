@@ -59,7 +59,8 @@ def main():
     
     client = TallyClient()
     if not client.routing_table:
-        print("ERROR: No active TallyPrime HTTP servers detected on ports 9000 or 9001.")
+        port_range_str = f"{min(client.ports)}-{max(client.ports)}" if client.ports else "configured ports"
+        print(f"ERROR: No active TallyPrime HTTP servers detected on ports {port_range_str}.")
         print("Please verify that TallyPrime is running and HTTP configuration is enabled.")
         sys.exit(1)
         

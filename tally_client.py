@@ -19,8 +19,21 @@
 import io                       # IMPORT RATIONALE: BytesIO memory buffer enables chunked streaming parsing without writing temporary files to disk.
 import re                       # IMPORT RATIONALE: Regular expressions for stripping invalid XML control codes, currency symbols, and numeric cleaning.
 import requests                 # IMPORT RATIONALE: Synchronous HTTP POST client used to send raw TDL XML Envelopes to Tally's local HTTP sockets.
+import socket                   # IMPORT RATIONALE: Low-level socket timeout management to avoid indefinite hangs on dead sockets.
+import urllib3                  # IMPORT RATIONALE: Catch chunk-level protocol and socket read timeouts during XML streaming.
 import xml.etree.ElementTree as ET # IMPORT RATIONALE: Python's standard library XML parser. Used in streaming `iterparse` mode to avoid DOM memory leaks.
 from datetime import datetime, timedelta # IMPORT RATIONALE: Critical for relative date math, historical reference date calculations, and age calculations.
+
+DEFAULT_HTTP_TIMEOUT = (0.5, 4.0)   # (connect_timeout_sec, read_timeout_sec) for localhost IPC
+DEFAULT_STREAM_TIMEOUT = (0.5, 6.0) # (connect_timeout_sec, read_timeout_sec) for streaming
+CHUNK_SOCKET_TIMEOUT = 3.5          # Max wait per 8KB chunk during XML stream reading
+
+class TallyConnectionError(ConnectionError):
+    """Raised when TallyPrime crashes, closes socket unexpectedly, or fails to respond."""
+    def __init__(self, port, message="TallyPrime process disconnected or stopped responding."):
+        self.port = port
+        self.message = message
+        super().__init__(f"[Port {port}] {message}")
 
 class TallyClient:
     """
@@ -260,16 +273,29 @@ class TallyClient:
         first_info = self.routing_table[first_key]
         return first_info["port"], first_info["name"], first_info.get("context", {})
 
-    def execute_xml_request(self, port, payload):
+    def _handle_dead_port(self, port):
+        """Purges dead/crashed port from active_ports, routing_table, and caches."""
+        if port in self.active_ports:
+            self.active_ports.discard(port)
+        dead_keys = [k for k, v in self.routing_table.items() if v.get("port") == port]
+        for k in dead_keys:
+            del self.routing_table[k]
+
+    def execute_xml_request(self, port, payload, timeout=DEFAULT_HTTP_TIMEOUT):
         """Sends an XML request to TallyPrime and returns the response text."""
         url = f"http://localhost:{port}"
         try:
-            response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=60)
+            response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=timeout)
             if response.status_code != 200:
                 raise IOError(f"Tally HTTP server returned status code {response.status_code}")
             return self.clean_xml(response.text)
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, 
+                ConnectionRefusedError, ConnectionResetError, socket.timeout) as e:
+            self._handle_dead_port(port)
+            raise TallyConnectionError(port, f"Connection failed or timed out: {e}")
         except requests.exceptions.RequestException as e:
-            raise ConnectionError(f"Failed to communicate with Tally on port {port}: {e}")
+            self._handle_dead_port(port)
+            raise TallyConnectionError(port, f"Failed to communicate with Tally on port {port}: {e}")
 
     def get_master_alter_id(self, company, port):
         """
@@ -1066,7 +1092,7 @@ class TallyClient:
         url = f"http://localhost:{port}"
         try:
             # 2. LIVE HTTP POST: Sends TDL request directly to http://localhost:<port>
-            response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=120, stream=True)
+            response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=DEFAULT_STREAM_TIMEOUT, stream=True)
             if response.status_code != 200:
                 raise IOError(f"Tally HTTP server returned status code {response.status_code}")
                 
@@ -1079,7 +1105,15 @@ class TallyClient:
             #   characters on-the-fly without buffering the entire payload into RAM memory.
             # ==================================================================
             class SanitizedStream:
-                def __init__(self, response):
+                def __init__(self, response, timeout_sec=CHUNK_SOCKET_TIMEOUT):
+                    # Force low-level socket read timeout on underlying TCP stream
+                    try:
+                        if hasattr(response.raw, '_fp') and hasattr(response.raw._fp, 'fp'):
+                            raw_sock = getattr(response.raw._fp.fp, 'raw', None)
+                            if raw_sock and hasattr(raw_sock, '_sock') and raw_sock._sock:
+                                raw_sock._sock.settimeout(timeout_sec)
+                    except Exception:
+                        pass
                     # Reads HTTP stream in optimal 8KB chunks directly from requests socket stream
                     self.iterator = response.iter_content(chunk_size=8192, decode_unicode=False)
                     self.byte_buffer = b""
@@ -1089,10 +1123,20 @@ class TallyClient:
                     # Regex to find illegal control character entities like &#4; or &#x04;
                     self.entity_regex = re.compile(b'&#(\\d+);|&#x([0-9a-fA-F]+);')
 
+                def _next_chunk(self):
+                    try:
+                        return next(self.iterator)
+                    except (socket.timeout, urllib3.exceptions.ReadTimeoutError, requests.exceptions.ChunkedEncodingError) as err:
+                        raise TallyConnectionError(port, f"Socket read timeout / stream aborted midway: {err}")
+                    except StopIteration:
+                        raise
+                    except Exception as err:
+                        raise TallyConnectionError(port, f"Stream socket error: {err}")
+
                 def read(self, size=-1):
                     while size > 0 and len(self.byte_buffer) < size:
                         try:
-                            chunk = next(self.iterator)
+                            chunk = self._next_chunk()
                             self.byte_buffer += chunk
                         except StopIteration:
                             break
@@ -1104,7 +1148,7 @@ class TallyClient:
                         chunks = []
                         try:
                             while True:
-                                chunks.append(next(self.iterator))
+                                chunks.append(self._next_chunk())
                         except StopIteration:
                             pass
                         chunk_to_process = b"".join(chunks)
@@ -1248,6 +1292,13 @@ class TallyClient:
                 "total_payables_sum": total_matched_payables_sum
             }
             return (bills, bills_summary)
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout, 
+                ConnectionRefusedError, ConnectionResetError, socket.timeout, urllib3.exceptions.ReadTimeoutError) as e:
+            self._handle_dead_port(port)
+            raise TallyConnectionError(port, f"Connection to Tally failed or timed out during bill streaming: {e}")
+        except TallyConnectionError:
+            self._handle_dead_port(port)
+            raise
         except Exception as e:
             print(f"Error streaming bills from Tally: {e}")
             return ([], {"total_count": 0, "total_receivables_sum": 0.0, "total_payables_sum": 0.0})
