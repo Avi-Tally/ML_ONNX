@@ -195,7 +195,7 @@ class TallyClient:
     </BODY>
 </ENVELOPE>"""
             try:
-                response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(0.5, 1.5))
+                response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(1.0, 3.0))
                 if response.status_code == 200:
                     cleaned_xml = self.clean_xml(response.text)
                     root = ET.fromstring(cleaned_xml)
@@ -566,6 +566,108 @@ class TallyClient:
                 ledgers[name.strip()] = bal.strip()
                 
         return ledgers
+
+    def fetch_ledger_dated_balance(self, company_name: str, port: int, ledger_name: str, reference_date: str = None) -> dict:
+        """
+        Fetches the exact point-in-time closing balance for a single ledger as of reference_date.
+        Uses fast indexed native Bills Collection (14ms) for bill-wise debtor/creditor accounts,
+        with fallback to master closing balance.
+        """
+        if not reference_date:
+            ledgers = self.fetch_ledgers(company_name, port)
+            raw_bal = ledgers.get(ledger_name, "0.00")
+            try:
+                val = float(raw_bal)
+            except:
+                val = 0.0
+            return {
+                "name": ledger_name,
+                "raw_balance": raw_bal,
+                "val": val,
+                "abs_val": abs(val),
+                "drcr": "Dr" if val < 0 else ("Cr" if val > 0 else ""),
+                "is_nil": (val == 0.0),
+                "is_dated": False,
+                "as_of_date": None
+            }
+
+        to_p = self._parse_date(reference_date)
+        to_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else reference_date
+        to_disp = to_p.strftime("%d-%b-%Y") if to_p != datetime.min else reference_date
+        escaped_party = ledger_name.replace("&", "&amp;").replace('"', '&quot;')
+        
+        payload = f"""<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Export</TALLYREQUEST>
+    <TYPE>Collection</TYPE>
+    <ID>FastBillsDated</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+        <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
+        <SVCURRENTDATE>{to_str}</SVCURRENTDATE>
+      </STATICVARIABLES>
+      <TDL>
+        <TDLMESSAGE>
+          <COLLECTION NAME="FastBillsDated">
+            <TYPE>Bills</TYPE>
+            <CHILDOF>"{escaped_party}"</CHILDOF>
+            <FETCH>Name, BillDate, ClosingBalance, OpeningBalance</FETCH>
+            <FILTER>DatedBillFilter</FILTER>
+          </COLLECTION>
+          <SYSTEM TYPE="Formulae" NAME="DatedBillFilter">
+            $BillDate &lt;= $$Date:"{to_str}"
+          </SYSTEM>
+        </TDLMESSAGE>
+      </TDL>
+    </DESC>
+  </BODY>
+</ENVELOPE>"""
+        try:
+            resp = self.execute_xml_request(port, payload, timeout=10)
+            cleaned = self.clean_xml(resp)
+            root = ET.fromstring(cleaned)
+            bills = root.findall(".//BILL")
+            
+            total_val = 0.0
+            for b in bills:
+                b_cl = b.findtext("CLOSINGBALANCE") or "0.00"
+                try:
+                    total_val += float(b_cl)
+                except:
+                    pass
+                    
+            return {
+                "name": ledger_name,
+                "raw_balance": str(total_val),
+                "val": total_val,
+                "abs_val": abs(total_val),
+                "drcr": "Dr" if total_val < 0 else ("Cr" if total_val > 0 else ""),
+                "is_nil": (total_val == 0.0),
+                "is_dated": True,
+                "as_of_date": to_disp,
+                "bills_count": len(bills)
+            }
+        except Exception:
+            ledgers = self.fetch_ledgers(company_name, port)
+            raw_bal = ledgers.get(ledger_name, "0.00")
+            try:
+                val = float(raw_bal)
+            except:
+                val = 0.0
+            return {
+                "name": ledger_name,
+                "raw_balance": raw_bal,
+                "val": val,
+                "abs_val": abs(val),
+                "drcr": "Dr" if val < 0 else ("Cr" if val > 0 else ""),
+                "is_nil": (val == 0.0),
+                "is_dated": False,
+                "as_of_date": to_disp
+            }
 
     def fetch_trial_balance(self, company_name, port):
         """Fetches the Trial Balance report."""
@@ -1119,6 +1221,11 @@ class TallyClient:
             filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="DateFilter">
                         $BillDate &gt;= $$Date:"{f_date_clean}" AND $BillDate &lt;= $$Date:"{t_date_clean}"
                     </SYSTEM>""")
+        elif ref_date_formatted:
+            filter_names.append("DateFilter")
+            filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="DateFilter">
+                        $BillDate &lt;= $$Date:"{ref_date_formatted}"
+                    </SYSTEM>""")
                     
         if status_filter == "pending":
             filter_names.append("OutstandingFilter")
@@ -1137,13 +1244,20 @@ class TallyClient:
                         $$IsCredit:$ClosingBalance
                     </SYSTEM>""")
 
+        if ledger_filter:
+            filter_names.append("SingleLedgerFilter")
+            escaped_ledger = ledger_filter.replace('&', '&amp;').replace('"', '&quot;')
+            filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="SingleLedgerFilter">
+                        $Parent = "{escaped_ledger}"
+                    </SYSTEM>""")
+
         date_filter_tag = ""
         date_filter_def = ""
         if filter_names:
             date_filter_tag = f"<FILTERS>{', '.join(filter_names)}</FILTERS>"
             date_filter_def = "\n                    ".join(filter_defs)
             
-        childname_tag = f"\n                        <CHILDNAME>{ledger_filter}</CHILDNAME>" if ledger_filter else ""
+        childname_tag = ""
             
         pdc_vars = ""
         if exclude_pdc:

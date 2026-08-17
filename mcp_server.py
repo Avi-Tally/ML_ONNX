@@ -200,6 +200,32 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # ======================================================================
+        # INTERCEPTOR 0.5: Mandatory Date Clarification Guardrail
+        # PURPOSE:
+        #   A date or reporting period is mandatory for all accounting queries.
+        #   If no date is found, prompt the user with supported date syntax options.
+        # ======================================================================
+        has_explicit_date_input = bool(
+            parsed.get("parameters", {}).get("reference_date") or 
+            parsed.get("parameters", {}).get("date_filter") or
+            any(w in query.lower() for w in ["today", "yesterday", "this month", "last month", "this year", "last year", "fy", "current date", "as of", "till today", "till date"])
+        )
+        if not has_explicit_date_input and intent in ["GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "GET_LEDGER_BALANCE", "GET_TRIAL_BALANCE"]:
+            payload = {
+                "type": "DATE_SELECTION",
+                "prompt": f"[{company_name or 'Accounting Query'}] Please specify a date or reporting period using one of the supported formats:",
+                "options": [
+                    "As of Specific Date (Formats: '11aug17', '11 aug 17', '11-aug-17', '11-08-2017', '11/8/17', '2017-08-11')",
+                    "For Fiscal Year (e.g. 'for FY 17-18', 'FY 2017-2018', '2017-18')",
+                    "For Month (e.g. 'in Aug 2017', 'August 2017', 'this month')",
+                    "For Custom Date Range (e.g. 'from 01-Apr-2017 to 11-Aug-2017')",
+                    "As of Today (Live Balance snapshot)"
+                ],
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
+
+        # ======================================================================
         # INTERCEPTOR 1: Multi-Ledger Ambiguity Guardrail
         # PURPOSE:
         #   If a query contains a short or generic party name (e.g., 'Reliance'),
@@ -211,6 +237,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 "type": "LEDGER_SELECTION",
                 "prompt": f"[{company_name}] I found multiple accounts matching '{extracted}'. Did you mean:",
                 "options": parsed["ambiguous_candidates"],
+                "extracted": extracted,
                 "original_query": query
             }
             return f"__AMBIGUITY__:{json.dumps(payload)}"
@@ -373,26 +400,36 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 except Exception:
                     return f"[{company_name}] Could not find ledger matching '{extracted}'."
 
-            # Format closing balance nicely
-            # Tally balance formats can be: negative number or empty or trailing Dr/Cr
-            bal_str = str(balance).strip()
-            if not bal_str or bal_str == "0.00":
-                display_balance = "Nil (0.00)"
+            ref_date = parsed.get("parameters", {}).get("reference_date")
+            if ref_date:
+                dated_res = tally_client.fetch_ledger_dated_balance(company_name, port, resolved, reference_date=ref_date)
+                if dated_res["is_nil"] or dated_res["abs_val"] == 0.0:
+                    display_balance = "Nil (0.00)"
+                else:
+                    drcr_label = f"({dated_res['drcr']}/Receivable)" if dated_res['drcr'] == "Dr" else f"({dated_res['drcr']}/Payable)"
+                    display_balance = f"₹ {dated_res['abs_val']:,.2f} {drcr_label}"
+                date_info = f" as of **{dated_res['as_of_date']}**"
             else:
-                try:
-                    bal_val = float(bal_str)
-                    abs_val = abs(bal_val)
-                    if bal_val < 0:
-                        display_balance = f"₹ {abs_val:,.2f} (Cr/Payable)"
-                    else:
-                        display_balance = f"₹ {abs_val:,.2f} (Dr/Receivable)"
-                except:
-                    if bal_str.startswith("-"):
-                        display_balance = f"₹ {bal_str.lstrip('-')} (Cr/Payable)"
-                    else:
-                        display_balance = f"₹ {bal_str} (Dr/Receivable)"
+                # Format live closing balance nicely
+                bal_str = str(balance).strip()
+                if not bal_str or bal_str == "0.00":
+                    display_balance = "Nil (0.00)"
+                else:
+                    try:
+                        bal_val = float(bal_str)
+                        abs_val = abs(bal_val)
+                        if bal_val < 0:
+                            display_balance = f"₹ {abs_val:,.2f} (Dr/Receivable)"
+                        else:
+                            display_balance = f"₹ {abs_val:,.2f} (Cr/Payable)"
+                    except:
+                        if bal_str.startswith("-"):
+                            display_balance = f"₹ {bal_str.lstrip('-')} (Dr/Receivable)"
+                        else:
+                            display_balance = f"₹ {bal_str} (Cr/Payable)"
+                date_info = ""
 
-            return f"In **{company_name}** (Port `{port}`), the closing balance for **{resolved}** is **{display_balance}**.\n*(Resolved from query '{extracted}' with {score:.1f}% confidence)*"
+            return f"In **{company_name}** (Port `{port}`), the closing balance for **{resolved}**{date_info} is **{display_balance}**.\n*(Resolved from query '{extracted}' with {score:.1f}% confidence)*"
 
         # 3. GET_TRIAL_BALANCE
         elif intent == "GET_TRIAL_BALANCE":

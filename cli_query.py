@@ -1,6 +1,15 @@
 import os
 import sys
+import io
 import json
+import re
+
+# Ensure UTF-8 output encoding across Windows PowerShell and CMD
+if hasattr(sys.stdout, 'buffer'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+if hasattr(sys.stderr, 'buffer'):
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 from mcp_server import query_tally
 from tally_client import TallyClient
 
@@ -34,19 +43,46 @@ def execute_with_interactivity(query: str) -> str:
                     if 0 <= idx < len(options):
                         selected = options[idx]
                         if amb_type == "COMPANY_SELECTION":
-                            current_query = f"{current_query} for {selected}"
+                            current_query = f"{current_query} $C({selected})"
                         elif amb_type == "LEDGER_SELECTION":
-                            current_query = f"{current_query} for {selected}"
+                            extracted = payload.get("extracted") or ""
+                            if extracted and extracted.lower() in current_query.lower():
+                                pattern = re.compile(re.escape(extracted), re.IGNORECASE)
+                                current_query = pattern.sub(f"$L({selected})", current_query, count=1)
+                            else:
+                                current_query = f"{current_query} $L({selected})"
                         elif amb_type == "DIRECTIONAL_SELECTION":
                             if "payable" in selected.lower():
                                 current_query = f"{current_query} payables"
                             else:
                                 current_query = f"{current_query} receivables"
+                        elif amb_type == "DATE_SELECTION":
+                            if "today" in selected.lower():
+                                current_query = f"{current_query} as of today"
+                            elif "specific date" in selected.lower():
+                                user_date = input("Enter specific date (e.g. 11-Aug-2017): ").strip()
+                                current_query = f"{current_query} on {user_date}"
+                            elif "fiscal year" in selected.lower():
+                                user_fy = input("Enter fiscal year (e.g. FY 17-18): ").strip()
+                                current_query = f"{current_query} for {user_fy}"
+                            elif "month" in selected.lower():
+                                user_month = input("Enter month (e.g. Aug 2017): ").strip()
+                                current_query = f"{current_query} in {user_month}"
+                            elif "custom" in selected.lower() or "range" in selected.lower():
+                                user_range = input("Enter date range (e.g. from 01-Apr-2017 to 11-Aug-2017): ").strip()
+                                current_query = f"{current_query} {user_range}"
+                        print(f"--> Re-submitting query: '{current_query}'")
+                        continue
+                else:
+                    # Allow user to directly type their date or clarification text
+                    if amb_type == "DATE_SELECTION":
+                        current_query = f"{current_query} {choice}"
                         print(f"--> Re-submitting query: '{current_query}'")
                         continue
                 print("Invalid selection. Please try again.")
                 continue
             except Exception as e:
+                print(f"[Ambiguity Handler Error]: {e}")
                 return response
         else:
             return response

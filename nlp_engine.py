@@ -78,9 +78,7 @@ class NLPEngine:
             self.pdc_only_session = None
             self.include_cleared_session = None
             self.intent_session = None
-            self.group_name_session = None
             self.gst_status_session = None
-            self.godown_name_session = None
             try:
                 self.status_session = ort.InferenceSession(os.path.join(param_models_dir, 'status_filter_model.onnx'))
                 self.date_target_session = ort.InferenceSession(os.path.join(param_models_dir, 'date_target_model.onnx'))
@@ -90,9 +88,7 @@ class NLPEngine:
                 self.tax_filter_session = ort.InferenceSession(os.path.join(param_models_dir, 'tax_filter_model.onnx'))
                 self.pdc_only_session = ort.InferenceSession(os.path.join(param_models_dir, 'pdc_only_model.onnx'))
                 self.include_cleared_session = ort.InferenceSession(os.path.join(param_models_dir, 'include_cleared_model.onnx'))
-                self.group_name_session = ort.InferenceSession(os.path.join(param_models_dir, 'group_name_model.onnx'))
                 self.gst_status_session = ort.InferenceSession(os.path.join(param_models_dir, 'gst_status_model.onnx'))
-                self.godown_name_session = ort.InferenceSession(os.path.join(param_models_dir, 'godown_name_model.onnx'))
             except Exception as e:
                 print(f"Warning: Param ONNX models not found ({e}). Falling back to heuristic rules.")
         except Exception as e:
@@ -168,7 +164,7 @@ class NLPEngine:
                 continue
 
             try:
-                pattern = r'\b' + re.escape(name_lower) + r'\b'
+                pattern = r'(?<![a-zA-Z0-9])' + re.escape(name_lower) + r'(?![a-zA-Z0-9])'
                 match = re.search(pattern, query_lower)
                 if match:
                     pos = match.start()
@@ -193,11 +189,11 @@ class NLPEngine:
             exact_clean = best_exact_name.lower().strip()
             score = 100.0
             if len(exact_clean.split()) <= 2:
-                ambig_matches = []
+                ambig_matches = [best_exact_name]
                 for lname in ledger_names:
-                    if lname.lower() in system_vtypes:
+                    if lname.lower() in system_vtypes or lname.lower() == exact_clean:
                         continue
-                    if re.search(r'\b' + re.escape(exact_clean) + r'\b', lname.lower()):
+                    if re.search(r'(?<![a-zA-Z0-9])' + re.escape(exact_clean) + r'(?![a-zA-Z0-9])', lname.lower()):
                         ambig_matches.append(lname)
                 if len(ambig_matches) > 1:
                     return None, score, ambig_matches[:4], 1
@@ -355,6 +351,9 @@ class NLPEngine:
         if hasattr(self, 'intent_session') and self.intent_session:
             ml_intent, conf = self.predict_param(self.intent_session, query)
             if ml_intent:
+                # Guard against false positive trial balance when 'trial' or 'tb' is absent
+                if ml_intent == "GET_TRIAL_BALANCE" and not any(w in q_lower for w in ["trial", "tb"]):
+                    return "GET_LEDGER_BALANCE"
                 return ml_intent
         return "GET_LEDGER_BALANCE"
 
@@ -793,16 +792,35 @@ class NLPEngine:
                     if not bool(re.search(r'\b(list|show|all).*bills\b', q_lower)) and not bool(re.search(r'oldest.*bill', q_lower)) and "bill amount" not in q_lower:
                         params["is_bill_query"] = False
                         
-        # 3. Explicit Reference Dates (Supports spaced, hyphenated, and unspaced formats like '1 apr17' or '10aug17')
-        ref_match = re.search(r"(?:on|as of|as on|till)\s+(\d{1,2})[-/\s]*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*(\d{2,4})", q_lower)
-        numeric_ref_match = re.search(r"(?:on|as of|as on|till)\s+(\d{1,2})[-/\s]+(\d{1,2})[-/\s]+(\d{2,4})", q_lower)
+        # 3. Explicit Reference Dates (Supports spaced, hyphenated, numeric, ISO, and unspaced formats like '11aug17', '11 aug 17', '11-08-2017', '2017-08-11')
+        ref_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{1,2})[-/\s]*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*(\d{2,4})\b", q_lower)
+        month_first_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]+(\d{1,2})(?:st|nd|rd|th)?(?:,)?[-/\s]+(\d{2,4})\b", q_lower)
+        numeric_ref_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{1,2})[-/. ]+(\d{1,2})[-/. ]+(\d{2,4})\b", q_lower)
+        iso_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{4})[-/. ]+(\d{1,2})[-/. ]+(\d{1,2})\b", q_lower)
+
+        full_month_map = {'jan': 'Jan', 'feb': 'Feb', 'mar': 'Mar', 'apr': 'Apr', 'may': 'May', 'jun': 'Jun', 
+                          'jul': 'Jul', 'aug': 'Aug', 'sep': 'Sep', 'oct': 'Oct', 'nov': 'Nov', 'dec': 'Dec',
+                          'january': 'Jan', 'february': 'Feb', 'march': 'Mar', 'april': 'Apr', 'june': 'Jun',
+                          'july': 'Jul', 'august': 'Aug', 'september': 'Sep', 'october': 'Oct', 'november': 'Nov', 'december': 'Dec'}
+        num_month_map = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 
+                         7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
+
         if ref_match:
             try:
                 day = int(ref_match.group(1))
-                month_str = ref_match.group(2)[:3].title()
+                m_key = ref_match.group(2).lower()
+                month_str = full_month_map.get(m_key, m_key[:3].title())
                 year = int(ref_match.group(3))
-                if year < 100:
-                    year = 2000 + year
+                if year < 100: year = 2000 + year
+                params["reference_date"] = f"{day:02d}-{month_str}-{year}"
+            except: pass
+        elif month_first_match:
+            try:
+                m_key = month_first_match.group(1).lower()
+                month_str = full_month_map.get(m_key, m_key[:3].title())
+                day = int(month_first_match.group(2))
+                year = int(month_first_match.group(3))
+                if year < 100: year = 2000 + year
                 params["reference_date"] = f"{day:02d}-{month_str}-{year}"
             except: pass
         elif numeric_ref_match:
@@ -810,12 +828,17 @@ class NLPEngine:
                 day = int(numeric_ref_match.group(1))
                 month_idx = int(numeric_ref_match.group(2))
                 year = int(numeric_ref_match.group(3))
-                if year < 100:
-                    year = 2000 + year
-                month_map = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 
-                             7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
-                if month_idx in month_map:
-                    params["reference_date"] = f"{day:02d}-{month_map[month_idx]}-{year}"
+                if year < 100: year = 2000 + year
+                if month_idx in num_month_map:
+                    params["reference_date"] = f"{day:02d}-{num_month_map[month_idx]}-{year}"
+            except: pass
+        elif iso_match:
+            try:
+                year = int(iso_match.group(1))
+                month_idx = int(iso_match.group(2))
+                day = int(iso_match.group(3))
+                if month_idx in num_month_map:
+                    params["reference_date"] = f"{day:02d}-{num_month_map[month_idx]}-{year}"
             except: pass
 
         if params.get("reference_date") and any(w in q_lower for w in ["till", "up to"]):
@@ -881,38 +904,83 @@ class NLPEngine:
         query_clean = query.strip()
         query_lower = query_clean.lower()
         
-        # 1. Identify which company/port is explicitly mentioned in the query
+        # 1. Multi-Entity Marker Syntax Support: $C(CompanyName) and $L(LedgerName)
         detected_company_key = None
         detected_identifier = None
+        explicit_ledger = None
         
-        # Build dynamic short-name identifiers from the routing table
-        dynamic_identifiers = {}
-        for key in self.tally_client.routing_table.keys():
-            words = [w for w in key.split() if w not in ["data", "for", "user", "activity", "materials", "pvt", "ltd", "limited", "corp", "co", "private"]]
-            if len(words) >= 2:
-                dynamic_identifiers[" ".join(words[:2])] = key
-                dynamic_identifiers[words[0]] = key
-                dynamic_identifiers[words[1]] = key
-            elif len(words) == 1:
-                dynamic_identifiers[words[0]] = key
-                
-        # Sort identifiers by length desc to match longest first
-        for identifier, full_key in sorted(dynamic_identifiers.items(), key=lambda x: len(x[0]), reverse=True):
-            if identifier in query_lower:
-                detected_company_key = full_key
-                detected_identifier = identifier
-                break
-                
-        # Remove the company name/identifier from the query so it doesn't interfere with ledger name extraction
-        query_without_company = query_clean
-        if detected_company_key:
-            pattern = re.compile(re.escape(detected_company_key), re.IGNORECASE)
-            query_without_company = pattern.sub("", query_without_company)
-        if detected_identifier:
-            pattern = re.compile(re.escape(detected_identifier), re.IGNORECASE)
-            query_without_company = pattern.sub("", query_without_company)
+        c_match = re.search(r'\$C\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if c_match:
+            raw_c = c_match.group(1).strip().lower()
+            if self.tally_client.routing_table:
+                matches = process.extract(raw_c, list(self.tally_client.routing_table.keys()), scorer=fuzz.token_set_ratio, limit=1)
+                if matches and matches[0][1] >= 65:
+                    detected_company_key = matches[0][0]
+                    detected_identifier = c_match.group(0)
+            query_clean = re.sub(r'\$C\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
             
-        query_without_company = query_without_company.strip()
+        l_match = re.search(r'\$L\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if l_match:
+            explicit_ledger = l_match.group(1).strip()
+            query_clean = re.sub(r'\$L\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        # 2. Fuzzy Window Matching for Company if not explicitly tagged with $C(...)
+        company_stop_words = {"for", "data", "user", "activity", "materials", "pvt", "ltd", "limited", "corp", "co", "private", "in", "on", "of", "to", "at", "the", "and", "by", "from", "show", "pending", "bills", "get", "what", "is", "balance"}
+        
+        if not detected_company_key and self.tally_client.routing_table:
+            words = query_clean.split()
+            company_keys = list(self.tally_client.routing_table.keys())
+            best_company = None
+            best_score = 0.0
+            best_w_len = 0
+            best_window = None
+            
+            for n in range(min(6, len(words)), 0, -1):
+                for i in range(len(words) - n + 1):
+                    window = " ".join(words[i:i+n])
+                    w_lower = window.lower().strip()
+                    non_stop = [w for w in w_lower.split() if w not in company_stop_words and len(w) > 2]
+                    if not non_stop:
+                        continue
+                        
+                    w_tokens = set(w_lower.split())
+                    w_len = len(w_tokens)
+                    
+                    matches = process.extract(w_lower, company_keys, scorer=fuzz.token_set_ratio, limit=3)
+                    if matches:
+                        for m in matches:
+                            comp_key = m[0]
+                            raw_score = m[1]
+                            c_tokens = set(comp_key.split())
+                            overlap = len(w_tokens.intersection(c_tokens))
+                            if overlap == 0:
+                                partial = any(any(w in c for c in c_tokens) for w in w_tokens if w not in company_stop_words and len(w) > 3)
+                                if not partial:
+                                    continue
+                                overlap = 0.8
+                                
+                            coverage = overlap / w_len
+                            score = raw_score * coverage
+                            
+                            if score > best_score or (score == best_score and w_len > best_w_len):
+                                best_score = score
+                                best_w_len = w_len
+                                best_company = comp_key
+                                best_window = window
+                                
+            if best_score >= 60.0:
+                detected_company_key = best_company
+                detected_identifier = best_window
+                
+        # Cleanly strip matched company from query
+        query_without_company = query_clean
+        if detected_identifier and not c_match:
+            pattern = re.compile(r'\b' + re.escape(detected_identifier) + r'\b', re.IGNORECASE)
+            query_without_company = pattern.sub("", query_without_company).strip()
+            query_without_company = re.sub(r'\b(?:for|in|from|of|at|comp|company)\s*$', '', query_without_company, flags=re.IGNORECASE).strip()
+            query_without_company = re.sub(r'^\s*(?:for|in|from|of|at)\b', '', query_without_company, flags=re.IGNORECASE).strip()
+            
+        query_without_company = re.sub(r'\s+', ' ', query_without_company).strip()
 
         # Check for group-wise breakdown target
         group_breakdown = False
@@ -963,6 +1031,9 @@ class NLPEngine:
                 
                 # For debugging, construct a rough extracted_ledger
                 temp_query = query_without_company.lower()
+                temp_query = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/\s]*(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*\d{2,4}\b', ' ', temp_query)
+                temp_query = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/. ]+\d{1,2}[-/. ]+\d{2,4}\b', ' ', temp_query)
+                temp_query = re.sub(r'\b\d{1,2}[a-z]{3}\d{2,4}\b', ' ', temp_query)
                 for phrase in sorted(self.stop_phrases, key=len, reverse=True):
                     temp_query = re.sub(r'\b' + re.escape(phrase) + r'\b', ' ', temp_query)
                 extracted_ledger = re.sub(r'\s+', ' ', temp_query).strip(",.!? ").strip()
@@ -970,12 +1041,19 @@ class NLPEngine:
                 port, resolved_company, context = self.tally_client.get_port_for_company(final_company_key)
                 try:
                     ledgers = self.tally_client.fetch_ledgers(resolved_company, port)
-                    res, score, amb, _tier = self.resolve_ledger(query_without_company, ledgers)
-                    fuzzy_score = score
-                    resolved_ledger = res
-                    ambiguous_candidates = amb
-                    if res:
-                        ledger_balance = ledgers[res]
+                    if explicit_ledger:
+                        res, score, amb, _tier = self.resolve_ledger(explicit_ledger, ledgers)
+                        fuzzy_score = score if res else 100.0
+                        resolved_ledger = res if res else explicit_ledger
+                        extracted_ledger = explicit_ledger
+                        ambiguous_candidates = amb
+                    else:
+                        res, score, amb, _tier = self.resolve_ledger(query_without_company, ledgers)
+                        fuzzy_score = score
+                        resolved_ledger = res
+                        ambiguous_candidates = amb
+                    if resolved_ledger and isinstance(ledgers, dict) and resolved_ledger in ledgers:
+                        ledger_balance = ledgers[resolved_ledger]
                 except Exception as e:
                     print(f"Error fetching ledgers: {e}")
             
