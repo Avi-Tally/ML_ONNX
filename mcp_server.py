@@ -18,6 +18,7 @@ import sys                      # IMPORT RATIONALE: Access to system paths and s
 import time                     # IMPORT RATIONALE: High-precision execution micro-benchmarking (`time.time()`).
 import datetime                 # IMPORT RATIONALE: Date calculations for relative date filters (e.g. last 30 days, this week).
 import json                     # IMPORT RATIONALE: Actionable JSON handoff payloads for interactive CLI menus.
+import re                       # IMPORT RATIONALE: Regular expressions for token sanitation and entity validation.
 from mcp.server.fastmcp import FastMCP # IMPORT RATIONALE: High-performance Anthropic FastMCP server framework.
 from tally_client import TallyClient, TallyConnectionError   # IMPORT RATIONALE: Low-level TDL socket transport instance and crash exception.
 from nlp_engine import NLPEngine       # IMPORT RATIONALE: Hybrid ONNX/Regex NLU engine instance.
@@ -99,12 +100,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
     
     # Overwrite today_str if reference_date is parsed (helps with aging relative to a historical date)
     ref_date = parsed.get("parameters", {}).get("reference_date")
-    if not ref_date and not parsed.get("parameters", {}).get("date_filter"):
-        # Testing fallback date
-        parsed.setdefault("parameters", {})["reference_date"] = "20-Sep-2017"
-        ref_date = "20-Sep-2017"
-
-    today_str = ref_date if ref_date else (context_dict.get("current_date") or "20-Sep-2017")
+    today_str = ref_date if ref_date else (context_dict.get("current_date") or datetime.date.today().strftime("%d-%b-%Y"))
     
     f_date, t_date = resolve_date_range(parsed.get("parameters", {}), context_dict)
 
@@ -126,13 +122,34 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             }
             return f"__AMBIGUITY__:{json.dumps(payload)}"
 
+        def _is_valid_party_name(p_str):
+            if not p_str or not isinstance(p_str, str):
+                return False
+            cleaned = p_str.strip(",.!? \t\n").lower()
+            if len(cleaned) < 3:
+                return False
+            generic_words = {
+                "in", "of", "for", "to", "from", "at", "by", "on", "the", "a", "an", "what", "how", "total", 
+                "all", "overdue", "pending", "bills", "bill", "amount", "balance", "items", "item", "list", 
+                "show", "get", "is", "are", "was", "were", "much", "many", "unpaid", "paid", "due", "recent",
+                "entries", "vouchers", "transactions", "ledger", "account", "accounts", "details", "summary",
+                "report", "last month", "this month", "last year", "this year", "customer", "customers",
+                "debtor", "debtors", "creditor", "creditors", "supplier", "suppliers", "vendor", "vendors"
+            }
+            if cleaned in generic_words:
+                return False
+            tokens = [t for t in re.split(r'\W+', cleaned) if t]
+            if not tokens or all(t in generic_words for t in tokens):
+                return False
+            return True
+
         # ======================================================================
         # INTERCEPTOR 1: Multi-Ledger Ambiguity Guardrail
         # PURPOSE:
         #   If a query contains a short or generic party name (e.g., 'Reliance'),
         #   and Tally contains matching ledgers, halt execution and return candidate options.
         # ======================================================================
-        if parsed.get("ambiguous_candidates"):
+        if parsed.get("ambiguous_candidates") and _is_valid_party_name(parsed.get("extracted_ledger")):
             extracted = parsed.get("extracted_ledger", "the requested party")
             payload = {
                 "type": "LEDGER_SELECTION",
@@ -144,24 +161,88 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # When no explicit date is provided, default seamlessly to active Tally company date context
+        intent = parsed.get("intent")
 
         # ======================================================================
         # INTERCEPTOR 2: Directional Ambiguity Guardrail (AMBIGUOUS_OUTSTANDINGS)
         # PURPOSE:
-        #   Queries like 'Show pending bills' lack direction. We prompt the user
-        #   to clarify whether they want Bills Payable (Suppliers) or Bills Receivable (Customers).
+        #   Queries like 'Show pending bills' lack direction. If no specific party is
+        #   specified, we return the Executive Outstandings & Financial Position Dashboard.
         # ======================================================================
         if intent == "AMBIGUOUS_OUTSTANDINGS":
-            payload = {
-                "type": "DIRECTIONAL_SELECTION",
-                "prompt": f"[{company_name}] Your query is directionally ambiguous. Are you looking for:",
-                "options": [
-                    "Bills Payable (Money you owe to suppliers)",
-                    "Bills Receivable (Money owed to you by customers)"
-                ],
-                "original_query": query
-            }
-            return f"__AMBIGUITY__:{json.dumps(payload)}"
+            extracted_party = parsed.get("extracted_ledger") or parsed.get("parameters", {}).get("party_name")
+            resolved_party = parsed.get("resolved_ledger")
+            
+            if resolved_party:
+                parsed["intent"] = "GET_RECEIVABLES"
+                intent = "GET_RECEIVABLES"
+            elif extracted_party and _is_valid_party_name(extracted_party):
+                payload = {
+                    "type": "DIRECTIONAL_SELECTION",
+                    "prompt": f"[{company_name}] Is '{extracted_party}' a Customer (Receivables) or a Supplier (Payables)?",
+                    "options": [
+                        f"Bills Receivable (Customer: {extracted_party})",
+                        f"Bills Payable (Supplier: {extracted_party})"
+                    ],
+                    "original_query": query
+                }
+                return f"__AMBIGUITY__:{json.dumps(payload)}"
+            else:
+                # General company-wide outstandings / pending summary inquiry -> Executive Dashboard
+                try:
+                    rec_data = tally_client.fetch_party_outstandings(company_name, port, report_type="Receivables", from_date=f_date, to_date=t_date)
+                    pay_data = tally_client.fetch_party_outstandings(company_name, port, report_type="Payables", from_date=f_date, to_date=t_date)
+
+                    rec_parties = rec_data.get("parties", [])
+                    pay_parties = pay_data.get("parties", [])
+
+                    tot_rec = sum(abs(float(p.get("amount", 0.0))) for p in rec_parties)
+                    tot_pay = sum(abs(float(p.get("amount", 0.0))) for p in pay_parties)
+                    net_pos = tot_rec - tot_pay
+                    net_str = f"₹ {abs(net_pos):,.2f} {'Dr (Net Receivable)' if net_pos >= 0 else 'Cr (Net Payable)'}"
+
+                    rec_sorted = sorted(rec_parties, key=lambda x: abs(float(x.get("amount", 0.0))), reverse=True)
+                    pay_sorted = sorted(pay_parties, key=lambda x: abs(float(x.get("amount", 0.0))), reverse=True)
+
+                    md = [
+                        f"## 📊 Executive Company Outstandings & Financial Position: {company_name} (Port {port})\n",
+                        "> **Real-Time Financial Position Summary**\n",
+                        "### 💼 Overall Outstandings Breakdown",
+                        "| Classification | Actionable Accounts | Total Balance (₹) | Direction / Financial Significance |",
+                        "| :--- | :---: | :---: | :--- |",
+                        f"| **Bills Receivable (Sundry Debtors)** | {len(rec_parties)} | ₹ {tot_rec:,.2f} | Money owed to company by customers |",
+                        f"| **Bills Payable (Sundry Creditors)** | {len(pay_parties)} | ₹ {tot_pay:,.2f} | Money company owes to suppliers |",
+                        f"| **Net Working Capital Exposure** | — | **{net_str}** | Net outstandings balance |"
+                    ]
+
+                    if rec_sorted:
+                        md.extend([
+                            "\n### 🎯 Top Critical Customer Receivables (Highest Outstanding)",
+                            "| Rank | Customer Account Name | Group Lineage | Outstanding (₹) | Collection Follow-Up |",
+                            "| :---: | :--- | :--- | :---: | :--- |"
+                        ])
+                        for i, p in enumerate(rec_sorted[:5], 1):
+                            p_amt = abs(float(p.get("amount", 0.0)))
+                            p_name = p.get("party", "Unknown")
+                            p_grp = p.get("parent", "Sundry Debtors")
+                            recom = "🔴 Immediate Action" if p_amt >= 10000000.0 else ("🟠 High Priority" if p_amt >= 2500000.0 else "🟡 Regular Follow-Up")
+                            md.append(f"| {i} | {p_name} | {p_grp} | ₹ {p_amt:,.2f} | {recom} |")
+
+                    if pay_sorted:
+                        md.extend([
+                            "\n### 🏷️ Top Critical Vendor Payables (Highest Pending)",
+                            "| Rank | Vendor Account Name | Group Lineage | Pending Amount (₹) |",
+                            "| :---: | :--- | :--- | :---: |"
+                        ])
+                        for i, p in enumerate(pay_sorted[:5], 1):
+                            p_amt = abs(float(p.get("amount", 0.0)))
+                            p_name = p.get("party", "Unknown")
+                            p_grp = p.get("parent", "Sundry Creditors")
+                            md.append(f"| {i} | {p_name} | {p_grp} | ₹ {p_amt:,.2f} |")
+
+                    return "\n".join(md)
+                except Exception as e:
+                    return f"Error retrieving company outstandings summary for {company_name}: {e}"
 
         # ======================================================================
         # INTENT RENDERER: GET_LEDGER_360 (Multi-Section Party View Card)

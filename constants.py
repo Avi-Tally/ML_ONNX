@@ -95,12 +95,8 @@ VOUCHER_TYPE_MACROS = {
 }
 
 # =====================================================================
-# Company Default Active Reference Dates
+# Company Default Active Reference Dates (Dynamic Discovery)
 # =====================================================================
-COMPANY_DEFAULT_DATES = {
-    "bella casa": "20-Sep-2017",
-    "bella casa data for user activity": "20-Sep-2017",
-    "modi chem": "29-Oct-2025",
-    "modi chemplast materials pvt ltd": "29-Oct-2025",
-}
+COMPANY_DEFAULT_DATES = {}
+
 

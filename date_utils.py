@@ -145,7 +145,7 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
     if not ref_dt and context:
         ref_dt = parse_date(context.get("current_date"))
     if not ref_dt:
-        ref_dt = datetime(2017, 9, 20)
+        ref_dt = datetime.now()
 
     month_regex_str = r'(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)'
 
@@ -336,12 +336,12 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
         date_filter = {"type": "till_today"}
         return {"from_date": None, "to_date": to_date, "date_filter": date_filter, "reference_date": to_date}
 
-    # Default fallback: No explicit date filter, upper bound is reference date
+    # Default: No explicit date filter in query
     return {
         "from_date": None,
-        "to_date": to_display_date(ref_dt),
+        "to_date": None,
         "date_filter": None,
-        "reference_date": to_display_date(ref_dt)
+        "reference_date": None
     }
 
 
@@ -352,8 +352,8 @@ def resolve_date_range(params: Dict[str, Any], context: Dict[str, Any]) -> Tuple
     Single source of truth for all intent handlers and TDL XML generators.
     """
     ref_date = params.get("reference_date")
-    ref_today = ref_date if ref_date else (context.get("current_date") or "20-Sep-2017")
-    ref_dt = parse_date(ref_today) or datetime(2017, 9, 20)
+    ref_today = ref_date if ref_date else (context.get("current_date") or datetime.now().strftime("%d-%b-%Y"))
+    ref_dt = parse_date(ref_today) or datetime.now()
     
     from_date = context.get("from_date")
     to_date = context.get("to_date")
