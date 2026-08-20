@@ -23,10 +23,15 @@ import socket                   # IMPORT RATIONALE: Low-level socket timeout man
 import urllib3                  # IMPORT RATIONALE: Catch chunk-level protocol and socket read timeouts during XML streaming.
 import xml.etree.ElementTree as ET # IMPORT RATIONALE: Python's standard library XML parser. Used in streaming `iterparse` mode to avoid DOM memory leaks.
 from datetime import datetime, timedelta # IMPORT RATIONALE: Critical for relative date math, historical reference date calculations, and age calculations.
+import time
+import constants
+import date_utils
+from tdl_builder import TDLEnvelopeBuilder
 
-DEFAULT_HTTP_TIMEOUT = (0.5, 6.0)   # (connect_timeout_sec, read_timeout_sec) for localhost IPC
-DEFAULT_STREAM_TIMEOUT = (0.5, 25.0) # (connect_timeout_sec, read_timeout_sec) for heavy global bill streaming
-CHUNK_SOCKET_TIMEOUT = 5.0          # Max wait per 8KB chunk during XML stream reading
+
+DEFAULT_HTTP_TIMEOUT = (constants.FAST_PROBE_TIMEOUT, constants.DEFAULT_HTTP_TIMEOUT)
+DEFAULT_STREAM_TIMEOUT = (constants.FAST_PROBE_TIMEOUT, constants.DEFAULT_STREAM_TIMEOUT)
+CHUNK_SOCKET_TIMEOUT = constants.CHUNK_SOCKET_TIMEOUT
 
 class TallyConnectionError(ConnectionError):
     """Raised when TallyPrime crashes, closes socket unexpectedly, or fails to respond."""
@@ -43,57 +48,12 @@ class TallyClient:
 
     def _parse_date(self, date_str):
         """
-        ========================================================================
-        FUNCTION: _parse_date(date_str)
-        PURPOSE:
-            Normalizes diverse Tally date string formats into Python datetime objects.
-        
-        WHY IT IS PRESENT:
-            Tally exports dates in varying formats depending on the report type:
-            - Standard TDL Date: '20250920' (%Y%m%d)
-            - Display Date: '20-Sep-2025' (%d-%b-%Y)
-            - Short Year Date: '20-Sep-25' (%d-%b-%y)
-            - ISO Date: '2025-09-20' (%Y-%m-%d)
-
-        EDGE-CASE SCENARIOS HANDLED:
-            - Empty/None dates: Returns `datetime.min` to prevent NullPointerException/AttributeError during comparisons.
-            - Malformed string: Sequential try-except blocks attempt every valid format, gracefully falling back to `datetime.min`.
-        ========================================================================
+        Normalizes diverse Tally date string formats into Python datetime objects.
+        Delegates to canonical date_utils.parse_date.
         """
-        if not date_str:
-            return datetime.min
-            
-        date_str = date_str.strip()
-        
-        # 1. Check 8-digit numeric Tally date format (e.g., '20250920') - Most common fast path
-        if len(date_str) == 8 and date_str.isdigit():
-            try:
-                return datetime.strptime(date_str, "%Y%m%d")
-            except Exception:
-                pass
-        
-        # 2. Try Display Date format with hyphens or spaces (e.g., '20-Sep-2025', '20 Sep 2025')
-        for fmt in ("%d-%b-%Y", "%d %b %Y", "%d-%B-%Y", "%d %B %Y"):
-            try:
-                return datetime.strptime(date_str, fmt)
-            except Exception:
-                pass
-            
-        # 3. Try Short Year format with hyphens or spaces (e.g., '20-Sep-25', '20 Sep 25')
-        for fmt in ("%d-%b-%y", "%d %b %y", "%d-%B-%y", "%d %B %y"):
-            try:
-                return datetime.strptime(date_str, fmt)
-            except Exception:
-                pass
-            
-        # 4. Try ISO Date format (e.g., '2025-09-20')
-        try:
-            return datetime.strptime(date_str, "%Y-%m-%d")
-        except Exception:
-            pass
-            
-        # Fallback for unparseable dates to maintain continuous execution without crashing loops
-        return datetime.min
+        parsed = date_utils.parse_date(date_str)
+        return parsed if parsed is not None else datetime.min
+
 
     def __init__(self, ports=None):
         if ports is None:
@@ -102,11 +62,12 @@ class TallyClient:
         self.active_ports = set() # Track known active ports to avoid sweeping 3000 ports on every query
         self.routing_table = {}  # Cache mapping company_name.lower() -> {name, port, context}
         
-        # Tier 1 & Tier 3 Cache & Alteration Trackers
         self._last_master_alter_ids = {} # (company, port) -> alter_id
         self._group_map_cache = {}       # (company, port) -> {group_name: parent_name}
         self._group_cache_timestamps = {}# (company, port) -> timestamp
+        self.master_cache = {}           # (company.lower(), port) -> cached masters dict
         self.ttl_seconds = 10.0          # 10-Second Time-To-Live expiration window
+
         
         self.update_routing_table(full_scan=True)
 
@@ -171,32 +132,16 @@ class TallyClient:
 
         def probe_port(port):
             url = f"http://localhost:{port}"
-            payload = """<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>LoadedCompaniesList</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="LoadedCompaniesList">
-                        <TYPE>Company</TYPE>
-                        <FETCH>Name</FETCH>
-                    </COLLECTION>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+            payload = (TDLEnvelopeBuilder()
+                       .set_collection("Company", "LoadedCompaniesList")
+                       .set_is_initialise(False)
+                       .set_fetch(["Name"])
+                       .build())
             try:
                 response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(1.0, 3.0))
+
                 if response.status_code == 200:
+
                     cleaned_xml = self.clean_xml(response.text)
                     root = ET.fromstring(cleaned_xml)
                     found = {}
@@ -307,19 +252,12 @@ class TallyClient:
             by an active CA, allowing safe reuse of cached group hierarchy maps.
         ========================================================================
         """
-        payload = f"""<ENVELOPE>
-    <HEADER><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Data</TYPE><ID>AlterIDCheck</ID></HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES><SVCURRENTCOMPANY>{company}</SVCURRENTCOMPANY></STATICVARIABLES>
-            <TDL><TDLMESSAGE>
-                <OBJECT NAME="AlterIDObj">
-                    <COMPUTE>CurrentAlterID: $$SysName:MasterAlterID</COMPUTE>
-                </OBJECT>
-            </TDLMESSAGE></TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_object("AlterIDObj")
+                   .set_company(company)
+                   .add_compute("CurrentAlterID", "$$SysName:MasterAlterID")
+                   .build())
+
         try:
             res = self.execute_xml_request(port, payload)
             match = re.search(r'<CURRENTALTERID>(\d+)</CURRENTALTERID>', res, re.IGNORECASE)
@@ -361,30 +299,11 @@ class TallyClient:
             return self._group_map_cache[cache_key]
 
         # TIER 2 & TIER 4: Fetch live XML group collection from Tally socket
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>GroupList</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="GroupList">
-                        <TYPE>Group</TYPE>
-                        <FETCH>Name, Parent</FETCH>
-                    </COLLECTION>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_collection("Group", "GroupList")
+                   .set_company(company)
+                   .set_fetch(["Name", "Parent"])
+                   .build())
         try:
             res = self.execute_xml_request(port, payload)
             root = ET.fromstring(res)
@@ -406,7 +325,6 @@ class TallyClient:
         except Exception as e:
             print(f"Error fetching group hierarchy map from port {port}: {e}")
             return self._group_map_cache.get(cache_key, {})
-            return {}
 
     def is_group_under(self, group_name, target_parent, group_map):
         """Recursively checks if group_name is a subgroup of target_parent using group_map."""
@@ -427,60 +345,46 @@ class TallyClient:
         """
         if not port or not company_name:
             return {}
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>CompanyPeriodDetails</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="CompanyPeriodDetails">
-                        <TYPE>Company</TYPE>
-                        <FILTER>IsCurrentCompany</FILTER>
-                        <FETCH>Name</FETCH>
-                        <COMPUTE>CurrentDate: ##SVCurrentDate</COMPUTE>
-                        <COMPUTE>FromDate: ##SVFromDate</COMPUTE>
-                        <COMPUTE>ToDate: ##SVToDate</COMPUTE>
-                    </COLLECTION>
-                    <SYSTEMNAME NAME="IsCurrentCompany">$$IsCurrentCompany:$Name</SYSTEMNAME>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_collection("Company", "CompanyPeriodDetails")
+                   .set_company(company_name)
+                   .set_is_initialise(False)
+                   .set_fetch(["Name", "StartingAt", "EndingAt", "BooksFrom"])
+                   .add_compute("CurrentDate", "##SVCurrentDate")
+                   .add_compute("FromDate", "##SVFromDate")
+                   .add_compute("ToDate", "##SVToDate")
+                   .build())
         try:
             response_xml = self.execute_xml_request(port, payload)
             root = ET.fromstring(response_xml)
-            company_node = root.find(".//COLLECTION/COMPANY")
-            if company_node is not None:
-                def parse_date(node_name):
-                    n = company_node.find(node_name)
-                    if n is not None and n.text:
-                        ds = n.text.strip()
-                        if len(ds) == 8: # YYYYMMDD
-                            import datetime
-                            try:
-                                return datetime.datetime.strptime(ds, "%Y%m%d").strftime("%d-%b-%Y")
-                            except:
-                                return ds
-                        return ds
-                    return "Unknown"
-                
-                return {
-                    "current_date": parse_date("CURRENTDATE"),
-                    "from_date": parse_date("FROMDATE"),
-                    "to_date": parse_date("TODATE")
-                }
+            target_lower = company_name.strip().lower()
+            
+            for company_node in root.findall(".//COLLECTION/COMPANY"):
+                c_name = company_node.attrib.get("NAME") or company_node.findtext("NAME") or ""
+                if c_name.strip().lower() == target_lower or target_lower in c_name.strip().lower():
+                    def parse_date(node_name):
+                        n = company_node.find(node_name)
+                        if n is not None and n.text:
+                            ds = n.text.strip()
+                            if len(ds) == 8: # YYYYMMDD
+                                import datetime
+                                try:
+                                    return datetime.datetime.strptime(ds, "%Y%m%d").strftime("%d-%b-%Y")
+                                except:
+                                    return ds
+                            return ds
+                        return "Unknown"
+                    
+                    return {
+                        "current_date": parse_date("CURRENTDATE"),
+                        "from_date": parse_date("FROMDATE"),
+                        "to_date": parse_date("TODATE"),
+                        "books_from": parse_date("BOOKSFROM"),
+                        "ending_at": parse_date("ENDINGAT")
+                    }
         except Exception as e:
             print("ERROR IN fetch_company_context:", e)
+
             try:
                 print("RESPONSE XML:", response_xml)
             except:
@@ -495,57 +399,20 @@ class TallyClient:
 
     def fetch_ledgers(self, company_name, port):
         """Fetches all ledgers and their balances for a specific company and port."""
-        payload_ledgers = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>LedgerListWithBalance</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="LedgerListWithBalance">
-                        <TYPE>Ledger</TYPE>
-                        <FETCH>Name, ClosingBalance</FETCH>
-                    </COLLECTION>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload_ledgers = (TDLEnvelopeBuilder()
+                           .set_collection("Ledger", "LedgerListWithBalance")
+                           .set_company(company_name)
+                           .set_fetch(["Name", "ClosingBalance"])
+                           .build())
 
-        payload_groups = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>GroupListWithBalance</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="GroupListWithBalance">
-                        <TYPE>Group</TYPE>
-                        <FETCH>Name, ClosingBalance</FETCH>
-                    </COLLECTION>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload_groups = (TDLEnvelopeBuilder()
+                          .set_collection("Group", "GroupListWithBalance")
+                          .set_company(company_name)
+                          .set_fetch(["Name", "ClosingBalance"])
+                          .build())
         
         ledgers = {}
+
         
         # 1. Fetch Ledgers
         res_ledgers = self.execute_xml_request(port, payload_ledgers)
@@ -566,6 +433,34 @@ class TallyClient:
                 ledgers[name.strip()] = bal.strip()
                 
         return ledgers
+
+    def _find_queryable_root_group(self, group_name: str, group_map: dict) -> str:
+        """
+        Walks the group hierarchy map upwards to find the highest queryable root group.
+        """
+        if not group_name or not group_map:
+            return group_name
+            
+        curr = group_name.strip()
+        visited = set()
+        
+        # Check direct match
+        for qg in constants.QUERYABLE_ROOT_GROUPS:
+            if curr.lower() == qg.lower():
+                return qg
+                
+        # Walk upwards
+        while curr and curr.lower() not in ["primary", ""] and curr.lower() not in visited:
+            visited.add(curr.lower())
+            for qg in constants.QUERYABLE_ROOT_GROUPS:
+                if curr.lower() == qg.lower():
+                    return qg
+            parent = group_map.get(curr, "")
+            if not parent or parent.lower() in ["primary", ""]:
+                break
+            curr = parent
+            
+        return group_name
 
     def fetch_ledger_dated_balance(self, company_name: str, port: int, ledger_name: str, reference_date: str = None) -> dict:
         """
@@ -594,23 +489,13 @@ class TallyClient:
         to_p = self._parse_date(reference_date)
         to_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else reference_date
         to_disp = to_p.strftime("%d-%b-%Y") if to_p != datetime.min else reference_date
-        escaped_party = ledger_name.replace("&", "&amp;").replace('"', '&quot;')
         
         # 1. Fetch full ledger master collection to accurately find parent group and master closing balance
-        payload_all_ledgers = f"""<ENVELOPE>
-  <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Collection</TYPE><ID>LedMasterAll</ID></HEADER>
-  <BODY>
-    <DESC>
-      <STATICVARIABLES><SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT><SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY></STATICVARIABLES>
-      <TDL><TDLMESSAGE>
-        <COLLECTION NAME="LedMasterAll">
-          <TYPE>Ledger</TYPE>
-          <FETCH>Name, Parent, ClosingBalance, OpeningBalance, IsBillWiseOn</FETCH>
-        </COLLECTION>
-      </TDLMESSAGE></TDL>
-    </DESC>
-  </BODY>
-</ENVELOPE>"""
+        payload_all_ledgers = (TDLEnvelopeBuilder()
+                               .set_collection("Ledger", "LedMasterAll")
+                               .set_company(company_name)
+                               .set_fetch(["Name", "Parent", "ClosingBalance", "OpeningBalance", "IsBillWiseOn"])
+                               .build())
         parent_group = None
         master_cl = 0.0
         try:
@@ -630,36 +515,14 @@ class TallyClient:
             pass
 
         # 2. Check if party has dated bills
-        payload = f"""<ENVELOPE>
-  <HEADER>
-    <VERSION>1</VERSION>
-    <TALLYREQUEST>Export</TALLYREQUEST>
-    <TYPE>Collection</TYPE>
-    <ID>FastBillsDated</ID>
-  </HEADER>
-  <BODY>
-    <DESC>
-      <STATICVARIABLES>
-        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-        <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-        <SVCURRENTDATE>{to_str}</SVCURRENTDATE>
-      </STATICVARIABLES>
-      <TDL>
-        <TDLMESSAGE>
-          <COLLECTION NAME="FastBillsDated">
-            <TYPE>Bills</TYPE>
-            <CHILDOF>"{escaped_party}"</CHILDOF>
-            <FETCH>Name, BillDate, ClosingBalance, OpeningBalance</FETCH>
-            <FILTER>DatedBillFilter</FILTER>
-          </COLLECTION>
-          <SYSTEM TYPE="Formulae" NAME="DatedBillFilter">
-            $BillDate &lt;= $$Date:"{to_str}"
-          </SYSTEM>
-        </TDLMESSAGE>
-      </TDL>
-    </DESC>
-  </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_collection("Bills", "FastBillsDated")
+                   .set_company(company_name)
+                   .set_current_date(to_str)
+                   .set_child_of(ledger_name)
+                   .set_fetch(["Name", "BillDate", "ClosingBalance", "OpeningBalance"])
+                   .add_filter("DatedBillFilter", f'$BillDate <= $$Date:"{to_str}"')
+                   .build())
         try:
             resp = self.execute_xml_request(port, payload, timeout=6)
             cleaned = self.clean_xml(resp)
@@ -687,26 +550,23 @@ class TallyClient:
                     "bills_count": len(bills)
                 }
 
-            # 3. Fallback to Parent Group Summary for voucher-based, non-bill, or on-account accounts
+            # 3. Fallback to Parent / Root Group Summary for voucher-based, non-bill, or on-account accounts
             if parent_group:
-                escaped_grp = parent_group.replace("&", "&amp;")
-                payload_grp = f"""<ENVELOPE>
-  <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Data</TYPE><ID>Group Summary</ID></HEADER>
-  <BODY>
-    <DESC>
-      <STATICVARIABLES>
-        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-        <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-        <GROUPNAME>{escaped_grp}</GROUPNAME>
-        <EXPLODEFLAG>Yes</EXPLODEFLAG>
-        <ISITEMWISE>Yes</ISITEMWISE>
-        <SVFROMDATE>19000101</SVFROMDATE>
-        <SVTODATE>{to_str}</SVTODATE>
-      </STATICVARIABLES>
-    </DESC>
-  </BODY>
-</ENVELOPE>"""
+                group_map = self.get_group_hierarchy_map(company_name, port)
+                target_group = self._find_queryable_root_group(parent_group, group_map) or parent_group
+                
+                payload_grp = (TDLEnvelopeBuilder()
+                               .set_report_id("Group Summary")
+                               .set_company(company_name)
+                               .set_group_name(target_group)
+                               .set_explode_flag(True)
+                               .set_itemwise(True)
+                               .set_date_range(constants.DATE_EPOCH, to_str)
+                               .build())
                 res_grp = self.execute_xml_request(port, payload_grp, timeout=6)
+
+
+
                 root_grp = ET.fromstring(self.clean_xml(res_grp))
                 acc_names = root_grp.findall(".//DSPACCNAME/DSPDISPNAME")
                 acc_infos = root_grp.findall(".//DSPACCINFO")
@@ -763,22 +623,10 @@ class TallyClient:
 
     def fetch_trial_balance(self, company_name, port):
         """Fetches the Trial Balance report."""
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Data</TYPE>
-        <ID>Trial Balance</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_report_id("Trial Balance")
+                   .set_company(company_name)
+                   .build())
         response_xml = self.execute_xml_request(port, payload)
         root = ET.fromstring(response_xml)
         
@@ -816,65 +664,618 @@ class TallyClient:
                 })
         return tb_data
 
-    def fetch_stock_summary(self, company_name, port, stock_group=None):
-        """Fetches Stock Summary using native TDL Collection on StockItem."""
-        childof_tag = f"\n                        <CHILDOF>{stock_group}</CHILDOF><BELONGSTO>Yes</BELONGSTO>" if stock_group else ""
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>CustomStockSummary</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCOMPANY>{company_name}</SVCOMPANY>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="CustomStockSummary" ISINITIALISE="Yes">
-                        <TYPE>StockItem</TYPE>{childof_tag}
-                        <FETCH>Name, Parent, BaseUnits, ClosingBalance, ClosingValue, ClosingRate</FETCH>
-                        <FILTER>NonZeroStock</FILTER>
-                    </COLLECTION>
-                    <SYSTEM TYPE="Formulae" NAME="NonZeroStock">$ClosingBalance != 0</SYSTEM>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
-        response_xml = self.execute_xml_request(port, payload)
-        cleaned_xml = self.clean_xml(response_xml)
-        root = ET.fromstring(cleaned_xml)
+    def fetch_stock_summary(
+        self, company_name: str, port: int,
+        stock_group: str = None,
+        stock_category: str = None,
+        godown_name: str = None,
+        item_name: str = None,
+        as_of_date: str = None
+    ) -> list:
+        """
+        Multi-dimensional inventory fetch:
+        - If godown_name: routes to native 'Godown Summary' report.
+        - If item/group/category: builds StockItem collection with CHILDOF / Category filter.
+        - Supports point-in-time inventory valuation via SVTODATE.
+        """
+        # 1. Godown Drill-down via native Godown Summary report
+        if godown_name:
+            builder = (TDLEnvelopeBuilder()
+                       .set_report_id("Godown Summary")
+                       .set_company(company_name)
+                       .set_godown_name(godown_name)
+                       .set_explode_flag(True)
+                       .set_itemwise(True))
+            if as_of_date:
+                builder.set_date_range(None, as_of_date)
+            payload = builder.build()
+            try:
+                response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+                cleaned = self.clean_xml(response_xml)
+                root = ET.fromstring(cleaned)
+                stock_data = []
+                for dsp in root.findall(".//DSPACCNAME"):
+                    name_elem = dsp.find("DSPDISPNAME")
+                    name = name_elem.text.strip() if (name_elem is not None and name_elem.text) else ""
+                    if not name or name.lower() == godown_name.lower():
+                        continue
+                    
+                    qty_elem = dsp.find("DSPCLQTYA")
+                    rate_elem = dsp.find("DSPCLRATEA")
+                    val_elem = dsp.find("DSPCLAMTA")
+                    
+                    qty = qty_elem.text.strip() if (qty_elem is not None and qty_elem.text) else "0"
+                    rate = rate_elem.text.strip() if (rate_elem is not None and rate_elem.text) else "0"
+                    val = val_elem.text.strip() if (val_elem is not None and val_elem.text) else "0"
+                    
+                    stock_data.append({
+                        "item": name,
+                        "parent": godown_name,
+                        "category": "Godown Location",
+                        "quantity": qty,
+                        "rate": rate,
+                        "value": val
+                    })
+                return stock_data
+            except Exception as e:
+                print(f"Error fetching godown summary for {godown_name} in {company_name}: {e}")
+                return []
+
+        # 2. Dynamic StockItem Collection
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("StockItem", "CustomStockSummary")
+                   .set_company(company_name)
+                   .set_fetch([
+                       "Name", "Parent", "Category", "BaseUnits", 
+                       "ClosingBalance", "ClosingValue", "ClosingRate", 
+                       "OpeningBalance", "OpeningValue", "OpeningRate",
+                       "StandardCost", "StandardPrice", "HSNCode", "PartNumber"
+                   ])
+                   .add_filter("NonZeroStock", "$ClosingBalance != 0"))
+
+        if stock_group:
+            builder.set_child_of(stock_group, belongs_to=True)
+            
+        if stock_category:
+            escaped_cat = TDLEnvelopeBuilder.escape_xml(stock_category)
+            builder.add_filter("CatFilter", f'$Category = "{escaped_cat}"')
+            
+        if as_of_date:
+            builder.set_date_range(None, as_of_date)
+
+        payload = builder.build()
+        try:
+            response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(response_xml)
+            root = ET.fromstring(cleaned)
+            
+            stock_data = []
+            for item in root.findall(".//STOCKITEM"):
+                name = item.findtext("NAME") or item.findtext(".//NAME") or item.attrib.get("NAME", "")
+                if not name:
+                    continue
+                
+                parent = item.findtext("PARENT") or ""
+                category = item.findtext("CATEGORY") or ""
+                qty = item.findtext("CLOSINGBALANCE") or "0"
+                rate = item.findtext("CLOSINGRATE") or "0"
+                val = item.findtext("CLOSINGVALUE") or "0"
+                units = item.findtext("BASEUNITS") or ""
+                hsn = item.findtext("HSNCODE") or ""
+                part_no = item.findtext("PARTNUMBER") or ""
+                
+                # Filter by item_name if provided
+                if item_name and item_name.lower() not in name.lower():
+                    continue
+                
+                stock_data.append({
+                    "item": name.strip(),
+                    "parent": parent.strip(),
+                    "category": category.strip(),
+                    "quantity": qty.strip(),
+                    "rate": rate.strip(),
+                    "value": val.strip(),
+                    "base_units": units.strip(),
+                    "hsn": hsn.strip(),
+                    "part_number": part_no.strip()
+                })
+            return stock_data
+        except Exception as e:
+            print(f"Error fetching stock summary for {company_name}: {e}")
+            return []
+
+    def fetch_batch_details(self, company_name: str, port: int, stock_item: str = None, godown_name: str = None) -> list:
+        """
+        Extracts batch allocations, manufacturing dates, and expiry dates for inventory items.
+        """
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("Batch", "CustomBatchColl")
+                   .set_company(company_name)
+                   .set_fetch([
+                       "Name", "Parent", "GodownName", "ClosingBalance",
+                       "ClosingValue", "ClosingRate", "ExpiryDate", "MfgDate"
+                   ]))
+        if stock_item:
+            builder.set_child_of(stock_item, belongs_to=True)
+            
+        payload = builder.build()
+        try:
+            response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(response_xml)
+            root = ET.fromstring(cleaned)
+            batches = []
+            for b in root.findall(".//BATCH"):
+                b_name = b.findtext("NAME") or b.findtext(".//NAME") or b.attrib.get("NAME", "")
+                parent_item = b.findtext("PARENT") or stock_item or ""
+                gd_name = b.findtext("GODOWNNAME") or ""
+                qty = b.findtext("CLOSINGBALANCE") or "0"
+                rate = b.findtext("CLOSINGRATE") or "0"
+                val = b.findtext("CLOSINGVALUE") or "0"
+                mfg = b.findtext("MFGDATE") or ""
+                exp = b.findtext("EXPIRYDATE") or ""
+                
+                if godown_name and godown_name.lower() not in gd_name.lower():
+                    continue
+                    
+                if b_name:
+                    batches.append({
+                        "item": parent_item.strip(),
+                        "batch": b_name.strip(),
+                        "godown": gd_name.strip(),
+                        "quantity": qty.strip(),
+                        "rate": rate.strip(),
+                        "value": val.strip(),
+                        "mfg_date": mfg.strip(),
+                        "expiry_date": exp.strip()
+                    })
+            return batches
+        except Exception as e:
+            print(f"Error fetching batch details for {company_name}: {e}")
+            return []
+
+    def fetch_ledger_monthly_summary(self, company_name: str, port: int, ledger_name: str, from_date: str = None, to_date: str = None) -> list:
+        """
+        Fetches native Ledger Monthly Summary report from Tally (12-month trajectory).
+        Returns: [{'month': 'April', 'debit': 0.0, 'credit': 0.0, 'closing_balance': 0.0}, ...]
+        """
+        builder = (TDLEnvelopeBuilder()
+                   .set_report_id("Ledger Monthly Summary")
+                   .set_company(company_name)
+                   .set_ledger_name(ledger_name)
+                   .set_explode_flag(True))
+        if from_date or to_date:
+            builder.set_date_range(from_date, to_date)
+            
+        payload = builder.build()
+        try:
+            response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(response_xml)
+            root = ET.fromstring(cleaned)
+            
+            monthly_data = []
+            periods = root.findall(".//DSPPERIOD")
+            acc_infos = root.findall(".//DSPACCINFO")
+            
+            for p_elem, info_elem in zip(periods, acc_infos):
+                month_name = p_elem.text.strip() if p_elem.text else ""
+                
+                dr_elem = info_elem.find(".//DSPDRAMTA")
+                cr_elem = info_elem.find(".//DSPCRAMTA")
+                cl_elem = info_elem.find(".//DSPCLAMTA")
+                
+                def _to_float(e):
+                    if e is not None and e.text and e.text.strip():
+                        try:
+                            return abs(float(e.text.strip()))
+                        except:
+                            return 0.0
+                    return 0.0
+
+                dr = _to_float(dr_elem)
+                cr = _to_float(cr_elem)
+                
+                cl_raw = cl_elem.text.strip() if (cl_elem is not None and cl_elem.text) else "0.00"
+                try:
+                    cl_val = float(cl_raw)
+                    cl_str = f"₹ {abs(cl_val):,.2f} {'Dr' if cl_val < 0 else 'Cr'}" if cl_val != 0 else "₹ 0.00"
+                except:
+                    cl_str = cl_raw
+                    
+                if month_name:
+                    monthly_data.append({
+                        "month": month_name,
+                        "debit": dr,
+                        "credit": cr,
+                        "closing_balance": cl_str
+                    })
+            return monthly_data
+        except Exception as e:
+            print(f"Error fetching ledger monthly summary for {ledger_name} in {company_name}: {e}")
+            return []
+
+    def fetch_company_dashboard(self, company_name: str, port: int) -> dict:
+        """
+        Synthesizes an executive company financial dashboard:
+        1. Liquidity (Cash & Bank)
+        2. Working Capital (Receivables, Payables, Net)
+        3. Top Debtors & Creditors
+        4. Stock Valuation
+        """
+        tb = self.fetch_trial_balance(company_name, port)
         
-        stock_data = []
-        for item in root.findall(".//STOCKITEM"):
-            name = item.findtext("NAME") or item.attrib.get("NAME", "")
-            if not name: continue
+        debtors_val = 0.0
+        creditors_val = 0.0
+        bank_val = 0.0
+        cash_val = 0.0
+        stock_val = 0.0
+        
+        for item in tb:
+            name = item.get("name", "").lower()
+            try:
+                bal_raw = float(item.get("balance", "0"))
+            except:
+                bal_raw = 0.0
+            bal = abs(bal_raw)
             
-            qty = item.findtext("CLOSINGBALANCE") or "0"
-            rate = item.findtext("CLOSINGRATE") or "0"
-            val = item.findtext("CLOSINGVALUE") or "0"
+            if "sundry debtor" in name:
+                debtors_val = bal
+            elif "sundry creditor" in name:
+                creditors_val = bal
+            elif "bank account" in name:
+                bank_val = bal
+            elif "cash" in name:
+                cash_val = bal
+            elif "stock" in name or "inventory" in name:
+                stock_val = bal
+
+        # Top Debtors & Creditors
+        debtors_summary = self.fetch_party_outstandings(company_name, port, "Receivables")
+        creditors_summary = self.fetch_party_outstandings(company_name, port, "Payables")
+        
+        top_debtors = debtors_summary.get("parties", [])[:5] if isinstance(debtors_summary, dict) else []
+        top_creditors = creditors_summary.get("parties", [])[:5] if isinstance(creditors_summary, dict) else []
+        total_debtors_count = debtors_summary.get("total_party_count", len(top_debtors)) if isinstance(debtors_summary, dict) else 0
+        total_creditors_count = creditors_summary.get("total_party_count", len(top_creditors)) if isinstance(creditors_summary, dict) else 0
+        
+        # Stock summary
+        stocks = self.fetch_stock_summary(company_name, port)
+        if not stock_val and stocks:
+            try:
+                stock_val = sum(abs(float(s.get("value", 0))) for s in stocks)
+            except:
+                stock_val = 0.0
+
+        return {
+            "company_name": company_name,
+            "port": port,
+            "receivables_total": debtors_val,
+            "payables_total": creditors_val,
+            "net_working_capital": debtors_val - creditors_val,
+            "bank_balance": bank_val,
+            "cash_balance": cash_val,
+            "total_liquidity": bank_val + cash_val,
+            "stock_valuation": stock_val,
+            "total_debtors_count": total_debtors_count,
+            "total_creditors_count": total_creditors_count,
+            "top_debtors": top_debtors,
+            "top_creditors": top_creditors,
+            "active_stock_items_count": len(stocks)
+        }
+
+    def fetch_trust_score_metrics(self, company_name: str, port: int, group_name: str = "All", from_date: str = None, to_date: str = None) -> dict:
+        """
+        Ultra-fast single-request TDL pushdown for Counterparty Trust Scores.
+        Extracts minimal scalar fields from Bill collection and streams into an O(N) party accumulator.
+        """
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("Bill", "FastTrustScoreBills")
+                   .set_company(company_name)
+                   .set_fetch(["Name", "BillDate", "BillDue", "ClosingBalance", "OpeningBalance", "Parent", "ClearedOn", "BillOverdue"])
+                   .set_child_of("$$GroupSundryDebtors" if group_name and "debtor" in group_name.lower() else ("$$GroupSundryCreditors" if group_name and "creditor" in group_name.lower() else "All"), belongs_to=True))
+        
+        if from_date or to_date:
+            to_p = self._parse_date(to_date) if to_date else datetime.now()
+            from_p = self._parse_date(from_date) if from_date else datetime(1900, 1, 1)
+            t_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else to_date
+            f_str = from_p.strftime("%Y%m%d") if from_p != datetime.min else constants.DATE_EPOCH
+            builder.set_date_range(f_str, t_str)
             
-            stock_data.append({
-                "item": name.strip(),
-                "quantity": qty.strip(),
-                "rate": rate.strip(),
-                "value": val.strip()
-            })
-        return stock_data
+        payload = builder.build()
+        party_map = {}
+        try:
+            raw_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(raw_xml)
+            root = ET.fromstring(cleaned)
+            
+            for b in root.findall(".//BILL"):
+                p_name = b.findtext("PARENT") or ""
+                if not p_name:
+                    continue
+                p_name = p_name.strip()
+                
+                cl_str = b.findtext("CLOSINGBALANCE") or b.findtext("BILLCL") or "0.00"
+                op_str = b.findtext("OPENINGBALANCE") or cl_str
+                od_str = b.findtext("BILLOVERDUE") or "0"
+                b_date = b.findtext("BILLDATE") or ""
+                cleared_on = b.findtext("CLEAREDON") or ""
+                
+                try:
+                    cl = abs(float(cl_str))
+                except:
+                    cl = 0.0
+                try:
+                    op = abs(float(op_str))
+                except:
+                    op = cl
+                try:
+                    od = int(od_str)
+                except:
+                    od = 0
+                
+                if op < cl:
+                    op = cl
+                    
+                is_settled = bool(cleared_on.strip()) or (cl == 0.0 and op > 0.0)
+                
+                if p_name not in party_map:
+                    party_map[p_name] = {
+                        "party": p_name,
+                        "total_invoiced": 0.0,
+                        "total_outstanding": 0.0,
+                        "total_settled": 0.0,
+                        "overdue_amount": 0.0,
+                        "bill_count": 0,
+                        "last_txn_date": None
+                    }
+                
+                rec = party_map[p_name]
+                rec["total_invoiced"] += op
+                rec["total_outstanding"] += cl
+                if is_settled:
+                    rec["total_settled"] += op
+                else:
+                    rec["total_settled"] += max(0.0, op - cl)
+                    if od > 0:
+                        rec["overdue_amount"] += cl
+                        
+                rec["bill_count"] += 1
+                if b_date:
+                    dt = self._parse_date(b_date)
+                    if dt != datetime.min:
+                        if not rec["last_txn_date"] or dt > rec["last_txn_date"]:
+                            rec["last_txn_date"] = dt
+                            
+            return party_map
+        except Exception as e:
+            print(f"Error fetching trust score metrics from Tally: {e}")
+            return {}
+
+    def fetch_party_voucher_counts(self, company_name: str, port: int, group_name: str = "Sundry Creditors", from_date: str = None, to_date: str = None) -> list:
+        """
+        Aggregates transaction counts and turnover per party with high-speed single-pass TDL pushdown.
+        """
+        metrics = self.fetch_trust_score_metrics(company_name, port, group_name=group_name, from_date=from_date, to_date=to_date)
+        if metrics:
+            result = []
+            for p_name, m in metrics.items():
+                result.append({
+                    "party": p_name,
+                    "voucher_count": m.get("bill_count", 0),
+                    "total_amount": m.get("total_invoiced", 0.0),
+                    "last_date": m["last_txn_date"].strftime("%d-%b-%Y") if m.get("last_txn_date") else ""
+                })
+            return sorted(result, key=lambda x: x["voucher_count"], reverse=True)
+        return []
+
+
+    def fetch_godowns(self, company_name: str, port: int) -> list:
+
+
+
+        """Fetches Godown master list: [{'name': ..., 'parent': ...}]."""
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("Godown", "GodownMasterList")
+                   .set_company(company_name)
+                   .set_fetch(["Name", "Parent", "Address"]))
+        payload = builder.build()
+        try:
+            response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(response_xml)
+            root = ET.fromstring(cleaned)
+            godowns = []
+            for g in root.findall(".//GODOWN"):
+                name = g.findtext("NAME") or g.attrib.get("NAME", "")
+                parent = g.findtext("PARENT") or ""
+                if name:
+                    godowns.append({"name": name.strip(), "parent": parent.strip()})
+            return godowns
+        except Exception as e:
+            print(f"Error fetching godowns from {company_name}: {e}")
+            return []
+
+    def fetch_cost_centres(self, company_name: str, port: int) -> list:
+        """Fetches Cost Centre master list: [{'name': ..., 'parent': ..., 'category': ...}]."""
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("CostCentre", "CostCentreMasterList")
+                   .set_company(company_name)
+                   .set_fetch(["Name", "Parent", "Category"]))
+        payload = builder.build()
+        try:
+            response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            cleaned = self.clean_xml(response_xml)
+            root = ET.fromstring(cleaned)
+            ccs = []
+            for cc in root.findall(".//COSTCENTRE"):
+                name = cc.findtext("NAME") or cc.attrib.get("NAME", "")
+                parent = cc.findtext("PARENT") or ""
+                category = cc.findtext("CATEGORY") or ""
+                if name:
+                    ccs.append({"name": name.strip(), "parent": parent.strip(), "category": category.strip()})
+            return ccs
+        except Exception as e:
+            print(f"Error fetching cost centres from {company_name}: {e}")
+            return []
+
+    def fetch_cost_centre_breakup(self, company_name: str, port: int, cost_centre: str = None, from_date: str = None, to_date: str = None) -> list:
+        """
+        Fetches Cost Centre Breakup report (when cost_centre is provided)
+        or All-Centre Summary (when cost_centre is None).
+        """
+        if cost_centre:
+            builder = (TDLEnvelopeBuilder()
+                       .set_report_id("Cost Centre Breakup")
+                       .set_company(company_name)
+                       .set_cost_centre_name(cost_centre)
+                       .set_explode_flag(True))
+            if from_date or to_date:
+                builder.set_date_range(from_date, to_date)
+            payload = builder.build()
+            try:
+                response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+                cleaned = self.clean_xml(response_xml)
+                root = ET.fromstring(cleaned)
+                breakup = []
+                for dsp in root.findall(".//DSPACCNAME"):
+                    p_elem = dsp.find("DSPDISPNAME")
+                    dr_elem = dsp.find("DSPDRAMT")
+                    cr_elem = dsp.find("DSPCRAMT")
+                    cl_elem = dsp.find("DSPCLAMTA")
+                    
+                    name = p_elem.text.strip() if (p_elem is not None and p_elem.text) else ""
+                    dr = dr_elem.text.strip() if (dr_elem is not None and dr_elem.text) else "0.00"
+                    cr = cr_elem.text.strip() if (cr_elem is not None and cr_elem.text) else "0.00"
+                    cl = cl_elem.text.strip() if (cl_elem is not None and cl_elem.text) else "0.00"
+                    
+                    if name and name != cost_centre:
+                        breakup.append({
+                            "particulars": name,
+                            "debit": dr,
+                            "credit": cr,
+                            "net_balance": cl
+                        })
+                return breakup
+            except Exception as e:
+                print(f"Error fetching cost centre breakup for {cost_centre} in {company_name}: {e}")
+                return []
+        else:
+            builder = (TDLEnvelopeBuilder()
+                       .set_collection("CostCentre", "CustomCostCentreColl")
+                       .set_company(company_name)
+                       .set_fetch(["Name", "Parent", "Category", "ClosingBalance", "OpeningBalance"]))
+            payload = builder.build()
+            try:
+                response_xml = self.execute_xml_request(port, payload, timeout=constants.DEFAULT_HTTP_TIMEOUT)
+                cleaned = self.clean_xml(response_xml)
+                root = ET.fromstring(cleaned)
+                ccs = []
+                for cc_elem in root.findall(".//COSTCENTRE"):
+                    name = cc_elem.findtext("NAME") or cc_elem.findtext(".//NAME") or cc_elem.attrib.get("NAME", "")
+                    parent = cc_elem.findtext("PARENT") or ""
+                    category = cc_elem.findtext("CATEGORY") or ""
+                    cl_bal = cc_elem.findtext("CLOSINGBALANCE") or "0.00"
+                    if name:
+                        ccs.append({
+                            "name": name.strip(),
+                            "parent": parent.strip(),
+                            "category": category.strip(),
+                            "balance": cl_bal.strip()
+                        })
+                return ccs
+            except Exception as e:
+                print(f"Error fetching cost centre summary in {company_name}: {e}")
+                return []
+
+    def fetch_stock_groups_and_categories(self, company_name: str, port: int) -> tuple:
+
+        """Fetches Stock Group and Stock Category master name lists."""
+        b_grp = (TDLEnvelopeBuilder()
+                 .set_collection("StockGroup", "StockGroupMasterList")
+                 .set_company(company_name)
+                 .set_fetch(["Name", "Parent"]))
+        b_cat = (TDLEnvelopeBuilder()
+                 .set_collection("StockCategory", "StockCategoryMasterList")
+                 .set_company(company_name)
+                 .set_fetch(["Name", "Parent"]))
+        stock_groups = []
+        stock_categories = []
+        try:
+            res_grp = self.execute_xml_request(port, b_grp.build(), timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            root_grp = ET.fromstring(self.clean_xml(res_grp))
+            for sg in root_grp.findall(".//STOCKGROUP"):
+                n = sg.findtext("NAME") or sg.attrib.get("NAME", "")
+                if n:
+                    stock_groups.append(n.strip())
+        except Exception as e:
+            print(f"Error fetching stock groups from {company_name}: {e}")
+            
+        try:
+            res_cat = self.execute_xml_request(port, b_cat.build(), timeout=constants.DEFAULT_HTTP_TIMEOUT)
+            root_cat = ET.fromstring(self.clean_xml(res_cat))
+            for sc in root_cat.findall(".//STOCKCATEGORY"):
+                n = sc.findtext("NAME") or sc.attrib.get("NAME", "")
+                if n:
+                    stock_categories.append(n.strip())
+        except Exception as e:
+            print(f"Error fetching stock categories from {company_name}: {e}")
+            
+        return stock_groups, stock_categories
+
+    def get_company_masters(self, company_name: str, port: int) -> dict:
+        """
+        Retrieves all cached company master lists with AlterID validation.
+        Returns: {
+            'alter_id': int,
+            'ledgers': {name: balance_str},
+            'groups': {group: parent},
+            'stock_items': [item_name, ...],
+            'stock_groups': [group_name, ...],
+            'stock_categories': [category_name, ...],
+            'godowns': [godown_name, ...],
+            'cost_centres': [centre_name, ...]
+        }
+        """
+        cache_key = (company_name.lower(), port)
+        current_alter_id = self.get_master_alter_id(company_name, port)
+        cached_entry = self.master_cache.get(cache_key)
+
+        now = time.time()
+        if cached_entry and cached_entry.get("alter_id") == current_alter_id and (now - cached_entry.get("timestamp", 0) < self.ttl_seconds):
+            return cached_entry
+
+        # Refresh all master entities
+        ledgers = self.fetch_ledgers(company_name, port)
+        groups = self.get_group_hierarchy_map(company_name, port)
+        stocks_raw = self.fetch_stock_summary(company_name, port)
+        stock_items = [s["item"] for s in stocks_raw if s.get("item")]
+        stock_groups, stock_categories = self.fetch_stock_groups_and_categories(company_name, port)
+        godowns_raw = self.fetch_godowns(company_name, port)
+        godowns = [g["name"] for g in godowns_raw if g.get("name")]
+        ccs_raw = self.fetch_cost_centres(company_name, port)
+        cost_centres = [cc["name"] for cc in ccs_raw if cc.get("name")]
+
+        masters = {
+            "alter_id": current_alter_id,
+            "timestamp": now,
+            "ledgers": ledgers,
+            "groups": groups,
+            "stock_items": stock_items,
+            "stock_groups": stock_groups,
+            "stock_categories": stock_categories,
+            "godowns": godowns,
+            "cost_centres": cost_centres
+        }
+        self.master_cache[cache_key] = masters
+        return masters
 
     def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None, voucher_type=None, limit=200):
-        """Fetches recent vouchers (transactions) from Tally using an indexed CHILDOF + BELONGSTO TDL Collection."""
+        """Fetches recent vouchers (transactions) using fast indexed routes and TDL."""
         def _to_tally_date(d_str):
             if not d_str: return d_str
             p = self._parse_date(d_str)
             return p.strftime("%Y%m%d") if p != datetime.min else d_str
 
         # 1. Determine Voucher Type Index (CHILDOF + BELONGSTO)
+
         childof_tag = ""
         vtype_cat = "general"
         if voucher_type:
@@ -908,58 +1309,71 @@ class TallyClient:
 
         # 2. Determine Conditional FETCH Projections based on Voucher Category
         if vtype_cat == "sales_purchase":
-            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Amount, Narration"
+            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Amount", "Narration"]
         elif vtype_cat == "receipt_payment":
-            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Amount, Narration, AllLedgerEntries.List, LedgerEntries.List"
+            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Amount", "Narration", "AllLedgerEntries.List", "LedgerEntries.List"]
         else:
-            # journal_contra or general
-            fetch_fields = "Date, VoucherTypeName, VoucherNumber, PartyLedgerName, Narration, Amount, AllLedgerEntries.List, LedgerEntries.List"
+            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Narration", "Amount", "AllLedgerEntries.List", "LedgerEntries.List"]
 
         # 3. Static Variable Dates & Bounds Configuration
-        sv_dates = ""
-        max_limit = limit if (limit and isinstance(limit, int) and limit > 0) else 200
-        sort_tag = "\n                        <SORT>Default : -$Date</SORT>"
-        date_filter_decl = ""
-        date_formula_decl = ""
+        max_limit = limit if (limit and isinstance(limit, int) and limit > 0) else constants.VOUCHER_DISPLAY_LIMIT
         
+        coll_type = "Vouchers:VoucherType" if voucher_type else "Voucher"
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection(coll_type, "VchCollection")
+                   .set_company(company_name)
+                   .set_max_limit(max_limit)
+                   .set_fetch(fetch_fields))
+
+        if voucher_type:
+            vtype_lower = voucher_type.lower()
+            if "credit note" in vtype_lower or "sales return" in vtype_lower:
+                builder.set_child_of("$$VchTypeCreditNote", belongs_to=True)
+            elif "debit note" in vtype_lower or "purchase return" in vtype_lower:
+                builder.set_child_of("$$VchTypeDebitNote", belongs_to=True)
+            elif "sales" in vtype_lower:
+                builder.set_child_of("$$VchTypeSales", belongs_to=True)
+            elif "purchase" in vtype_lower:
+                builder.set_child_of("$$VchTypePurchase", belongs_to=True)
+            elif "receipt" in vtype_lower:
+                builder.set_child_of("$$VchTypeReceipt", belongs_to=True)
+            elif "payment" in vtype_lower:
+                builder.set_child_of("$$VchTypePayment", belongs_to=True)
+            elif "journal" in vtype_lower:
+                builder.set_child_of("$$VchTypeJournal", belongs_to=True)
+            elif "contra" in vtype_lower:
+                builder.set_child_of("$$VchTypeContra", belongs_to=True)
+            else:
+                builder.set_child_of(voucher_type, belongs_to=True)
+
         if from_date or to_date:
             f_date_clean = _to_tally_date(from_date) if from_date else "19000101"
             t_date_clean = _to_tally_date(to_date) if to_date else "20991231"
-            sv_dates += f"\n                <SVFROMDATE>{f_date_clean}</SVFROMDATE>\n                <SVTODATE>{t_date_clean}</SVTODATE>"
-            sort_tag = ""
-            if from_date == to_date and from_date:
-                date_filter_decl = "\n                        <FILTER>DateFilter</FILTER>"
-                date_formula_decl = f"\n                    <SYSTEM TYPE=\"Formulae\" NAME=\"DateFilter\">$Date = $$Date:\"{from_date}\"</SYSTEM>"
+            
+            # Fast out-of-bounds guard: If queried dates are far outside the company's active fiscal years (e.g. 2025 vs 2017), return []
+            f_dt = self._parse_date(from_date) if from_date else None
+            t_dt = self._parse_date(to_date) if to_date else None
+            ctx = self.fetch_company_context(company_name, port)
+            if ctx and ctx.get("to_date") and ctx.get("to_date") != "Unknown":
+                cmp_to_dt = self._parse_date(ctx["to_date"])
+                cmp_from_dt = self._parse_date(ctx["from_date"]) if ctx.get("from_date") != "Unknown" else None
+                if (f_dt and cmp_to_dt and f_dt > cmp_to_dt + timedelta(days=365)) or (t_dt and cmp_from_dt and t_dt < cmp_from_dt - timedelta(days=365)):
+                    return []
 
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>VchCollection</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCOMPANY>{company_name}</SVCOMPANY>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>{sv_dates}
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="VchCollection" ISINITIALISE="Yes">
-                        <TYPE>Vouchers:VoucherType</TYPE>
-                        {childof_tag}{sort_tag}{date_filter_decl}
-                        <MAX>{max_limit}</MAX>
-                        <FETCH>{fetch_fields}</FETCH>
-                    </COLLECTION>{date_formula_decl}
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+            builder.set_date_range(f_date_clean, t_date_clean)
+            if f_date_clean == t_date_clean:
+                builder.add_filter("VchDateFilter", f'$Date = $$Date:"{f_date_clean}"')
+            else:
+                builder.add_filter("VchDateFilter", f'$Date >= $$Date:"{f_date_clean}" AND $Date <= $$Date:"{t_date_clean}"')
 
-        response_xml = self.execute_xml_request(port, payload)
+        payload = builder.build()
+        response_xml = self.execute_xml_request(port, payload, timeout=12)
+
+
+
+
+
+
         cleaned_xml = self.clean_xml(response_xml)
         root = ET.fromstring(cleaned_xml)
         
@@ -1051,7 +1465,12 @@ class TallyClient:
                         filtered_vchs.append(v)
                 vouchers = filtered_vchs
 
+        vouchers.sort(key=lambda x: str(x.get("date", "")), reverse=True)
         return vouchers
+
+
+
+
 
     def fetch_party_outstandings(self, company_name: str, port: int, report_type: str = "Receivables", from_date: str = None, to_date: str = None, max_limit: int = 200, party_filter: str = None) -> dict:
         """
@@ -1074,20 +1493,20 @@ class TallyClient:
             to_p = self._parse_date(to_date)
             t_str = to_p.strftime("%Y%m%d") if to_p != datetime.min else to_date
             from_p = self._parse_date(from_date) if from_date else datetime(1900, 1, 1)
-            f_str = from_p.strftime("%Y%m%d") if from_p != datetime.min else "19000101"
+            f_str = from_p.strftime("%Y%m%d") if from_p != datetime.min else constants.DATE_EPOCH
             
             target_groups = []
             if is_rec or is_all:
-                target_groups.append("Sundry Debtors")
+                target_groups.append(constants.GROUP_SUNDRY_DEBTORS)
                 for g in group_map.keys():
-                    if self.is_group_under(g.lower(), "sundry debtors", group_map) or self.is_group_under(g.lower(), "trade receivables", group_map):
+                    if self.is_group_under(g.lower(), constants.GROUP_SUNDRY_DEBTORS.lower(), group_map) or self.is_group_under(g.lower(), constants.GROUP_TRADE_RECEIVABLES.lower(), group_map):
                         if g not in target_groups:
                             target_groups.append(g)
                             
             if is_pay or is_all:
-                target_groups.append("Sundry Creditors")
+                target_groups.append(constants.GROUP_SUNDRY_CREDITORS)
                 for g in group_map.keys():
-                    if self.is_group_under(g.lower(), "sundry creditors", group_map) or self.is_group_under(g.lower(), "trade payables", group_map):
+                    if self.is_group_under(g.lower(), constants.GROUP_SUNDRY_CREDITORS.lower(), group_map) or self.is_group_under(g.lower(), constants.GROUP_TRADE_PAYABLES.lower(), group_map):
                         if g not in target_groups:
                             target_groups.append(g)
                             
@@ -1100,23 +1519,14 @@ class TallyClient:
                     continue
                 scanned_groups.add(grp_clean.lower())
                 
-                escaped_grp = grp_clean.replace("&", "&amp;")
-                payload = f"""<ENVELOPE>
-    <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Data</TYPE><ID>Group Summary</ID></HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-                <GROUPNAME>{escaped_grp}</GROUPNAME>
-                <EXPLODEFLAG>Yes</EXPLODEFLAG>
-                <ISITEMWISE>Yes</ISITEMWISE>
-                <SVFROMDATE>{f_str}</SVFROMDATE>
-                <SVTODATE>{t_str}</SVTODATE>
-            </STATICVARIABLES>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+                payload = (TDLEnvelopeBuilder()
+                           .set_report_id("Group Summary")
+                           .set_company(company_name)
+                           .set_group_name(grp_clean)
+                           .set_explode_flag(True)
+                           .set_itemwise(True)
+                           .set_date_range(f_str, t_str)
+                           .build())
                 try:
                     raw = self.execute_xml_request(port, payload, timeout=(0.5, 6.0))
                     cleaned = self.clean_xml(raw)
@@ -1172,51 +1582,33 @@ class TallyClient:
         # BRANCH B: FAST LIVE MASTER LEDGER COLLECTION (NON-DATED)
         # ----------------------------------------------------------------------
         if is_all:
-            group_name = "Sundry Debtors"
+            group_name = constants.GROUP_SUNDRY_DEBTORS
             filter_name = "AllOutstandingsFilter"
             filter_formula = "$ClosingBalance != 0"
             group_belongs_formula = "$$IsBelongsTo:$$GroupSundryDebtors OR $$IsBelongsTo:$$GroupSundryCreditors"
         elif is_rec:
-            group_name = "Sundry Debtors"
+            group_name = constants.GROUP_SUNDRY_DEBTORS
             filter_name = "ReceivableFilter"
             filter_formula = "$$IsDebit:$ClosingBalance"
             group_belongs_formula = "$$IsBelongsTo:$$GroupSundryDebtors"
         else:
-            group_name = "Sundry Creditors"
+            group_name = constants.GROUP_SUNDRY_CREDITORS
             filter_name = "PayableFilter"
             filter_formula = "$$IsCredit:$ClosingBalance"
             group_belongs_formula = "$$IsBelongsTo:$$GroupSundryCreditors"
 
-        payload = f"""<ENVELOPE>
-    <HEADER><VERSION>1</VERSION><TALLYREQUEST>Export</TALLYREQUEST><TYPE>Collection</TYPE><ID>PartyOutstandingsColl</ID></HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCOMPANY>{company_name}</SVCOMPANY>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="PartyOutstandingsColl" ISINITIALISE="Yes">
-                        <TYPE>Ledger</TYPE>
-                        <FETCH>Name, ClosingBalance, Parent</FETCH>
-                        <TOTAL>ClosingBalance</TOTAL>
-                        <SORT>Default : -$ClosingBalance</SORT>
-                        <MAX>{max_limit}</MAX>
-                        <FILTER>{filter_name}, NonZeroFilter, GroupBelongsFilter</FILTER>
-                    </COLLECTION>
-
-                    <SYSTEM TYPE="Formulae" NAME="{filter_name}">{filter_formula}</SYSTEM>
-                    <SYSTEM TYPE="Formulae" NAME="NonZeroFilter">$ClosingBalance != 0</SYSTEM>
-                    <SYSTEM TYPE="Formulae" NAME="GroupBelongsFilter">{group_belongs_formula}</SYSTEM>
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        payload = (TDLEnvelopeBuilder()
+                   .set_collection("Ledger", "PartyOutstandingsColl")
+                   .set_company(company_name)
+                   .set_fetch(["Name", "ClosingBalance", "Parent"])
+                   .set_sort("Default : -$ClosingBalance")
+                   .add_filter(filter_name, filter_formula)
+                   .add_filter("NonZeroFilter", "$ClosingBalance != 0")
+                   .add_filter("GroupBelongsFilter", group_belongs_formula)
+                   .build())
         try:
             raw = self.execute_xml_request(port, payload)
+
             cleaned = self.clean_xml(raw)
             root = ET.fromstring(cleaned)
             ledgers = root.findall(".//LEDGER")
@@ -1289,7 +1681,7 @@ class TallyClient:
             print(f"Error fetching party outstandings from Tally: {e}")
             return {"total_outstanding": 0.0, "total_party_count": 0, "parties": []}
 
-    def fetch_bills(self, company_name, port, report_type="All", from_date=None, to_date=None, status_filter=None, reference_date=None, exclude_pdc=True, ledger_filter=None):
+    def fetch_bills(self, company_name, port, report_type="All", from_date=None, to_date=None, status_filter=None, reference_date=None, exclude_pdc=True, ledger_filter=None, bill_name_filter=None):
         """Fetches bills using a custom TDL collection and a streaming parser."""
         ref_date_formatted = None
         if reference_date:
@@ -1301,97 +1693,56 @@ class TallyClient:
         filter_names = []
         filter_defs = []
         
+        builder = (TDLEnvelopeBuilder()
+                   .set_collection("Bill", "CustomBillCollection")
+                   .set_company(company_name)
+                   .set_fetch(["Name", "BillDate", "BillCreditPeriod", "ClosingBalance", "OpeningBalance", "Parent", "ClearedOn", "IsBillWiseOn"])
+                   .set_sort("Default : -$ClosingBalance")
+                   .add_compute("PartyGSTIN", "$Partygstin:Ledger:$Parent")
+                   .add_compute("GSTRegType", "$GSTRegistrationType:Ledger:$Parent")
+                   .add_compute("ParentGroup", "$Parent:Ledger:$Parent")
+                   .add_compute("IsBillWiseOn", "$IsBillWiseOn:Ledger:$Parent"))
+
+        if ref_date_formatted:
+            builder.set_current_date(ref_date_formatted)
+        if exclude_pdc:
+            builder.set_exclude_postdated(True)
+            builder.set_exclude_optional(True)
+
         if from_date or to_date:
             def _to_tdl_date(d_str, default_val):
                 if not d_str: return default_val
                 p = self._parse_date(d_str)
                 return p.strftime("%Y%m%d") if p != datetime.min else d_str
             
-            f_date_clean = _to_tdl_date(from_date, "19000101")
-            t_date_clean = _to_tdl_date(to_date, "20991231")
-            filter_names.append("DateFilter")
-            filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="DateFilter">
-                        $BillDate &gt;= $$Date:"{f_date_clean}" AND $BillDate &lt;= $$Date:"{t_date_clean}"
-                    </SYSTEM>""")
+            f_date_clean = _to_tdl_date(from_date, constants.DATE_EPOCH)
+            t_date_clean = _to_tdl_date(to_date, constants.DATE_FAR_FUTURE)
+            builder.set_date_range(f_date_clean, t_date_clean)
+            builder.add_filter("DateFilter", f'$BillDate >= $$Date:"{f_date_clean}" AND $BillDate <= $$Date:"{t_date_clean}"')
         elif ref_date_formatted:
-            filter_names.append("DateFilter")
-            filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="DateFilter">
-                        $BillDate &lt;= $$Date:"{ref_date_formatted}"
-                    </SYSTEM>""")
+            builder.add_filter("DateFilter", f'$BillDate <= $$Date:"{ref_date_formatted}"')
                     
         if status_filter == "pending":
-            filter_names.append("OutstandingFilter")
-            filter_defs.append("""<SYSTEM TYPE="Formulae" NAME="OutstandingFilter">
-                        $ClosingBalance != 0
-                    </SYSTEM>""")
+            builder.add_filter("OutstandingFilter", "$ClosingBalance != 0")
                     
         if report_type in ["Receivable", "Receivables"]:
-            filter_names.append("ReceivableFilter")
-            filter_defs.append("""<SYSTEM TYPE="Formulae" NAME="ReceivableFilter">
-                        $$IsDebit:$ClosingBalance
-                    </SYSTEM>""")
+            builder.add_filter("ReceivableFilter", "$$IsDebit:$ClosingBalance")
         elif report_type in ["Payable", "Payables"]:
-            filter_names.append("PayableFilter")
-            filter_defs.append("""<SYSTEM TYPE="Formulae" NAME="PayableFilter">
-                        $$IsCredit:$ClosingBalance
-                    </SYSTEM>""")
+            builder.add_filter("PayableFilter", "$$IsCredit:$ClosingBalance")
 
         if ledger_filter:
-            filter_names.append("SingleLedgerFilter")
-            escaped_ledger = ledger_filter.replace('&', '&amp;').replace('"', '&quot;')
-            filter_defs.append(f"""<SYSTEM TYPE="Formulae" NAME="SingleLedgerFilter">
-                        $Parent = "{escaped_ledger}"
-                    </SYSTEM>""")
+            escaped_ledger = TDLEnvelopeBuilder.escape_xml(ledger_filter)
+            builder.add_filter("SingleLedgerFilter", f'$Parent = "{escaped_ledger}"')
 
-        date_filter_tag = ""
-        date_filter_def = ""
-        if filter_names:
-            date_filter_tag = f"<FILTERS>{', '.join(filter_names)}</FILTERS>"
-            date_filter_def = "\n                    ".join(filter_defs)
-            
-        childname_tag = ""
-            
-        pdc_vars = ""
-        if exclude_pdc:
-            pdc_vars = "\n                <SVEXCLUDEPOSTDATED>Yes</SVEXCLUDEPOSTDATED>\n                <SVEXCLUDEOPTIONAL>Yes</SVEXCLUDEOPTIONAL>"
-         
-        payload = f"""<ENVELOPE>
-    <HEADER>
-        <VERSION>1</VERSION>
-        <TALLYREQUEST>Export</TALLYREQUEST>
-        <TYPE>Collection</TYPE>
-        <ID>CustomBillCollection</ID>
-    </HEADER>
-    <BODY>
-        <DESC>
-            <STATICVARIABLES>
-                <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
-                <SVCOMPANY>{company_name}</SVCOMPANY>
-                <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
-                {f'<SVCURRENTDATE>{ref_date_formatted}</SVCURRENTDATE>' if ref_date_formatted else ''}{pdc_vars}
-            </STATICVARIABLES>
-            <TDL>
-                <TDLMESSAGE>
-                    <COLLECTION NAME="CustomBillCollection">
-                        <TYPE>Bill</TYPE>{childname_tag}
-                        <FETCH>Name, BillDate, BillCreditPeriod, ClosingBalance, OpeningBalance, Parent, ClearedOn, IsBillWiseOn</FETCH>
-                        <TOTAL>ClosingBalance</TOTAL>
-                        <SORT>Default : -$ClosingBalance</SORT>
-                        <MAX>200</MAX>
-                        <COMPUTE>PartyGSTIN: $Partygstin:Ledger:$Parent</COMPUTE>
-                        <COMPUTE>GSTRegType: $GSTRegistrationType:Ledger:$Parent</COMPUTE>
-                        <COMPUTE>ParentGroup: $Parent:Ledger:$Parent</COMPUTE>
-                        <COMPUTE>IsBillWiseOn: $IsBillWiseOn:Ledger:$Parent</COMPUTE>
-                        {date_filter_tag}
-                    </COLLECTION>
-                    {date_filter_def}
-                </TDLMESSAGE>
-            </TDL>
-        </DESC>
-    </BODY>
-</ENVELOPE>"""
+        # Bill name filter: narrows to a specific bill by its Name field (not $Parent)
+        if bill_name_filter:
+            escaped_bill = TDLEnvelopeBuilder.escape_xml(bill_name_filter)
+            builder.add_filter("BillNameFilter", f'$Name = "{escaped_bill}"')
+
+        payload = builder.build()
         
         url = f"http://localhost:{port}"
+
         try:
             # 2. LIVE HTTP POST: Sends TDL request directly to http://localhost:<port>
             response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=DEFAULT_STREAM_TIMEOUT, stream=True)

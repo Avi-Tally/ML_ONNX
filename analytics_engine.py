@@ -1,35 +1,14 @@
 from datetime import datetime, timedelta
+import date_utils
 
 class AnalyticsEngine:
     def __init__(self):
         pass
 
     def _parse_date(self, date_str):
-        if not date_str:
-            return datetime.min
-        date_str = date_str.strip()
-        if len(date_str) == 8 and date_str.isdigit():
-            try:
-                return datetime.strptime(date_str, "%Y%m%d")
-            except:
-                pass
-        
-        try:
-            return datetime.strptime(date_str, "%d-%b-%Y")
-        except:
-            pass
-            
-        try:
-            return datetime.strptime(date_str, "%d-%b-%y")
-        except:
-            pass
-            
-        try:
-            return datetime.strptime(date_str, "%Y-%m-%d")
-        except:
-            pass
-            
-        return datetime.min
+        parsed = date_utils.parse_date(date_str)
+        return parsed if parsed is not None else datetime.min
+
 
     def process_bills(self, bills, intent, params=None, today_str=None):
         if params is None:
@@ -96,15 +75,14 @@ class AnalyticsEngine:
         for b in filtered_bills:
             include = True
             
-            # Exclude bills that are invoiced in the future relative to the reporting date (today)
-            if b["parsed_date"] != datetime.min and b["parsed_date"] > today:
-                include = False
-                
-            # Exclude bills with a future due date (negative age relative to today)
-            if b["age_days"] < 0:
-                include = False
+            # Exclude bills that are invoiced in the future relative to the reporting date
+            # Only when the user has NOT asked for future-dated or upcoming bills
+            if not params.get("date_filter") or params.get("date_filter", {}).get("type") not in ("next_days", "this_week"):
+                if b["parsed_date"] != datetime.min and b["parsed_date"] > today:
+                    include = False
                 
             # Overdue filter (exclude non-overdue bills with negative/zero age)
+            # Only exclude future-due bills when user explicitly asks for overdue
             if params.get("overdue_only") and b["age_days"] <= 0:
                 include = False
                 
@@ -223,3 +201,194 @@ class AnalyticsEngine:
             final_bills = final_bills[:limit]
             
         return final_bills
+
+    def compute_trust_scores(
+        self,
+        party_metrics: dict = None,
+        party_bills: list = None,
+        party_vouchers: list = None,
+        party_outstandings: list = None,
+        reference_date: datetime = None
+    ) -> list:
+        """
+        Computes mathematically rigorous, bounded Trust Score T in [0, 100%]:
+        T = [ 0.40 * S_settle + 0.25 * S_freq + 0.20 * S_recent + 0.15 * S_volume ] * (1 - P_overdue) * 100%
+        """
+        if reference_date is None:
+            reference_date = datetime.now()
+
+        party_map = {}
+
+        # 0. High-performance fast path: directly use pre-aggregated scalar metrics
+        if party_metrics:
+            for p_name, m in party_metrics.items():
+                p_clean = p_name.strip()
+                if not p_clean:
+                    continue
+                party_map[p_clean] = {
+                    "party": p_clean,
+                    "total_invoiced": m.get("total_invoiced", 0.0),
+                    "total_settled": m.get("total_settled", 0.0),
+                    "total_outstanding": m.get("total_outstanding", 0.0),
+                    "overdue_amount": m.get("overdue_amount", 0.0),
+                    "bill_count": m.get("bill_count", 1),
+                    "voucher_count": m.get("bill_count", 1),
+                    "last_txn_date": m.get("last_txn_date"),
+                    "parent_group": ""
+                }
+
+        # 1. Aggregate Bills Data (Settlement Rate & Overdue Penalty) - Fallback
+        elif party_bills:
+            for b in party_bills:
+                party = b.get("party", "").strip()
+                if not party:
+                    continue
+                if party not in party_map:
+                    party_map[party] = {
+                        "party": party,
+                        "total_invoiced": 0.0,
+                        "total_settled": 0.0,
+                        "total_outstanding": 0.0,
+                        "overdue_amount": 0.0,
+                        "bill_count": 0,
+                        "voucher_count": 0,
+                        "last_txn_date": None,
+                        "parent_group": b.get("parent_group", "")
+                    }
+                
+                try:
+                    amt = abs(float(b.get("amount", 0)))
+                except:
+                    amt = 0.0
+                    
+                is_settled = bool(b.get("is_settled") or b.get("is_cleared"))
+                age = b.get("age_days", 0)
+                
+                party_map[party]["total_invoiced"] += amt
+                party_map[party]["bill_count"] += 1
+                
+                if is_settled:
+                    party_map[party]["total_settled"] += amt
+                else:
+                    party_map[party]["total_outstanding"] += amt
+                    if age > 0:
+                        party_map[party]["overdue_amount"] += amt
+
+        # 2. Aggregate Vouchers Data (Frequency & Recency)
+        if party_vouchers:
+            for v in party_vouchers:
+                party = v.get("party", "").strip()
+                if not party:
+                    continue
+                if party not in party_map:
+                    party_map[party] = {
+                        "party": party,
+                        "total_invoiced": 0.0,
+                        "total_settled": 0.0,
+                        "total_outstanding": 0.0,
+                        "overdue_amount": 0.0,
+                        "bill_count": 0,
+                        "voucher_count": 0,
+                        "last_txn_date": None,
+                        "parent_group": ""
+                    }
+                
+                party_map[party]["voucher_count"] += 1
+                v_date_str = v.get("date", "")
+                v_date = self._parse_date(v_date_str)
+                if v_date != datetime.min:
+                    if not party_map[party]["last_txn_date"] or v_date > party_map[party]["last_txn_date"]:
+                        party_map[party]["last_txn_date"] = v_date
+
+        # 3. Integrate Party Outstandings
+        if party_outstandings:
+            for p in party_outstandings:
+                p_name = p.get("party") or p.get("name", "")
+                if not p_name:
+                    continue
+                if p_name not in party_map:
+                    party_map[p_name] = {
+                        "party": p_name,
+                        "total_invoiced": abs(float(p.get("amount", 0))),
+                        "total_settled": 0.0,
+                        "total_outstanding": abs(float(p.get("amount", 0))),
+                        "overdue_amount": 0.0,
+                        "bill_count": 1,
+                        "voucher_count": 1,
+                        "last_txn_date": None,
+                        "parent_group": p.get("parent", "")
+                    }
+
+        if not party_map:
+            return []
+
+        # Find max volume for relative normalization
+        max_volume = max((p["total_invoiced"] for p in party_map.values()), default=1.0)
+        if max_volume <= 0:
+            max_volume = 1.0
+
+        scores = []
+        for p_name, data in party_map.items():
+            tot_inv = data["total_invoiced"]
+            tot_settled = data["total_settled"]
+            tot_out = data["total_outstanding"]
+            overdue = data["overdue_amount"]
+            txns = max(data["voucher_count"], data["bill_count"])
+            
+            # S_settle: Settlement Ratio in [0, 1]
+            if tot_inv > 0:
+                s_settle = min(1.0, max(0.0, tot_settled / tot_inv))
+                if s_settle == 0 and tot_out > 0 and overdue == 0:
+                    s_settle = 0.70
+            else:
+                s_settle = 0.50
+
+            # S_freq: Frequency Score in [0, 1] (capped at 10 transactions)
+            s_freq = min(1.0, txns / 10.0)
+
+            # S_recent: Recency Score in [0, 1]
+            if data["last_txn_date"]:
+                days_since = max(0, (reference_date - data["last_txn_date"]).days)
+                s_recent = max(0.0, 1.0 - (days_since / 365.0))
+            else:
+                s_recent = 0.60
+
+            # S_volume: Volume Score in [0, 1]
+            s_volume = min(1.0, tot_inv / max_volume) if max_volume > 0 else 0.5
+
+            # P_overdue: Overdue Penalty in [0, 0.50]
+            if tot_out > 0:
+                p_overdue = min(0.50, overdue / tot_out)
+            else:
+                p_overdue = 0.0
+
+            # Weighted Trust Score Calculation
+            raw_trust = (0.40 * s_settle + 0.25 * s_freq + 0.20 * s_recent + 0.15 * s_volume) * (1.0 - p_overdue)
+            trust_pct = round(min(100.0, max(0.0, raw_trust * 100.0)), 1)
+
+            # Assign Rating Badge
+            if trust_pct >= 85.0:
+                rating = "🟢 AAA (Exceptional)"
+            elif trust_pct >= 70.0:
+                rating = "🟢 AA (Very High)"
+            elif trust_pct >= 55.0:
+                rating = "🟡 A (Good)"
+            elif trust_pct >= 40.0:
+                rating = "🟠 BBB (Moderate)"
+            else:
+                rating = "🔴 High Risk"
+
+            scores.append({
+                "party": p_name,
+                "trust_score": trust_pct,
+                "rating": rating,
+                "settlement_rate": round(s_settle * 100, 1),
+                "txn_count": txns,
+                "total_volume": tot_inv,
+                "overdue_amount": overdue,
+                "outstanding": tot_out
+            })
+
+        scores.sort(key=lambda x: x["trust_score"], reverse=True)
+        return scores
+

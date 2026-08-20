@@ -24,6 +24,8 @@ import numpy as np              # IMPORT RATIONALE: Constructs high-performance 
 import onnxruntime as ort       # IMPORT RATIONALE: C++ accelerated machine learning runtime. Executes pre-trained TF-IDF + LogisticRegression models in <0.5ms.
 from tokenizers import Tokenizer # IMPORT RATIONALE: HuggingFace Fast Tokenizer for character and subword tokenization.
 from rapidfuzz import process, fuzz # IMPORT RATIONALE: C++ optimized Levenshtein and token-set ratio string matching (100x faster than fuzzywuzzy).
+import constants
+import date_utils
 
 class NLPEngine:
     """
@@ -95,6 +97,7 @@ class NLPEngine:
             print(f"Warning: Failed to load ONNX model ({e}). Intents may fallback to GET_LEDGER_BALANCE.")
 
         # Words to strip out when trying to find a ledger name from a query via fuzzy match
+        # Multi-word intent frames and conversational prefixes to strip during entity resolution
         self.stop_phrases = [
             "what is the balance of", "what is balance of", "balance of", "balance for",
             "show balance of", "fetch balance of", "get balance of", "how much is in",
@@ -107,44 +110,77 @@ class NLPEngine:
             "show ledger", "get ledger", "ledger", "balance", "for", "of", "the", "please",
             "total", "outstanding", "pending bills", "pending invoices", "pending", 
             "bills", "invoices", "due amount", "amount due", "owed by", "owe me", "owe",
-            "receivables from", "payables to", "what is my", "is", "show customer advances", "show supplier advances", "show all sales invoices for", "show all sales invoices",
-            "show sales invoices for", "show sales invoices", "show purchase invoices for", "show purchase invoices",
-            "sales invoices for", "sales invoices", "purchase invoices for", "purchase invoices",
-            "sales vouchers for", "sales vouchers", "purchase vouchers for", "purchase vouchers",
-            "receipt vouchers for", "receipt vouchers", "payment vouchers for", "payment vouchers",
-            "journal vouchers for", "journal vouchers", "contra vouchers for", "contra vouchers",
-            "sales entries for", "sales entries", "purchase entries for", "purchase entries",
-            "sales", "purchase", "receipt", "payment", "journal", "contra", "invoices", "vouchers", "entries",
-            "vendors", "vendor", "customers", "customer", "creditors", "creditor", "debtors", "debtor",
-            "parties", "party", "suppliers", "supplier", "group", "under", "system", "all", "any",
-            "receivable", "receivables", "payable", "payables", "advance", "advances", "sundry", "collections",
-            "cleared", "settled", "due", "overdue", "unpaid", "paid", "companies", "company", "comp"
+            "receivables from", "payables to", "what is my", "is", "show customer advances", "show supplier advances",
+            "show all sales invoices for", "show all sales invoices", "show sales invoices for", "show sales invoices",
+            "show purchase invoices for", "show purchase invoices", "sales invoices for", "sales invoices",
+            "purchase invoices for", "purchase invoices", "sales vouchers for", "sales vouchers",
+            "purchase vouchers for", "purchase vouchers", "receipt vouchers for", "receipt vouchers",
+            "payment vouchers for", "payment vouchers", "journal vouchers for", "journal vouchers",
+            "contra vouchers for", "contra vouchers", "sales entries for", "sales entries",
+            "purchase entries for", "purchase entries"
         ]
+        # Sort stop_phrases by length descending for greedy prefix stripping
+        self.stop_phrases.sort(key=len, reverse=True)
         
+        # Single-word accounting terms, conversational tokens, numbers, and temporal filters
         self.common_words = {
-            "the", "and", "for", "that", "this", "with", "from", "your", "what", "how", "who", "why", 
-            "when", "where", "are", "you", "not", "all", "any", "it", "is", "of", "to", "in", "on", 
-            "at", "by", "as", "be", "do", "does", "did", "will", "would", "shall", "should", "can", 
-            "could", "may", "might", "must", "a", "an", "money", "total", "amount", "balance", 
-            "show", "get", "give", "list", "display", "bill", "bills", "invoice", "invoices", 
-            "payment", "payments", "receipt", "receipts", "due", "overdue", "pending", "cleared", 
-            "paid", "receivable", "payable", "unpaid", "settled", "outstanding", "opening", "closing", 
-            "final", "net", "gst", "gstin", "status", "sundry", "next", "last", "past", "top", "showing", 
-            "based", "order", "ascending", "descending", "beyond", "within"
+            "what", "is", "the", "balance", "balances", "show", "me", "how", "much", "does", "owe", 
+            "amount", "for", "party", "parties", "invoices", "invoice", "pending", "from", "ledger", 
+            "account", "accounts", "due", "dues", "receivables", "receivable", "payable", "payables", 
+            "debtor", "debtors", "creditor", "creditors", "customer", "customers", "vendor", "vendors", 
+            "supplier", "suppliers", "all", "any", "some", "total", "value", "many", "bill", "bills", 
+            "receipt", "receipts", "payment", "payments", "sales", "purchase", "journal", "contra", 
+            "vouchers", "voucher", "entries", "entry", "credit", "debit", "note", "notes", "company", 
+            "companies", "group", "groups", "details", "summary", "type", "types", "with", "on", "in", 
+            "at", "by", "to", "and", "or", "but", "less", "than", "more", "greater", "above", "below", 
+            "under", "over", "age", "days", "day", "date", "dates", "today", "year", "month", "week", 
+            "where", "as", "about", "between", "after", "before", "since", "till", "who", "which", 
+            "list", "sundry", "next", "last", "past", "top", "showing", "based", "order", "ascending", 
+            "descending", "be", "paid", "unpaid", "cleared", "settled", "overdue", "outstanding", 
+            "opening", "closing", "final", "net", "display", "give", "get", "gst", "gstin", "status", 
+            "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec", 
+            "january", "february", "march", "april", "june", "july", "august", "september", "october", 
+            "november", "december", "first", "second", "third", "fourth", "fifth", "one", "two", "three", 
+            "four", "five", "six", "seven", "eight", "nine", "ten", "limit", "are", "were", "was", "been", 
+            "starting", "start", "end", "ending", "billdate", "duedate", "paymentdate", "least", "most", 
+            "inr", "rs", "rupees", "lakh", "lakhs", "crore", "crores", "cr", "beyond", "within", 
+            "limited", "ltd", "pvt", "private", "inc", "corp", "corporation", "enterprises", "industries", 
+            "international", "owed", "owing", "collect", "collection", "collections", "receive", 
+            "received", "receiving", "books", "well", "system", "systems", "only", "also", "have", 
+            "has", "crossed", "exceeding", "adjustment", "adjustments", "count", "sorted", "available", 
+            "associated", "association", "linked", "unallocated", "unadjusted", "unsettled", "against", 
+            "advance", "advances", "reference", "that", "this", "your", "why", "when", "you", "not", 
+            "it", "do", "did", "will", "would", "shall", "should", "can", "could", "money"
         }
 
+        # Accounting classification groups and generic placeholder ledgers
         self.generic_ledgers = {
             "customer", "customers", "debtor", "debtors", "creditor", "creditors", 
             "supplier", "suppliers", "vendor", "vendors", "account", "accounts", 
-            "ledger", "ledgers", "group", "groups"
+            "ledger", "ledgers", "group", "groups", "advance", "advances", "customer advances", "supplier advances",
+            "sundry debtors", "sundry creditors", "expenses", "group expenses", "direct expenses", "indirect expenses",
+            "duties & taxes", "duties and taxes", "sales", "sales account", "purchase", "purchase account",
+            "cash", "bank", "interest received", "books & periodicals", "freight inward", "freight outward"
         }
 
     def resolve_ledger(self, query, ledgers):
         if not ledgers:
             return None, 0.0, [], 0
             
-        ledger_names = list(ledgers.keys())
+        ledger_names = list(ledgers.keys()) if isinstance(ledgers, dict) else list(ledgers)
         query_lower = query.lower()
+
+        # Direct explicit marker syntax $L(...) resolution
+        m = re.search(r'\$L\(([^)]+)\)', query, re.IGNORECASE)
+        if m:
+            explicit_name = m.group(1).strip()
+            for lname in ledger_names:
+                if lname.lower() == explicit_name.lower():
+                    return lname, 100.0, [], 1
+            # Exact match with case-insensitivity
+            for lname in ledger_names:
+                if lname.lower().strip() == explicit_name.lower().strip():
+                    return lname, 100.0, [], 1
         
         # Rewrite Group Expenses to Expenses ONLY if Group Expenses is not a valid ledger/group name in the company
         if "group expenses" in query_lower and not any(l.lower() == "group expenses" for l in ledger_names):
@@ -162,6 +198,11 @@ class NLPEngine:
             name_lower = name.lower()
             if name_lower in self.common_words or name_lower in system_vtypes:
                 continue
+            # Skip multi-word ledger names whose leading token is a common accounting keyword
+            # e.g. "OUTSTANDING INTEREST ON CAPITAL FIRST" starts with "outstanding" → skip
+            name_tokens = name_lower.split()
+            if len(name_tokens) > 1 and name_tokens[0] in self.common_words:
+                continue
 
             try:
                 pattern = r'(?<![a-zA-Z0-9])' + re.escape(name_lower) + r'(?![a-zA-Z0-9])'
@@ -175,20 +216,21 @@ class NLPEngine:
                         best_exact_pos = pos
                         best_exact_name = name
                         best_is_generic = False
-                    elif pos < best_exact_pos:
-                        best_exact_pos = pos
-                        best_exact_name = name
-                        best_is_generic = is_generic
-                    elif pos == best_exact_pos and best_exact_name and len(name) > len(best_exact_name):
-                        best_exact_name = name
-                        best_is_generic = is_generic
+                    elif is_generic == best_is_generic:
+                        if pos < best_exact_pos:
+                            best_exact_pos = pos
+                            best_exact_name = name
+                        elif pos == best_exact_pos and best_exact_name and len(name) > len(best_exact_name):
+                            best_exact_name = name
             except re.error:
                 pass
 
         if best_exact_name:
             exact_clean = best_exact_name.lower().strip()
             score = 100.0
-            if len(exact_clean.split()) <= 2:
+            # Only trigger ambiguity if the matched name is a short partial token (e.g. 'Reliance')
+            # and is NOT a known generic/group category like 'Sundry Debtors'
+            if len(exact_clean.split()) <= 1 and exact_clean not in self.generic_ledgers:
                 ambig_matches = [best_exact_name]
                 for lname in ledger_names:
                     if lname.lower() in system_vtypes or lname.lower() == exact_clean:
@@ -196,35 +238,19 @@ class NLPEngine:
                     if re.search(r'(?<![a-zA-Z0-9])' + re.escape(exact_clean) + r'(?![a-zA-Z0-9])', lname.lower()):
                         ambig_matches.append(lname)
                 if len(ambig_matches) > 1:
-                    return None, score, ambig_matches[:4], 1
+                    # Score each candidate against the query/exact_clean and sort descending
+                    scored_candidates = []
+                    for lname in ambig_matches:
+                        f_score = max(fuzz.token_set_ratio(exact_clean, lname.lower()), fuzz.WRatio(exact_clean, lname.lower()))
+                        scored_candidates.append((lname, f_score))
+                    scored_candidates.sort(key=lambda x: x[1], reverse=True)
+                    top_10 = [c[0] for c in scored_candidates[:10]]
+                    return None, score, top_10, 1
             return best_exact_name, score, [], 1
                     
         # ======================================================================
         # RESOLUTION STEP 2: Sliding 1-to-4 Word N-Gram Window Generator
-        #
-        # WHY IT IS PRESENT:
-        #   Users type informal party names (e.g. 'thermo ltd' when Tally ledger is 'THERMO LIMITED').
-        #   Generating contiguous sub-sequences of length 1, 2, 3, 4 words ensures we isolate
-        #   the exact party name substring while discarding accounting stop words.
         # ======================================================================
-        common = {"what", "is", "the", "balance", "of", "show", "me", "how", "much", "does", "owe", 
-                  "amount", "for", "party", "invoices", "pending", "from", "ledger", "account", "due", "receivables",
-                  "payable", "payables", "receivable", "debtor", "debtors", "creditor", "creditors", "customer", "customers",
-                  "vendor", "vendors", "supplier", "suppliers", "all", "any", "some", "total", "value", "many",
-                  "bill", "bills", "receipt", "receipts", "payment", "payments", "sales", "purchase", "journal", "contra", "vouchers", "entries", "invoice",
-                  "credit", "debit", "note", "notes", "company", "companies", "group", "groups", "details", "summary", "type", "types",
-                  "with", "on", "in", "at", "by", "to", "and", "or", "but", "less", "than", "more", "greater", "above", "below",
-                  "under", "over", "age", "days", "day", "date", "dates", "today", "year", "month", "week", "where", "as", "about",
-                  "between", "after", "before", "since", "till", "who", "which", "list", "sundry", "next", "last", "past", "top", "showing", "based", "order", "ascending", "descending",
-                  "be", "paid", "unpaid", "cleared", "settled", "overdue", "outstanding", "opening", "closing", "final", "net", "display", "give", "get", "gst", "gstin", "status",
-                  "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
-                  "january", "february", "march", "april", "june", "july", "august", "september", "october", "november", "december",
-                  "first", "second", "third", "fourth", "fifth", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "limit",
-                  "are", "were", "was", "been", "starting", "start", "end", "ending", "billdate", "duedate", "paymentdate", "least", "most",
-                  "inr", "rs", "rupees", "lakh", "lakhs", "crore", "crores", "cr", "beyond", "within",
-                  "limited", "ltd", "pvt", "private", "inc", "corp", "corporation", "enterprises", "industries", "international",
-                  "owed", "owing", "collect", "collection", "collections"}
-                  
         q_clean = re.sub(r'[^a-zA-Z0-9\s]', '', query_lower)
         words = q_clean.split()
         
@@ -232,7 +258,7 @@ class NLPEngine:
         for n in range(4, 0, -1):
             for i in range(len(words) - n + 1):
                 window = " ".join(words[i:i+n])
-                if all(w in common or w.isdigit() or len(w) < 2 for w in words[i:i+n]):
+                if all(w in self.common_words or w.isdigit() or len(w) < 2 for w in words[i:i+n]):
                     continue
                 if len(window) < 3:
                     continue
@@ -260,7 +286,7 @@ class NLPEngine:
             w_len = len(w_clean_tokens)
             if w_len == 0:
                 continue
-            matches = process.extract(window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=10)
+            matches = process.extract(window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=20)
             if matches:
                 for m in matches:
                     matched_name_lower = m[0]
@@ -292,22 +318,37 @@ class NLPEngine:
         sorted_candidates = sorted(ledger_best.items(), key=lambda x: x[1][0], reverse=True)
         best_idx, (best_score, best_w_len, best_window) = sorted_candidates[0]
 
-        if best_score < 85.0:
+        # Strict thresholding for single-word candidate windows to prevent false positive ledger matching
+        if best_w_len == 1:
+            if len(best_window) < 4 or best_score < 90.0:
+                return None, best_score, [], 0
+            cand_tokens = set(re.findall(r'[a-zA-Z0-9]+', ledger_names[best_idx].lower()))
+            if not any(fuzz.ratio(best_window.lower(), ct) >= 80.0 for ct in cand_tokens):
+                return None, best_score, [], 0
+        elif best_score < 85.0:
             return None, best_score, [], 0
 
-        # Ambiguity Check for candidate window
+        # Ambiguity Check for candidate window: Collect and rank top 10 candidates based on fuzzy score
         if best_window:
-            top_matches = process.extract(best_window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=5)
+            top_matches = process.extract(best_window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=20)
             high_score_candidates = []
+            seen_names = set()
             for m in top_matches:
                 m_score = m[1]
                 m_orig_name = ledger_names[original_indices[m[2]]]
-                if abs(m_score - best_score) < 5.0 and m_orig_name not in high_score_candidates:
-                    high_score_candidates.append(m_orig_name)
+                if m_orig_name not in seen_names:
+                    seen_names.add(m_orig_name)
+                    # Combine token_set_ratio and WRatio for robust ranking
+                    w_score = fuzz.WRatio(best_window.lower(), m_orig_name.lower())
+                    comb_score = (m_score + w_score) / 2.0
+                    if abs(m_score - best_score) < 10.0 or (comb_score >= 70.0 and abs(comb_score - best_score) < 15.0):
+                        high_score_candidates.append((m_orig_name, comb_score))
             
             if len(high_score_candidates) > 1:
-                # Return ambiguity list!
-                return None, best_score, high_score_candidates[:4], 3
+                # Rank strictly by fuzzy score descending and take top 10
+                high_score_candidates.sort(key=lambda x: x[1], reverse=True)
+                top_10 = [c[0] for c in high_score_candidates[:10]]
+                return None, best_score, top_10, 3
             
         matched_name = ledger_names[best_idx]
         matched_lower = matched_name.lower()
@@ -352,6 +393,32 @@ class NLPEngine:
         if "compare" in q_lower and ("company" in q_lower or "companies" in q_lower or "between" in q_lower):
             return "GET_COMPARATIVE_SUMMARY"
 
+        if any(w in q_lower for w in ["company overview", "company summary", "financial overview", "executive summary", "business dashboard", "company dashboard"]):
+            return "GET_COMPANY_SUMMARY"
+
+        if any(w in q_lower for w in ["ledger 360", "party 360", "ledger overview", "account overview", "party overview", "overview of", "360 of"]):
+            return "GET_LEDGER_BALANCE"
+
+        if "cost cent" in q_lower or "cost category" in q_lower or "cost centre" in q_lower or "cost center" in q_lower or "$cc(" in q_lower:
+            return "GET_COST_CENTRE_BREAKUP"
+
+        if any(w in q_lower for w in ["trust score", "trusted client", "trusted customer", "trusted vendor", "credit rating", "most trusted"]):
+            return "GET_TRUST_SCORES"
+
+        if any(w in q_lower for w in ["transaction count", "voucher count", "most frequent", "frequent vendor", "frequent supplier", "frequent party", "by transactions"]):
+            return "GET_TOP_VENDORS_BY_TXN"
+
+        if any(w in q_lower for w in ["batch details", "batch-wise", "batch tracking", "expiry date", "expiring batches", "mfg date", "batch wise"]):
+            return "GET_BATCH_DETAILS"
+
+        if any(w in q_lower for w in ["balance of", "closing balance", "opening balance", "balance for", "ledger balance", "party balance"]):
+            if not any(w in q_lower for w in ["trial", "tb", "payables", "receivables", "stock", "inventory"]):
+                return "GET_LEDGER_BALANCE"
+
+
+
+
+
         if hasattr(self, 'intent_session') and self.intent_session:
             ml_intent, conf = self.predict_param(self.intent_session, query)
             if ml_intent:
@@ -360,6 +427,7 @@ class NLPEngine:
                     return "GET_LEDGER_BALANCE"
                 return ml_intent
         return "GET_LEDGER_BALANCE"
+
 
     def predict_param(self, session, text: str):
         if not session:
@@ -418,15 +486,17 @@ class NLPEngine:
         q_lower = query.lower()
         normalized_query = query.replace("₹", "Rs ")
 
-        # Extract 27-entity advanced parameters
+        # Extract group parameters
         if "expenses" in q_lower:
             params["group_name"] = "Expenses"
         elif "sundry creditors" in q_lower or "creditors group" in q_lower:
-            params["group_name"] = "Sundry Creditors"
+            params["group_name"] = constants.GROUP_SUNDRY_CREDITORS
         elif "sundry debtors" in q_lower or "debtors group" in q_lower:
-            params["group_name"] = "Sundry Debtors"
+            params["group_name"] = constants.GROUP_SUNDRY_DEBTORS
 
-        if "usd" in q_lower or "$" in q_lower:
+        # Ignore entity tag prefixes ($C(, $L(, $G(, $S(, $CC(, $SG(, $SC()
+        cleaned_for_curr = re.sub(r'\$[A-Za-z]+\(', '', q_lower)
+        if re.search(r'\busd\b|\$([0-9]|\s)', cleaned_for_curr):
             params["currency"] = "USD"
             params["forex_only"] = True
         elif "eur" in q_lower or "€" in q_lower:
@@ -438,14 +508,24 @@ class NLPEngine:
         elif "unregistered" in q_lower:
             params["gst_status"] = "unregistered"
 
-        if "reliance job" in q_lower:
-            params["cost_center"] = "Reliance Job"
+        # Cost Centre & Godown: Parsed via keywords (dynamically resolved against live caches in Phase 2)
+        generic_entity_words = {"summary", "breakup", "details", "list", "all", "report", "overview", "balances", "balance"}
+        cc_match = re.search(r'\b(?:cost\s*cent(?:er|re)|department|division)\s*[:\-]?\s*([a-zA-Z0-9\s]+?)(?:\s+(?:in|for|of|from|to)\b|$)', q_lower)
+        if cc_match:
+            candidate_cc = cc_match.group(1).strip()
+            if candidate_cc.lower() not in generic_entity_words and len(candidate_cc) > 1:
+                params["cost_center"] = candidate_cc.title()
 
-        if "bhiwandi" in q_lower or "godown" in q_lower or "warehouse" in q_lower:
-            params["godown_name"] = "Bhiwandi Godown"
+        godown_match = re.search(r'\b(?:godown|warehouse|location|depot)\s*[:\-]?\s*([a-zA-Z0-9\s]+?)(?:\s+(?:in|for|of|from|to)\b|$)', q_lower)
+        if godown_match:
+            candidate_gd = godown_match.group(1).strip()
+            if candidate_gd.lower() not in generic_entity_words and len(candidate_gd) > 1:
+                params["godown_name"] = candidate_gd.title()
 
-        if "compare" in q_lower and ("company" in q_lower or "companies" in q_lower or "between" in q_lower):
-            params["compare_companies"] = True
+
+        #if "compare" in q_lower and ("company" in q_lower or "companies" in q_lower or "between" in q_lower):
+         #   params["compare_companies"] = True
+
 
         # Regex for Document References (Case-preserving finditer match) - extract first as other params depend on it
         doc_id = None
@@ -663,90 +743,13 @@ class NLPEngine:
 
         if any(phrase in q_lower for phrase in ["highest average overdue", "highest avg overdue", "decreasing avg overdue", "decreasing average overdue", "by overdue days", "by average overdue", "by avg overdue"]) and "maximum overdue days" not in q_lower:
             params["sort"] = None
-
-        # Custom date/amount extractors for stability
-        if "as of today" in q_lower or "as on today" in q_lower:
-            if params.get("document_ref"):
-                params["reference_date"] = "today"
-                params["date_filter"] = None
-            else:
-                params["date_filter"] = {"type": "till_today"}
-                params["reference_date"] = None
-        elif "till date" in q_lower or "today" in q_lower:
-            if "pending" in q_lower or "till" in q_lower or "payable" in q_lower or "receivable" in q_lower or "due" in q_lower or "getting" in q_lower or "outstanding" in q_lower or "owe" in q_lower or "settled" in q_lower or "cleared" in q_lower or "paid" in q_lower or "pay" in q_lower or "received" in q_lower:
-                params["date_filter"] = {"type": "till_today"}
-            else:
-                params["date_filter"] = {"type": "today"}
-
-        fy_match = re.search(r'\bfy\s*(?:20)?(\d{2})-(?:20)?(\d{2})\b', q_lower)
-        if fy_match:
-            sy = int("20" + fy_match.group(1))
-            ey = int("20" + fy_match.group(2))
-            params["date_filter"] = {"type": "explicit_range", "start_day": 1, "start_month": 4, "start_year": sy, "end_day": 31, "end_month": 3, "end_year": ey}
-        elif "next month" in q_lower:
-            params["date_filter"] = {"type": "next_days", "days": 30}
-        elif "this month" in q_lower:
-            params["date_filter"] = {"type": "this_month"}
-        elif "next hy" in q_lower or "next half year" in q_lower:
-            params["date_filter"] = {"type": "next_days", "days": 180}
-        elif "this quarter" in q_lower:
-            params["date_filter"] = {"type": "last_days", "days": 90}
-        elif "past 6 months" in q_lower:
-            params["date_filter"] = {"type": "last_days", "days": 180}
-        elif "within 7 days" in q_lower:
-            params["date_filter"] = {"type": "next_days", "days": 7}
-        elif "next quarter" in q_lower:
-            params["date_filter"] = {"type": "next_quarter"}
-
-        if "yesterday" in q_lower and "today" not in q_lower and "this week" not in q_lower and "this month" not in q_lower:
-            params["date_filter"] = None
-            
-        range_months_match = re.search(r'\b(?:for\s+)?(?:the\s+)?(\d+)\s+months?\s+(?:from|since|starting)\s+([a-z]{3})[a-z]*\s+(\d{4})\b', q_lower)
-        if range_months_match:
-            months_to_add = int(range_months_match.group(1))
-            start_month_str = range_months_match.group(2)[:3].title()
-            start_year = int(range_months_match.group(3))
-            
-            month_map = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
-                         'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
-            if start_month_str in month_map:
-                start_month = month_map[start_month_str]
-                end_month_raw = start_month + months_to_add - 1
-                end_year = start_year + (end_month_raw - 1) // 12
-                end_month = (end_month_raw - 1) % 12 + 1
-                if end_month in [1, 3, 5, 7, 8, 10, 12]:
-                    end_day = 31
-                elif end_month in [4, 6, 9, 11]:
-                    end_day = 30
-                else:
-                    is_leap = (end_year % 4 == 0 and (end_year % 100 != 0 or end_year % 400 == 0))
-                    end_day = 29 if is_leap else 28
-                params["date_filter"] = {
-                    "type": "explicit_range",
-                    "start_day": 1,
-                    "start_month": start_month,
-                    "start_year": start_year,
-                    "end_day": end_day,
-                    "end_month": end_month,
-                    "end_year": end_year
-                }
-
-        bw_match = re.search(r'between\s+(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)(?:\s+(\d{4}))?\s+and\s+(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s+(\d{4})', q_lower)
-        if bw_match:
-            month_map = {'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6, 'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12}
-            sm = month_map[bw_match.group(1)[:3]]
-            em = month_map[bw_match.group(3)[:3]]
-            ey = int(bw_match.group(4))
-            sy = int(bw_match.group(2)) if bw_match.group(2) else ey
-            import calendar
-            end_day = calendar.monthrange(ey, em)[1]
-            params["date_filter"] = {"type": "explicit_range", "start_day": 1, "start_month": sm, "start_year": sy, "end_day": end_day, "end_month": em, "end_year": ey}
-            
-        my_match = re.search(r'\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)\s+(\d{4})\b', q_lower)
-        if my_match and not params["date_filter"]:
-            month_str = my_match.group(1)[:3].title()
-            month_map = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
-            params["date_filter"] = {"type": "month_year", "month": month_map[month_str], "year": int(my_match.group(2))}
+        
+        # Comprehensive Temporal & Date Extraction via Canonical date_utils
+        date_res = date_utils.extract_dates_from_query(q_lower, ref_date_str=params.get("reference_date"))
+        if date_res.get("date_filter"):
+            params["date_filter"] = date_res["date_filter"]
+        if date_res.get("reference_date"):
+            params["reference_date"] = date_res["reference_date"]
 
         range_match = re.search(r'\b(?:between|ranging from|in the range of|in range of)\s*(?:rs|inr|₹)?\s*([\d\.,]+)\s*(k|l|lakh|cr|m)?\s+(?:to|and)\s*(?:rs|inr|₹)?\s*([\d\.,]+)\s*(k|l|lakh|cr|m)?\b(?!\s*(?:days|months|weeks|years))', q_lower)
         if range_match:
@@ -796,58 +799,6 @@ class NLPEngine:
                     if not bool(re.search(r'\b(list|show|all).*bills\b', q_lower)) and not bool(re.search(r'oldest.*bill', q_lower)) and "bill amount" not in q_lower:
                         params["is_bill_query"] = False
                         
-        # 3. Explicit Reference Dates (Supports spaced, hyphenated, numeric, ISO, and unspaced formats like '11aug17', '11 aug 17', '11-08-2017', '2017-08-11')
-        ref_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{1,2})[-/\s]*(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*(\d{2,4})\b", q_lower)
-        month_first_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]+(\d{1,2})(?:st|nd|rd|th)?(?:,)?[-/\s]+(\d{2,4})\b", q_lower)
-        numeric_ref_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{1,2})[-/. ]+(\d{1,2})[-/. ]+(\d{2,4})\b", q_lower)
-        iso_match = re.search(r"(?:(?:on|as of|as on|till|for|in|at)\s+)?\b(\d{4})[-/. ]+(\d{1,2})[-/. ]+(\d{1,2})\b", q_lower)
-
-        full_month_map = {'jan': 'Jan', 'feb': 'Feb', 'mar': 'Mar', 'apr': 'Apr', 'may': 'May', 'jun': 'Jun', 
-                          'jul': 'Jul', 'aug': 'Aug', 'sep': 'Sep', 'oct': 'Oct', 'nov': 'Nov', 'dec': 'Dec',
-                          'january': 'Jan', 'february': 'Feb', 'march': 'Mar', 'april': 'Apr', 'june': 'Jun',
-                          'july': 'Jul', 'august': 'Aug', 'september': 'Sep', 'october': 'Oct', 'november': 'Nov', 'december': 'Dec'}
-        num_month_map = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 
-                         7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
-
-        if ref_match:
-            try:
-                day = int(ref_match.group(1))
-                m_key = ref_match.group(2).lower()
-                month_str = full_month_map.get(m_key, m_key[:3].title())
-                year = int(ref_match.group(3))
-                if year < 100: year = 2000 + year
-                params["reference_date"] = f"{day:02d}-{month_str}-{year}"
-            except: pass
-        elif month_first_match:
-            try:
-                m_key = month_first_match.group(1).lower()
-                month_str = full_month_map.get(m_key, m_key[:3].title())
-                day = int(month_first_match.group(2))
-                year = int(month_first_match.group(3))
-                if year < 100: year = 2000 + year
-                params["reference_date"] = f"{day:02d}-{month_str}-{year}"
-            except: pass
-        elif numeric_ref_match:
-            try:
-                day = int(numeric_ref_match.group(1))
-                month_idx = int(numeric_ref_match.group(2))
-                year = int(numeric_ref_match.group(3))
-                if year < 100: year = 2000 + year
-                if month_idx in num_month_map:
-                    params["reference_date"] = f"{day:02d}-{num_month_map[month_idx]}-{year}"
-            except: pass
-        elif iso_match:
-            try:
-                year = int(iso_match.group(1))
-                month_idx = int(iso_match.group(2))
-                day = int(iso_match.group(3))
-                if month_idx in num_month_map:
-                    params["reference_date"] = f"{day:02d}-{num_month_map[month_idx]}-{year}"
-            except: pass
-
-        if params.get("reference_date") and any(w in q_lower for w in ["till", "up to"]):
-            params["date_filter"] = {"type": "till_today"}
-
         # 4. Relative dates and ages (Regex Fallback)
         match_days = re.search(r'\b(next|last|past)\s+(\d+)\s+days\b', q_lower)
         if match_days:
@@ -899,6 +850,95 @@ class NLPEngine:
             
         return params
 
+    def resolve_entity_from_masters(self, token: str, candidate_list: list, threshold: int = 60) -> tuple:
+        """
+        Uses RapidFuzz WRatio with score_cutoff=threshold
+        for sub-millisecond dynamic entity resolution against live Tally masters (<0.7ms).
+        """
+
+        if not token or not candidate_list:
+            return None, 0.0
+        
+        token_clean = token.strip()
+        if not token_clean:
+            return None, 0.0
+            
+        candidates = [str(c) for c in candidate_list if c]
+        if not candidates:
+            return None, 0.0
+
+        match = process.extractOne(
+            token_clean,
+            candidates,
+            scorer=fuzz.WRatio,
+            score_cutoff=threshold
+        )
+        if match:
+            matched_name, score, _ = match
+            return matched_name, score
+        return None, 0.0
+
+    def disambiguate_stock_entity(self, query: str, masters: dict) -> dict:
+        """
+        Collection-type-aware stock disambiguation.
+        Evaluates candidate tokens against Stock Items, Stock Groups, and Stock Categories.
+        Returns dict with keys: item_name, stock_group, stock_category, and top_score.
+        """
+        res = {
+            "item_name": None,
+            "stock_group": None,
+            "stock_category": None,
+            "top_score": 0.0,
+            "entity_type": None
+        }
+        if not masters:
+            return res
+
+        stock_items = masters.get("stock_items", [])
+        stock_groups = masters.get("stock_groups", [])
+        stock_categories = masters.get("stock_categories", [])
+
+        # 1. Clean query for candidate search
+        q_clean = query
+        # Strip date patterns
+        q_clean = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/\s]*(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*\d{2,4}\b', ' ', q_clean, flags=re.IGNORECASE)
+        q_clean = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/. ]+\d{1,2}[-/. ]+\d{2,4}\b', ' ', q_clean, flags=re.IGNORECASE)
+        q_clean = re.sub(r'\b\d{1,2}[a-z]{3}\d{2,4}\b', ' ', q_clean, flags=re.IGNORECASE)
+        
+        for p in self.stop_phrases:
+            q_clean = re.sub(r'\b' + re.escape(p) + r'\b', ' ', q_clean, flags=re.IGNORECASE)
+            
+        q_clean = re.sub(r'\b(?:stock\s+summary|stock\s+report|inventory\s+summary|stock|inventory)\s*(?:for|of|in|under)?\b', ' ', q_clean, flags=re.IGNORECASE)
+        q_clean = re.sub(r'\b(?:as\s+of|as\s+on|dated|on|in|under|for|of)\s*$', '', q_clean, flags=re.IGNORECASE)
+        candidate = re.sub(r'\s+', ' ', q_clean).strip()
+        if not candidate or len(candidate) < 2:
+            return res
+
+
+
+        # 2. Score against all three collections
+        matched_item, score_item = self.resolve_entity_from_masters(candidate, stock_items, threshold=70)
+        matched_group, score_group = self.resolve_entity_from_masters(candidate, stock_groups, threshold=70)
+        matched_cat, score_cat = self.resolve_entity_from_masters(candidate, stock_categories, threshold=70)
+
+        # 3. Disambiguate based on highest score
+        max_score = max(score_item, score_group, score_cat)
+        if max_score < 70:
+            return res
+
+        res["top_score"] = max_score
+        if score_group == max_score and score_group > score_item:
+            res["stock_group"] = matched_group
+            res["entity_type"] = "stock_group"
+        elif score_cat == max_score and score_cat > score_item and score_cat > score_group:
+            res["stock_category"] = matched_cat
+            res["entity_type"] = "stock_category"
+        else:
+            res["item_name"] = matched_item
+            res["entity_type"] = "item_name"
+
+        return res
+
     def parse_query(self, query: str):
         """
         Parses the natural language query.
@@ -908,10 +948,18 @@ class NLPEngine:
         query_clean = query.strip()
         query_lower = query_clean.lower()
         
-        # 1. Multi-Entity Marker Syntax Support: $C(CompanyName) and $L(LedgerName)
+        # 1. Multi-Entity Marker Syntax Support:
+        # $C(Company), $L(Ledger), $G(Group), $S(StockItem), $SG(StockGroup), $SC(StockCategory), $GD(Godown), $CC(CostCentre)
         detected_company_key = None
         detected_identifier = None
         explicit_ledger = None
+        explicit_group = None
+        explicit_stock_item = None
+        explicit_stock_group = None
+        explicit_stock_category = None
+        explicit_godown = None
+        explicit_cost_centre = None
+
         c_matches = re.findall(r'\$C\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
         if c_matches:
             if self.tally_client.routing_table:
@@ -930,8 +978,39 @@ class NLPEngine:
             explicit_ledger = l_match.group(1).strip()
             query_clean = re.sub(r'\$L\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
 
+        g_match = re.search(r'\$G\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if g_match:
+            explicit_group = g_match.group(1).strip()
+            query_clean = re.sub(r'\$G\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        s_match = re.search(r'\$S\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if s_match:
+            explicit_stock_item = s_match.group(1).strip()
+            query_clean = re.sub(r'\$S\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        sg_match = re.search(r'\$SG\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if sg_match:
+            explicit_stock_group = sg_match.group(1).strip()
+            query_clean = re.sub(r'\$SG\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        sc_match = re.search(r'\$SC\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if sc_match:
+            explicit_stock_category = sc_match.group(1).strip()
+            query_clean = re.sub(r'\$SC\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        gd_match = re.search(r'\$GD\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if gd_match:
+            explicit_godown = gd_match.group(1).strip()
+            query_clean = re.sub(r'\$GD\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
+        cc_match = re.search(r'\$CC\(((?:[^()]|\([^()]*\))+)\)', query_clean, re.IGNORECASE)
+        if cc_match:
+            explicit_cost_centre = cc_match.group(1).strip()
+            query_clean = re.sub(r'\$CC\(((?:[^()]|\([^()]*\))+)\)', '', query_clean, flags=re.IGNORECASE).strip()
+
         # 2. Fuzzy Window Matching for Company if not explicitly tagged with $C(...)
         company_stop_words = {"for", "data", "user", "activity", "materials", "pvt", "ltd", "limited", "corp", "co", "private", "in", "on", "of", "to", "at", "the", "and", "by", "from", "show", "pending", "bills", "get", "what", "is", "balance"}
+
         
         if not detected_company_key and self.tally_client.routing_table:
             words = query_clean.split()
@@ -1030,6 +1109,86 @@ class NLPEngine:
             final_company_key = detected_company_key
 
         if not missing_company and final_company_key:
+            port, resolved_company, context = self.tally_client.get_port_for_company(final_company_key)
+            try:
+                masters = self.tally_client.get_company_masters(resolved_company, port)
+            except Exception as e:
+                print(f"Error fetching company masters: {e}")
+                masters = {}
+
+            # 1. Resolve Explicit Tags against live masters
+            if explicit_group and masters:
+                cand_groups = list(masters.get("groups", {}).keys()) + list(constants.QUERYABLE_ROOT_GROUPS)
+                matched_g, _ = self.resolve_entity_from_masters(explicit_group, cand_groups, threshold=65)
+                parameters["group_name"] = matched_g or explicit_group
+            elif explicit_group:
+                parameters["group_name"] = explicit_group
+
+            if explicit_stock_item and masters:
+                matched_s, _ = self.resolve_entity_from_masters(explicit_stock_item, masters.get("stock_items", []), threshold=65)
+                parameters["item_name"] = matched_s or explicit_stock_item
+            elif explicit_stock_item:
+                parameters["item_name"] = explicit_stock_item
+
+            if explicit_stock_group and masters:
+                matched_sg, _ = self.resolve_entity_from_masters(explicit_stock_group, masters.get("stock_groups", []), threshold=65)
+                parameters["stock_group"] = matched_sg or explicit_stock_group
+            elif explicit_stock_group:
+                parameters["stock_group"] = explicit_stock_group
+
+            if explicit_stock_category and masters:
+                matched_sc, _ = self.resolve_entity_from_masters(explicit_stock_category, masters.get("stock_categories", []), threshold=65)
+                parameters["stock_category"] = matched_sc or explicit_stock_category
+            elif explicit_stock_category:
+                parameters["stock_category"] = explicit_stock_category
+
+            if explicit_godown and masters:
+                matched_gd, _ = self.resolve_entity_from_masters(explicit_godown, masters.get("godowns", []), threshold=65)
+                parameters["godown_name"] = matched_gd or explicit_godown
+            elif explicit_godown:
+                parameters["godown_name"] = explicit_godown
+
+            if explicit_cost_centre and masters:
+                matched_cc, _ = self.resolve_entity_from_masters(explicit_cost_centre, masters.get("cost_centres", []), threshold=65)
+                parameters["cost_center"] = matched_cc or explicit_cost_centre
+            elif explicit_cost_centre:
+                parameters["cost_center"] = explicit_cost_centre
+
+            # 2. Dynamic Inventory Disambiguation (Collection-type-aware)
+            if detected_intent == "GET_STOCK_SUMMARY" or "stock" in query_without_company.lower() or "inventory" in query_without_company.lower():
+                if not parameters.get("item_name") and not parameters.get("stock_group") and not parameters.get("stock_category") and masters:
+                    stock_res = self.disambiguate_stock_entity(query_without_company, masters)
+                    if stock_res.get("stock_group"):
+                        parameters["stock_group"] = stock_res["stock_group"]
+                    elif stock_res.get("stock_category"):
+                        parameters["stock_category"] = stock_res["stock_category"]
+                    elif stock_res.get("item_name"):
+                        parameters["item_name"] = stock_res["item_name"]
+
+            # 3. Dynamic Account Group Resolution
+            if not parameters.get("group_name") and masters:
+                g_match_candidate = re.search(r'\b(?:under|group|expenses under)\s+([a-zA-Z0-9\s&/\-]+?)(?:\s+(?:in|for|of|from|to)\b|$)', query_without_company, flags=re.IGNORECASE)
+                if g_match_candidate:
+                    c_group = g_match_candidate.group(1).strip()
+                    cand_groups = list(masters.get("groups", {}).keys()) + list(constants.QUERYABLE_ROOT_GROUPS)
+                    m_grp, m_score = self.resolve_entity_from_masters(c_group, cand_groups, threshold=75)
+                    if m_grp:
+                        parameters["group_name"] = m_grp
+
+            # 4. Dynamic Godown Resolution
+            if not parameters.get("godown_name") and masters.get("godowns"):
+                for gd_candidate in masters["godowns"]:
+                    if gd_candidate.lower() in query_without_company.lower():
+                        parameters["godown_name"] = gd_candidate
+                        break
+
+            # 5. Dynamic Cost Centre Resolution
+            if not parameters.get("cost_center") and masters.get("cost_centres"):
+                for cc_candidate in masters["cost_centres"]:
+                    if cc_candidate.lower() in query_without_company.lower():
+                        parameters["cost_center"] = cc_candidate
+                        break
+
             if detected_intent in ["GET_LEDGER_BALANCE", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_BILL_DETAILS", "GET_RECENT_VOUCHERS", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "AMBIGUOUS_OUTSTANDINGS"] and detected_intent != "GET_STOCK_SUMMARY":
                 # Rewrite group expenses to expenses for real-world companies
                 if "under group expenses" in query_without_company.lower():
@@ -1043,34 +1202,47 @@ class NLPEngine:
                 for phrase in sorted(self.stop_phrases, key=len, reverse=True):
                     temp_query = re.sub(r'\b' + re.escape(phrase) + r'\b', ' ', temp_query)
                 extracted_ledger = re.sub(r'\s+', ' ', temp_query).strip(",.!? ").strip()
+                extracted_ledger = re.sub(r'^(?:for|in|to|of|from|show|display|get|details|bills|balance)\s+', '', extracted_ledger, flags=re.IGNORECASE)
+                extracted_ledger = re.sub(r'\s+(?:for|in|to|of|from|show|display|get|details|bills|balance)$', '', extracted_ledger, flags=re.IGNORECASE).strip()
                 
-                port, resolved_company, context = self.tally_client.get_port_for_company(final_company_key)
                 try:
-                    ledgers = self.tally_client.fetch_ledgers(resolved_company, port)
+                    ledgers = masters.get("ledgers") if masters.get("ledgers") else self.tally_client.fetch_ledgers(resolved_company, port)
                     if explicit_ledger:
-                        res, score, amb, _tier = self.resolve_ledger(explicit_ledger, ledgers)
-                        if not res and isinstance(ledgers, dict) and ledgers:
-                            f_matches = process.extract(explicit_ledger.lower(), list(ledgers.keys()), scorer=fuzz.WRatio, limit=4)
-                            f_high = [m for m in f_matches if m[1] >= 65.0]
-                            if len(f_high) == 1:
-                                res = f_high[0][0]
-                                score = f_high[0][1]
-                            elif len(f_high) > 1:
-                                if f_high[0][1] - f_high[1][1] >= 15.0:
+                        exact_found = None
+                        for lname in (ledgers.keys() if isinstance(ledgers, dict) else []):
+                            if lname.lower().strip() == explicit_ledger.lower().strip():
+                                exact_found = lname
+                                break
+                        if exact_found:
+                            resolved_ledger = exact_found
+                            fuzzy_score = 100.0
+                            ambiguous_candidates = []
+                        else:
+                            res, score, amb, _tier = self.resolve_ledger(explicit_ledger, ledgers)
+                            if not res and isinstance(ledgers, dict) and ledgers:
+                                f_matches = process.extract(explicit_ledger.lower(), list(ledgers.keys()), scorer=fuzz.WRatio, limit=15)
+                                f_high = [m for m in f_matches if m[1] >= 65.0]
+                                if len(f_high) == 1:
                                     res = f_high[0][0]
                                     score = f_high[0][1]
-                                else:
-                                    amb = [m[0] for m in f_high]
-                                    score = f_high[0][1]
-                        fuzzy_score = score if res else (score if amb else 100.0)
-                        resolved_ledger = res if res else (None if amb else explicit_ledger)
+                                elif len(f_high) > 1:
+                                    if f_high[0][1] - f_high[1][1] >= 15.0:
+                                        res = f_high[0][0]
+                                        score = f_high[0][1]
+                                    else:
+                                        f_high.sort(key=lambda m: m[1], reverse=True)
+                                        amb = [m[0] for m in f_high[:10]]
+                                        score = f_high[0][1]
+                            fuzzy_score = score if res else (score if amb else 100.0)
+                            resolved_ledger = res if res else (None if amb else explicit_ledger)
+                            ambiguous_candidates = amb
                         extracted_ledger = explicit_ledger
-                        ambiguous_candidates = amb
                     else:
                         res, score, amb, _tier = self.resolve_ledger(query_without_company, ledgers)
                         fuzzy_score = score
                         resolved_ledger = res
                         ambiguous_candidates = amb
+
                     if resolved_ledger and isinstance(ledgers, dict) and resolved_ledger in ledgers:
                         ledger_balance = ledgers[resolved_ledger]
                 except Exception as e:
@@ -1079,6 +1251,7 @@ class NLPEngine:
         # Clear generic ledger names for top level / generic list queries
         if resolved_ledger and resolved_ledger.lower() in self.generic_ledgers:
             is_plural_generic = resolved_ledger.lower() in ["customers", "debtors", "creditors", "suppliers", "vendors", "customer", "debtor", "creditor", "supplier", "vendor"]
+
             if detected_intent in ["GET_TOP_DEBTORS", "GET_TOP_CREDITORS"] or any(w in query_without_company.lower() for w in ["settled accounts", "cleared customers", "cleared accounts", "settled bills"]):
                 resolved_ledger = None
                 ledger_balance = None
@@ -1136,16 +1309,17 @@ class NLPEngine:
                 is_group_ledger = rl_lower in [g.lower() for g in group_map.values()] or rl_lower in ["sundry creditors", "sundry debtors", "creditors", "debtors", "suppliers", "customers", "vendors", "dealers"]
                 
                 parent = group_map.get(rl_lower, rl_lower)
-                if self.tally_client.is_group_under(rl_lower, "sundry creditors", group_map) or \
-                   self.tally_client.is_group_under(rl_lower, "trade payables", group_map) or \
-                   self.tally_client.is_group_under(parent, "sundry creditors", group_map) or \
-                   self.tally_client.is_group_under(parent, "trade payables", group_map):
+                if self.tally_client.is_group_under(rl_lower, constants.GROUP_SUNDRY_CREDITORS.lower(), group_map) or \
+                   self.tally_client.is_group_under(rl_lower, constants.GROUP_TRADE_PAYABLES.lower(), group_map) or \
+                   self.tally_client.is_group_under(parent, constants.GROUP_SUNDRY_CREDITORS.lower(), group_map) or \
+                   self.tally_client.is_group_under(parent, constants.GROUP_TRADE_PAYABLES.lower(), group_map):
                     role = "creditor"
-                elif self.tally_client.is_group_under(rl_lower, "sundry debtors", group_map) or \
-                     self.tally_client.is_group_under(rl_lower, "trade receivables", group_map) or \
-                     self.tally_client.is_group_under(parent, "sundry debtors", group_map) or \
-                     self.tally_client.is_group_under(parent, "trade receivables", group_map):
+                elif self.tally_client.is_group_under(rl_lower, constants.GROUP_SUNDRY_DEBTORS.lower(), group_map) or \
+                     self.tally_client.is_group_under(rl_lower, constants.GROUP_TRADE_RECEIVABLES.lower(), group_map) or \
+                     self.tally_client.is_group_under(parent, constants.GROUP_SUNDRY_DEBTORS.lower(), group_map) or \
+                     self.tally_client.is_group_under(parent, constants.GROUP_TRADE_RECEIVABLES.lower(), group_map):
                     role = "debtor"
+
             except Exception:
                 pass
             

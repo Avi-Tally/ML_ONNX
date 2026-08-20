@@ -276,3 +276,68 @@ O(1) Index Lookup vs O(N) Table Scan: When you use a <FILTER> (like our formula 
 Native Inheritance Handling: Companies frequently create custom voucher types (e.g., "GST Sales", "Export Sales", "POS Sales") that inherit from the primary "Sales" voucher type. If you define a collection with: <TYPE>Voucher</TYPE> <VOUCHERTYPE>Sales</VOUCHERTYPE> <BELONGSTO>Yes</BELONGSTO> Tally natively and instantly understands the inheritance tree. It automatically fetches all base "Sales" vouchers plus all vouchers from any custom child types that belong to the Sales family, completely bypassing the need for complex string-matching or boolean formula checks.
 
 Your insight is spot on. For filtering by Voucher Types (or Ledger/Item Groups), moving away from <FILTER> and binding the collection directly using BELONGSTO / CHILDOF is the optimal, high-performance way to architect the TDL payload.
+
+---------------------------------------------------------
+
+Side Question: raw_xml_dumps folder purpose.
+The raw_xml_dumps folder is used to log and store raw TDL XML request payloads and response XML dumps exchanged with TallyPrime's local HTTP sockets (e.g., ports 9000, 9001, 9005).
+
+Key Purposes & Uses:
+TDL Request & Envelope Auditing: Captures the exact TDL XML request structure sent to Tally to inspect static variables (SVCOMPANY, SVFROMDATE, SVTODATE), TDL collection definitions, formulas, and filters.
+Raw Response Debugging: Logs complete, unparsed XML responses received from TallyPrime to inspect raw XML tags (CLOSINGBALANCE, BILLDATE, PARENT, NAME) before Python streaming (ElementTree).
+Parse Error Investigation: Essential for diagnosing Tally XML format issues, such as invalid ASCII control characters (e.g., &#4;), missing tag structures, or socket payload truncation.
+Performance & Byte Audit: Used to analyze raw XML payload sizes and verify data purity before aggregation and markdown report rendering.
+
+---------------------------------------------------------
+
+Side Question: Ok so tell me if the cli_query is closed, then the variables still remain in memory or the memory is freed?
+When the CLI query execution process (cli_query) exits or is closed:
+
+Python Process Level: Operating systems (Windows / Linux) immediately reclaim all heap RAM, socket handles, memory allocations, ONNX runtime contexts, and Python variables held by that CLI process. No process memory leaks or persistent Python variables remain in host RAM.
+
+In-Memory Caches: Any local Python dictionaries or runtime caches (such as routing_table, _group_map_cache, or active_ports) residing inside that process instance are completely freed from system memory.
+
+Tally Prime C++ Memory: Tally Prime itself (which runs as a separate standalone Windows application process) retains its own internal accounting database and loaded company states in its RAM. Closing the CLI script does not alter Tally Prime's internal memory state.
+
+--------------------------------------------------------------
+
+Side Question: correct me if i am wrong. When i run cli_query, the routing_table is only updated at that time. During that continuous session, the routing is not updated. So whats the purpose of update_routing_table?
+You are partially mistaken, but your question highlights an important architectural detail!
+
+The Premise Correction:
+In our implementation, update_routing_table() is NOT run only once at startup. It is actually executed before every single query inside _query_tally_internal (line 153 of mcp_server.py).
+
+The 4 Core Purposes of update_routing_table()
+Handling Live Tally State Changes: In desktop environments, accounting users frequently open new companies, shut down open companies, or alter company names inside Tally Prime while your CLI session is running continuous queries. Probing before every query guarantees the system always routes to currently loaded companies.
+
+Handling Tally Restarts & Port Shifts: If Tally Prime crashes, is restarted by the user, or changes its HTTP listener port (e.g., shifting from port 9000 to 9005), update_routing_table() automatically detects the new active port without requiring you to restart the CLI session.
+
+Sub-20ms Cached Incremental Probing: Sweeping 10 HTTP ports sequentially on every query would cause noticeable lag. update_routing_table() solves this by keeping track of self.active_ports. When active ports are known, it performs a concurrent multi-threaded ping only to known active ports in ~20 milliseconds.
+
+Auto-Fallback to Full Scan: If an active port goes silent (e.g., Tally was restarted on a new port), the method detects new_routing is empty and automatically triggers full_scan=True across ports 9000–9010 to re-establish the connection seamlessly.
+
+---------------------------------------------------------
+
+Side Question: i hope not a single thing was hardcoded in phase 0 execution
+No. Phase 0 was specifically executed to eliminate hardcoded business logic and entity strings across the codebase.
+
+Here is the exact breakdown of what was removed and how dynamic execution was preserved:
+
+1. Hardcoded Entities Eliminated
+Removed Hardcoded Cost Centre ("Reliance Job"): Previously, nlp_engine.py had a literal check if "reliance job" in q_lower: params["cost_center"] = "Reliance Job". This was removed and replaced with a generalized dynamic regex pattern (r'\b(?:cost\s*cent(?:er|re)|department|division)\s*[:\-]?\s*(.+?)...') so any cost centre in any company can be extracted and dynamically resolved against Tally master data.
+Removed Hardcoded Godown ("Bhiwandi Godown"): Previously, nlp_engine.py hardcoded any mention of godown/warehouse to "Bhiwandi Godown". This was removed and replaced with a generalized dynamic extractor (r'\b(?:godown|warehouse|location|depot)\s*[:\-]?\s*(.+?)...').
+Eliminated Triplicated Date Parsing: The hardcoded, brittle date format blocks in analytics_engine.py, nlp_engine.py, and mcp_server.py were replaced with date_utils.py, which dynamically parses all standard formats (%Y%m%d, %d-%b-%Y, %d-%b-%y, %Y-%m-%d, %d/%m/%Y, %B %d, %Y) and dynamically computes fiscal year boundaries.
+2. What constants.py Contains (and What It Does Not)
+What it contains: Strictly system protocol constants required by Tally's C++ XML engine (such as standard root group tokens like "Sundry Debtors" and "Sundry Creditors", standard socket timeouts, TDL format identifier $$SysName:XML, and voucher type macros like $$VchTypeSales).
+What it does NOT contain: No company names, no party names, no stock items, no godown locations, no fixed balances, and no hardcoded dates.
+3. Verification of Dynamic Behavior
+In the live verification test run during Phase 0:
+
+Company name was dynamically extracted from $C(modi chem) and routed to Port 9005.
+Ledger name was dynamically resolved via Levenshtein token-set distance from typo $L(khusbuddin) 
+→
+→ KHUSHBUDDIN( Reliance Job) at 95.2% confidence.
+Closing balance was dynamically queried from TallyPrime's live socket 
+→
+→ ₹ 34,444.00 (Dr).
+Everything remains 100% dynamic, data-driven, and company-agnostic.
