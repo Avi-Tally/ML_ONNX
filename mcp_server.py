@@ -520,13 +520,14 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         # 3. GET_TRIAL_BALANCE
         elif intent == "GET_TRIAL_BALANCE":
             try:
-                tb = tally_client.fetch_trial_balance(company_name, port)
+                tb = tally_client.fetch_trial_balance(company_name, port, from_date=f_date, to_date=t_date)
                 if not tb:
                     return f"[{company_name}] The Trial Balance report is empty or could not be loaded."
 
                 # Format as Markdown Table
+                period_str = f"Period: {f_date} to {t_date}" if f_date and t_date else (f"as of {t_date}" if t_date else "Current Fiscal Period")
                 md = [
-                    f"### Trial Balance: {company_name} (Port {port})",
+                    f"### Trial Balance: {company_name} ({period_str})",
                     "| Account Group / Ledger Name | Closing Balance | Type |",
                     "| :--- | :--- | :---: |"
                 ]

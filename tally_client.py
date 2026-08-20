@@ -621,12 +621,14 @@ class TallyClient:
                 "as_of_date": to_disp
             }
 
-    def fetch_trial_balance(self, company_name, port):
-        """Fetches the Trial Balance report."""
-        payload = (TDLEnvelopeBuilder()
+    def fetch_trial_balance(self, company_name: str, port: int, from_date: Optional[str] = None, to_date: Optional[str] = None) -> list:
+        """Fetches the Trial Balance report for a specified date range or as of a point in time."""
+        builder = (TDLEnvelopeBuilder()
                    .set_report_id("Trial Balance")
-                   .set_company(company_name)
-                   .build())
+                   .set_company(company_name))
+        if from_date or to_date:
+            builder.set_date_range(from_date, to_date)
+        payload = builder.build()
         response_xml = self.execute_xml_request(port, payload)
         root = ET.fromstring(response_xml)
         
