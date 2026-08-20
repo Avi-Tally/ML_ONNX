@@ -351,10 +351,11 @@ def _query_tally_internal(query: str, profiler=None) -> str:
         # 2. GET_COMPANY_SUMMARY (Executive Financial Dashboard)
         elif intent in ["GET_COMPANY_SUMMARY", "GET_COMPARATIVE_SUMMARY"] or ("summary" in query.lower() and not parsed.get("resolved_ledger") and not parsed.get("parameters", {}).get("stock_group") and not parsed.get("parameters", {}).get("godown_name") and not parsed.get("parameters", {}).get("cost_center")):
             try:
-                dash = tally_client.fetch_company_dashboard(company_name, port)
+                dash = tally_client.fetch_company_dashboard(company_name, port, from_date=f_date, to_date=t_date)
+                period_str = f"Period: {f_date} to {t_date}" if f_date and t_date else (f"as of {t_date}" if t_date else "Active Financial Year")
                 
                 md = [
-                    f"## 📊 Executive Financial Dashboard: {company_name} (Port {port})\n",
+                    f"## 📊 Executive Financial Dashboard: {company_name} ({period_str}) (Port {port})\n",
                     "### 1. Working Capital & Liquidity Snapshot",
                     "| Financial Metric | Amount (₹) | Status / Details |",
                     "| :--- | :--- | :--- |",
@@ -429,7 +430,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 except Exception:
                     return f"[{company_name}] Could not find ledger matching '{extracted}'."
 
-            ref_date = parsed.get("parameters", {}).get("reference_date")
+            ref_date = parsed.get("parameters", {}).get("reference_date") or t_date
             if ref_date:
                 dated_res = tally_client.fetch_ledger_dated_balance(company_name, port, resolved, reference_date=ref_date)
                 if dated_res["is_nil"] or dated_res["abs_val"] == 0.0:
@@ -458,7 +459,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 date_info = ""
 
             # Check if this is a rich 360 / dashboard query
-            is_deep_query = any(w in query.lower() for w in ["overview", "360", "details", "dashboard", "history", "trend", "breakup", "profile"]) or len(query.split()) > 4
+            is_deep_query = any(w in query.lower() for w in ["overview", "360", "details", "dashboard", "history", "trend", "breakup", "profile", "drilldown"])
 
             if not is_deep_query:
                 return f"In **{company_name}** (Port `{port}`), the closing balance for **{resolved}**{date_info} is **{display_balance}**.\n*(Resolved from query '{extracted}' with {score:.1f}% confidence)*"
@@ -473,7 +474,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             ]
 
             # Card 2: Pending Bills & Aging
-            bills_res = tally_client.fetch_bills(company_name, port, "All", ledger_filter=resolved)
+            bills_res = tally_client.fetch_bills(company_name, port, "All", ledger_filter=resolved, from_date=f_date, to_date=t_date)
             bills = bills_res[0] if isinstance(bills_res, tuple) else bills_res
             cards.append("### 🎴 Card 2: Pending Outstanding Bills & Overdue Status")
             if bills:
@@ -492,7 +493,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 cards.append("> ℹ️ *No pending overdue bills found for this account.*\n")
 
             # Card 3: Monthly Financial Trend (12 Months)
-            monthly = tally_client.fetch_ledger_monthly_summary(company_name, port, resolved)
+            monthly = tally_client.fetch_ledger_monthly_summary(company_name, port, resolved, from_date=f_date, to_date=t_date)
             cards.append("\n### 🎴 Card 3: 12-Month Financial Movement Trajectory")
             if monthly:
                 cards.append("| Month | Debit Movement (₹) | Credit Movement (₹) | Closing Balance |")
@@ -503,7 +504,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 cards.append("> ℹ️ *No monthly summary data recorded for active FY.*\n")
 
             # Card 4: Recent Vouchers
-            vouchers = tally_client.fetch_recent_vouchers(company_name, port)
+            vouchers = tally_client.fetch_recent_vouchers(company_name, port, from_date=f_date, to_date=t_date)
             party_vouchers = [v for v in vouchers if resolved.lower() in str(v.get("party", "")).lower()][:5]
             cards.append("\n### 🎴 Card 4: Recent Transaction Activity")
             if party_vouchers:
@@ -561,7 +562,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
 
                 # Check if batch/expiry details are specifically requested
                 if intent == "GET_BATCH_DETAILS" or any(w in query.lower() for w in ["batch", "batches", "expiry", "mfg date", "manufacturing date", "expiring"]):
-                    batches = tally_client.fetch_batch_details(company_name, port, stock_item=item_name, godown_name=godown)
+                    batches = tally_client.fetch_batch_details(company_name, port, stock_item=item_name, godown_name=godown, as_of_date=as_of_date)
                     if not batches:
                         item_msg = f" for '{item_name}'" if item_name else ""
                         return f"[{company_name}] No batch tracking records{item_msg} found."
