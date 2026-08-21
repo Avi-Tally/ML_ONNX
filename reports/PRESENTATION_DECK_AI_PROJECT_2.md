@@ -34,20 +34,20 @@
 
 ```mermaid
 graph LR
-    subgraph "The Problem (Legacy Tally)"
+    subgraph TheProblem ["The Problem (Legacy Tally)"]
         A["Non-accountants blocked by GUI menus"] --> D["Query Friction"]
         B["Custom reports require manual TDL code"] --> D
         C["Cloud LLMs leak private financial books"] --> D
     end
 
-    subgraph "AI Project - 2 Mandate"
+    subgraph AIMMandate ["AI Project - 2 Mandate"]
         D --> E["100% Offline Execution"]
         D --> F["Zero Marginal Cost per Query"]
         D --> G["Sub-Second End-to-End Latency"]
         D --> H["100% Financial Determinism"]
     end
 
-    subgraph "Delivered ML_ONNX System"
+    subgraph DeliveredSystem ["Delivered ML_ONNX System"]
         E --> I["ONNX C++ Runtime (No Cloud)"]
         F --> J["$0.00 Token Invariant"]
         G --> K["Avg NLU < 1ms, TDL Pushdown"]
@@ -138,29 +138,42 @@ sequenceDiagram
 ## Slide 5: Comprehensive Scope of Aspects Covered
 
 ```mermaid
-mindmap
-  root((Tally NLP Bridge))
-    Financial Reporting
-      Bills Receivable & Ageing
-      Bills Payable & Overdue
-      Trial Balance & P&L
-      Stock Summary & Godowns
-      Day Book & Voucher Feeds
-    Executive BI Analytics
-      5-Factor Counterparty Trust Scores
-      Transaction Frequency Analytics
-      Party 360 Comprehensive Cards
-      Multi-Company Consolidated Summaries
-    TDL Socket Optimizations
-      Indexed Formula Pushdown
-      Streaming iterparse XML
-      MasterAlterID Delta Sync
-      Multi-Port 9000-9010 Auto-Discovery
-    Safety & Security
-      100% Air-Gapped Offline Execution
-      Directional Ambiguity Guardrails
-      Top-10 RapidFuzz Candidate Menus
-      Zero Unescaped XML Injection
+graph TD
+    Root["TallyPrime NLP Bridge Scope"]
+    
+    subgraph S1["1. Financial Reporting"]
+        R1["Bills Receivable & Ageing Analysis"]
+        R2["Bills Payable & Overdue Tracking"]
+        R3["Trial Balance & P&L Extraction"]
+        R4["Stock Summary & Godown Inventory"]
+        R5["Day Book & Voucher Streams"]
+    end
+    
+    subgraph S2["2. Executive BI Analytics"]
+        B1["5-Factor Counterparty Trust Scores"]
+        B2["Transaction Frequency Analytics"]
+        B3["Party 360 Comprehensive Cards"]
+        B4["Multi-Company Consolidated Summaries"]
+    end
+    
+    subgraph S3["3. TDL Socket Optimizations"]
+        T1["Indexed Formula Pushdown"]
+        T2["Streaming iterparse XML (O(1) RAM)"]
+        T3["MasterAlterID Delta Sync (< 1.5ms)"]
+        T4["Multi-Port 9000-9010 Auto-Discovery"]
+    end
+    
+    subgraph S4["4. Safety & Security Guardrails"]
+        G1["100% Air-Gapped Offline Execution"]
+        G2["Directional Ambiguity Guardrails"]
+        G3["Top-10 RapidFuzz Candidate Menus"]
+        G4["Zero Unescaped XML Injection"]
+    end
+
+    Root --> S1
+    Root --> S2
+    Root --> S3
+    Root --> S4
 ```
 
 ### The 27-Entity Parameter Extraction Coverage
@@ -254,27 +267,31 @@ Heap RAM Delta Per Query | < 2.0 MB / query       | 🟢 Zero Memory Leaks (Stre
 ====================================================================================================
 ```
 
-### Batch Performance Distribution (13 Batches)
+### Batch Performance Breakdown Across 13 Test Batches
 
 ```mermaid
-gantt
-    title Latency Across 13 Stress-Test Batches (ms)
-    dateFormat  X
-    axisFormat %s ms
+flowchart LR
+    subgraph FastPath ["⚡ Ultra-Fast (< 1,000 ms)"]
+        B07["Batch 07 (Single Day Lookups): 416 ms"]
+        B06["Batch 06 (Ledger Balances): 829 ms"]
+        B11["Batch 11 (Voucher Lookups): 998 ms"]
+    end
 
-    section High Density
-    Batch 07 (Single Day Lookups) :0, 416
-    Batch 06 (Ledger Balances)    :0, 829
-    Batch 11 (Voucher Lookups)    :0, 998
-    section Moderate Depth
-    Batch 10 (Item Summaries)     :0, 1376
-    Batch 12 (Payable Records)    :0, 1415
-    Batch 05 (Day Book Analytics) :0, 1519
-    section Deep Aggregations
-    Batch 03 (Multi-Ledger Bills) :0, 2214
-    Batch 02 (Ageing Brackets)    :0, 2506
-    Batch 01 (Complex 360s)       :0, 3178
-    Batch 04 (Full Book Scans)    :0, 4501
+    subgraph MidPath ["⏱️ Moderate Depth (1,000 - 2,000 ms)"]
+        B10["Batch 10 (Item Summaries): 1,376 ms"]
+        B12["Batch 12 (Payable Records): 1,415 ms"]
+        B05["Batch 05 (Day Book Analytics): 1,519 ms"]
+    end
+
+    subgraph DeepPath ["🔍 Deep Aggregations (2,000 - 5,000 ms)"]
+        B03["Batch 03 (Multi-Ledger Bills): 2,214 ms"]
+        B02["Batch 02 (Ageing Brackets): 2,506 ms"]
+        B08["Batch 08 (Overdue Tracking): 2,636 ms"]
+        B09["Batch 09 (Party Outstandings): 3,162 ms"]
+        B01["Batch 01 (Complex 360s): 3,178 ms"]
+        B04["Batch 04 (Full Book Scans): 4,501 ms"]
+        B13["Batch 13 (Consolidated Group): 5,118 ms"]
+    end
 ```
 
 ### Analysis of the 206 "EMPTY" Returns
@@ -312,14 +329,14 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph "Current State (V4 Prototype / MVP)"
+    subgraph CurrentMVP ["Current State (V4 Prototype / MVP)"]
         A["Python 3.10+ Runtime"]
         B["FastMCP Local Host"]
         C["Single Tally Instance Socket (HTTP)"]
         D["11 ONNX FP32 Models (1.8 MB)"]
     end
 
-    subgraph "Production Grade Target Architecture"
+    subgraph ProductionTarget ["Production Grade Target Architecture"]
         E["C++ / Rust Embedded Sidecar (Zero Python Runtime Dependency)"]
         F["INT8 Quantized ONNX Engines (< 0.5 MB RAM, < 0.1 ms inference)"]
         G["Connection Pooling & Keep-Alive HTTP/2 Multiplexing"]
