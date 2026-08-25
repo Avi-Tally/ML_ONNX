@@ -732,10 +732,17 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                 if ref_dt == datetime.datetime.min:
                     ref_dt = datetime.datetime.now()
 
-                grp = parsed.get("parameters", {}).get("group_name") or "Sundry Debtors"
-                metrics = tally_client.fetch_trust_score_metrics(company_name, port, group_name=grp, from_date=f_date, to_date=t_date)
+                is_vendor_query = any(w in query.lower() for w in ["vendor", "supplier", "creditor", "payable"])
+                default_grp = "Sundry Creditors" if is_vendor_query else "Sundry Debtors"
+                rep_type = "Payables" if is_vendor_query else "Receivables"
+                role_label = "Vendor / Creditor" if is_vendor_query else "Debtor Account"
+
+                grp = parsed.get("parameters", {}).get("group_name") or default_grp
+                out_data = tally_client.fetch_party_outstandings(company_name, port, report_type=rep_type, from_date=f_date, to_date=t_date or today_str)
+                parties = out_data.get("parties", [])
+                
                 scores = analytics_engine.compute_trust_scores(
-                    party_metrics=metrics,
+                    party_outstandings=parties,
                     reference_date=ref_dt
                 )
                 
@@ -743,7 +750,7 @@ def _query_tally_internal(query: str, profiler=None) -> str:
 
                 if scores:
                     md = [
-                        f"## 🏆 Business Intelligence: Counterparty Trust Scores - {company_name} (Port {port})\n",
+                        f"## 🏆 Business Intelligence: Counterparty Trust Scores ({role_label}s) - {company_name} (Port {port})\n",
                         "| Rank | Party Name | Trust Score | Credit Rating | Settlement Rate | Txns | Total Volume (₹) | Overdue (₹) |",
                         "| :---: | :--- | :---: | :--- | :---: | :---: | :--- | :--- |"
                     ]
@@ -753,41 +760,39 @@ def _query_tally_internal(query: str, profiler=None) -> str:
                         md.append(f"\n*(Showing top {display_limit} out of {len(scores)} scored counterparties)*")
                     return "\n".join(md)
                 else:
-                    # Debtor follow-up prioritization fallback using fast native party balances
-                    out_data = tally_client.fetch_party_outstandings(company_name, port, report_type="Receivables", from_date=f_date, to_date=t_date)
-                    parties = out_data.get("parties", [])
                     if not parties:
-                        return f"[{company_name}] No debtor accounts found for follow-up prioritization."
+                        return f"[{company_name}] No {role_label.lower()} accounts found for analysis."
                     
                     # Sort by outstanding amount descending
                     parties_sorted = sorted(parties, key=lambda x: abs(float(x.get("amount", 0.0))), reverse=True)
-                    tot_rec = out_data.get("total_receivable", 0.0)
+                    tot_amt = sum(abs(float(p.get("amount", 0.0))) for p in parties_sorted)
+                    dash_title = "Vendor Exposure & Settlement Priority" if is_vendor_query else "Collection Priority & Debtor Follow-Up"
                     
                     md = [
-                        f"## 🎯 Collection Priority & Debtor Follow-Up Dashboard: {company_name} (Port {port})\n",
-                        f"> **Total Outstanding Receivables:** ₹ {tot_rec:,.2f} | **Actionable Counterparties:** {len(parties_sorted)}\n",
-                        "| Priority Rank | Debtor Account Name | Group Classification | Pending Balance | Follow-Up Recommendation |",
+                        f"## 🤝 {dash_title}: {company_name} (Port {port})\n",
+                        f"> **Total Outstanding {rep_type}:** ₹ {tot_amt:,.2f} | **Active Counterparties:** {len(parties_sorted)}\n",
+                        f"| Priority Rank | {role_label} Name | Group Classification | Outstanding Balance | Status / Exposure |",
                         "| :---: | :--- | :--- | :---: | :--- |"
                     ]
                     
                     for i, p in enumerate(parties_sorted[:display_limit]):
                         p_amt = abs(float(p.get("amount", 0.0)))
-                        p_name = p.get("party", "Unknown")
-                        p_grp = p.get("parent", "Sundry Debtors")
+                        p_name = p.get("party") or p.get("name") or "Unknown"
+                        p_grp = p.get("parent") or p.get("group") or grp
                         
                         if i == 0 or p_amt >= 10000000.0:
-                            recom = "🔴 **Immediate Action** (Critical Exposure)"
+                            recom = "🔴 **Critical Exposure**" if is_vendor_query else "🔴 **Immediate Action** (Critical Exposure)"
                         elif p_amt >= 2500000.0:
-                            recom = "🟠 **High Priority** (Formal Reminder)"
+                            recom = "🟠 **High Exposure**" if is_vendor_query else "🟠 **High Priority** (Formal Reminder)"
                         elif p_amt >= 500000.0:
-                            recom = "🟡 **Routine Follow-Up** (Statement of Acct)"
+                            recom = "🟡 **Moderate Volume**" if is_vendor_query else "🟡 **Medium Priority** (Call / Soft Nudge)"
                         else:
-                            recom = "🟢 **Low Risk** (Regular Follow-Up)"
+                            recom = "🟢 **Routine Settlement**" if is_vendor_query else "🟢 **Low Priority** (Standard Aging)"
                             
                         md.append(f"| {i+1} | {p_name} | {p_grp} | ₹ {p_amt:,.2f} | {recom} |")
                         
                     if len(parties_sorted) > display_limit:
-                        md.append(f"\n*(Showing top {display_limit} out of {len(parties_sorted)} debtors prioritized for follow-up)*")
+                        md.append(f"\n*(Showing top {display_limit} out of {len(parties_sorted)} {role_label.lower()}s)*")
                         
                     return "\n".join(md)
             except Exception as e:
