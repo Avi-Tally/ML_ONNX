@@ -410,11 +410,16 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
             date_filter = {"type": "last_days", "days": days}
         return {"from_date": from_date, "to_date": to_date, "date_filter": date_filter, "reference_date": None}
 
-    # 10. General Relative Point-in-Time: "today", "till date", "till today"
-    if "today" in q or "till date" in q or "till today" in q:
+    # 10. General Relative Point-in-Time: 'till today' vs 'today'
+    if "till date" in q or "till today" in q or "as of today" in q or "as on today" in q:
         to_date = to_display_date(ref_dt)
         date_filter = {"type": "till_today"}
         return {"from_date": None, "to_date": to_date, "date_filter": date_filter, "reference_date": to_date}
+
+    if "today" in q:
+        d_str = to_display_date(ref_dt)
+        date_filter = {"type": "today"}
+        return {"from_date": d_str, "to_date": d_str, "date_filter": date_filter, "reference_date": None}
 
     # Default: No explicit date filter in query
     return {

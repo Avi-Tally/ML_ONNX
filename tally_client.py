@@ -1280,102 +1280,103 @@ class TallyClient:
         return masters
 
     def fetch_recent_vouchers(self, company_name, port, from_date=None, to_date=None, voucher_type=None, limit=200):
-        """Fetches recent vouchers (transactions) using fast indexed routes and TDL."""
+        """Fetches recent vouchers (transactions) using native Voucher Register report or fast collection."""
         def _to_tally_date(d_str):
             if not d_str: return d_str
             p = self._parse_date(d_str)
             return p.strftime("%Y%m%d") if p != datetime.min else d_str
 
-        # 1. Determine Voucher Type Index (CHILDOF + BELONGSTO)
+        # 1. If date range is specified, query Tally's native 'Voucher Register' report (< 50ms)
+        if from_date or to_date:
+            f_date_clean = _to_tally_date(from_date) if from_date else _to_tally_date(to_date)
+            t_date_clean = _to_tally_date(to_date) if to_date else _to_tally_date(from_date)
+            
+            payload_vr = f"""<ENVELOPE>
+  <HEADER>
+    <VERSION>1</VERSION>
+    <TALLYREQUEST>Export</TALLYREQUEST>
+    <TYPE>Data</TYPE>
+    <ID>Voucher Register</ID>
+  </HEADER>
+  <BODY>
+    <DESC>
+      <STATICVARIABLES>
+        <SVEXPORTFORMAT>$$SysName:XML</SVEXPORTFORMAT>
+        <SVCURRENTCOMPANY>{company_name}</SVCURRENTCOMPANY>
+        <SVFROMDATE>{f_date_clean}</SVFROMDATE>
+        <SVTODATE>{t_date_clean}</SVTODATE>
+      </STATICVARIABLES>
+    </DESC>
+  </BODY>
+</ENVELOPE>"""
+            try:
+                res_vr = self.execute_xml_request(port, payload_vr, timeout=6)
+                cleaned_vr = self.clean_xml(res_vr)
+                root_vr = ET.fromstring(cleaned_vr)
+                vchs = root_vr.findall(".//VOUCHER")
+                if vchs:
+                    vouchers = []
+                    for v in vchs:
+                        d_raw = v.findtext("DATE")
+                        vt = v.findtext("VOUCHERTYPENAME")
+                        vn = v.findtext("VOUCHERNUMBER")
+                        party = v.findtext("PARTYLEDGERNAME")
+                        narration = v.findtext("NARRATION") or ""
+                        
+                        if not d_raw and not vt:
+                            continue
+                            
+                        # Format date: 20260101 -> 01-Jan-2026
+                        formatted_date = d_raw
+                        if d_raw and len(d_raw) == 8:
+                            try:
+                                dt = datetime.strptime(d_raw, "%Y%m%d")
+                                formatted_date = dt.strftime("%d-%b-%Y")
+                            except:
+                                pass
+                                
+                        # Amount extraction
+                        total_amount = "0.00"
+                        entries = v.findall(".//ALLLEDGERENTRIES.LIST") + v.findall(".//LEDGERENTRIES.LIST")
+                        for e in entries:
+                            a = e.findtext("AMOUNT")
+                            if a:
+                                try:
+                                    total_amount = f"{abs(float(a.strip().replace(',', ''))):,.2f}"
+                                    break
+                                except:
+                                    pass
+                                    
+                        if voucher_type:
+                            vt_clean = voucher_type.strip().lower()
+                            if vt and vt_clean not in vt.lower():
+                                continue
+                                
+                        vouchers.append({
+                            "date": formatted_date,
+                            "type": vt or "",
+                            "number": vn or "",
+                            "party": party or "",
+                            "amount": total_amount,
+                            "narration": narration
+                        })
+                    if vouchers:
+                        return vouchers[:limit]
+            except Exception as e:
+                pass
 
-        childof_tag = ""
-        vtype_cat = "general"
-        if voucher_type:
-            vtype_lower = voucher_type.lower()
-            if "credit note" in vtype_lower or "sales return" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeCreditNote</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "sales_purchase"
-            elif "debit note" in vtype_lower or "purchase return" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeDebitNote</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "sales_purchase"
-            elif "sales" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeSales</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "sales_purchase"
-            elif "purchase" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypePurchase</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "sales_purchase"
-            elif "receipt" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeReceipt</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "receipt_payment"
-            elif "payment" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypePayment</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "receipt_payment"
-            elif "journal" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeJournal</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "journal_contra"
-            elif "contra" in vtype_lower:
-                childof_tag = "<CHILDOF>$$VchTypeContra</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-                vtype_cat = "journal_contra"
-            else:
-                childof_tag = f"<CHILDOF>{voucher_type}</CHILDOF><BELONGSTO>Yes</BELONGSTO>"
-
-        # 2. Determine Conditional FETCH Projections based on Voucher Category
-        if vtype_cat == "sales_purchase":
-            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Amount", "Narration"]
-        elif vtype_cat == "receipt_payment":
-            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Amount", "Narration", "AllLedgerEntries.List", "LedgerEntries.List"]
-        else:
-            fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Narration", "Amount", "AllLedgerEntries.List", "LedgerEntries.List"]
-
-        # 3. Static Variable Dates & Bounds Configuration
+        # 2. General Fallback: Fast Voucher Collection
         max_limit = limit if (limit and isinstance(limit, int) and limit > 0) else constants.VOUCHER_DISPLAY_LIMIT
+        fetch_fields = ["Date", "VoucherTypeName", "VoucherNumber", "PartyLedgerName", "Amount", "Narration"]
         
-        coll_type = "Vouchers:VoucherType" if voucher_type else "Voucher"
         builder = (TDLEnvelopeBuilder()
-                   .set_collection(coll_type, "VchCollection")
+                   .set_collection("Voucher", "VchCollection")
                    .set_company(company_name)
                    .set_max_limit(max_limit)
                    .set_fetch(fetch_fields))
 
-        if voucher_type:
-            vtype_lower = voucher_type.lower()
-            if "credit note" in vtype_lower or "sales return" in vtype_lower:
-                builder.set_child_of("$$VchTypeCreditNote", belongs_to=True)
-            elif "debit note" in vtype_lower or "purchase return" in vtype_lower:
-                builder.set_child_of("$$VchTypeDebitNote", belongs_to=True)
-            elif "sales" in vtype_lower:
-                builder.set_child_of("$$VchTypeSales", belongs_to=True)
-            elif "purchase" in vtype_lower:
-                builder.set_child_of("$$VchTypePurchase", belongs_to=True)
-            elif "receipt" in vtype_lower:
-                builder.set_child_of("$$VchTypeReceipt", belongs_to=True)
-            elif "payment" in vtype_lower:
-                builder.set_child_of("$$VchTypePayment", belongs_to=True)
-            elif "journal" in vtype_lower:
-                builder.set_child_of("$$VchTypeJournal", belongs_to=True)
-            elif "contra" in vtype_lower:
-                builder.set_child_of("$$VchTypeContra", belongs_to=True)
-            else:
-                builder.set_child_of(voucher_type, belongs_to=True)
-
-        if from_date or to_date:
-            f_date_clean = _to_tally_date(from_date) if from_date else "19000101"
-            t_date_clean = _to_tally_date(to_date) if to_date else "20991231"
-            
-            # Fast out-of-bounds guard: If queried dates are far outside the company's active fiscal years (e.g. 2025 vs 2017), return []
-            f_dt = self._parse_date(from_date) if from_date else None
-            t_dt = self._parse_date(to_date) if to_date else None
-            ctx = self.fetch_company_context(company_name, port)
-            if ctx and ctx.get("to_date") and ctx.get("to_date") != "Unknown":
-                cmp_to_dt = self._parse_date(ctx["to_date"])
-                cmp_from_dt = self._parse_date(ctx["from_date"]) if ctx.get("from_date") != "Unknown" else None
-                if (f_dt and cmp_to_dt and f_dt > cmp_to_dt + timedelta(days=365)) or (t_dt and cmp_from_dt and t_dt < cmp_from_dt - timedelta(days=365)):
-                    return []
-
-            builder.set_date_range(f_date_clean, t_date_clean)
-
         payload = builder.build()
-        response_xml = self.execute_xml_request(port, payload, timeout=12)
+        response_xml = self.execute_xml_request(port, payload, timeout=6)
 
 
 
