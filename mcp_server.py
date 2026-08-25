@@ -128,18 +128,22 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             cleaned = p_str.strip(",.!? \t\n").lower()
             if len(cleaned) < 3:
                 return False
+            # Reject numeric strings and top-N ranking phrases (e.g. 'top 5', 'top 10', 'bottom 5')
+            if re.match(r'^(?:top|bottom|first|last|highest|lowest)\s*\d+$', cleaned) or cleaned.isdigit():
+                return False
             generic_words = {
                 "in", "of", "for", "to", "from", "at", "by", "on", "the", "a", "an", "what", "how", "total", 
                 "all", "overdue", "pending", "bills", "bill", "amount", "balance", "items", "item", "list", 
-                "show", "get", "is", "are", "was", "were", "much", "many", "unpaid", "paid", "due", "recent",
+                "show", "get", "tell", "tell me", "is", "are", "was", "were", "much", "many", "unpaid", "paid", "due", "recent",
                 "entries", "vouchers", "transactions", "ledger", "account", "accounts", "details", "summary",
                 "report", "last month", "this month", "last year", "this year", "customer", "customers",
-                "debtor", "debtors", "creditor", "creditors", "supplier", "suppliers", "vendor", "vendors"
+                "debtor", "debtors", "creditor", "creditors", "supplier", "suppliers", "vendor", "vendors",
+                "top", "bottom", "first", "last", "highest", "lowest", "maximum", "minimum"
             }
             if cleaned in generic_words:
                 return False
             tokens = [t for t in re.split(r'\W+', cleaned) if t]
-            if not tokens or all(t in generic_words for t in tokens):
+            if not tokens or all(t in generic_words or t.isdigit() for t in tokens):
                 return False
             return True
 

@@ -163,6 +163,52 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
 
     month_regex_str = r'(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)'
 
+    # 0A. Explicit Named Date Ranges (e.g., 'from 1 apr 17 to 8oct17', '1 apr to 8 oct 17', 'between 1 april 2017 and 8 october 2017')
+    m_named_range = re.search(
+        r'\b(?:from\s+|between\s+)?'
+        r'(\d{1,2})(?:st|nd|rd|th)?[\s\-\/\.]*(' + month_regex_str + r')(?:[\s\-\/\.]*(\d{2,4}))?'
+        r'\s*(?:to|-|and)\s*'
+        r'(\d{1,2})(?:st|nd|rd|th)?[\s\-\/\.]*(' + month_regex_str + r')(?:[\s\-\/\.]*(\d{2,4}))?\b',
+        q
+    )
+    if m_named_range:
+        d1_raw, m1_raw, y1_raw, d2_raw, m2_raw, y2_raw = m_named_range.groups()
+        if y2_raw and not y1_raw:
+            y1_raw = y2_raw
+        elif y1_raw and not y2_raw:
+            y2_raw = y1_raw
+            
+        d1 = int(d1_raw)
+        m1 = MONTH_NAMES[m1_raw.lower()]
+        y1 = (int("20" + y1_raw) if len(y1_raw) == 2 else int(y1_raw)) if y1_raw else infer_year_for_month(m1, ref_dt)
+        
+        d2 = int(d2_raw)
+        m2 = MONTH_NAMES[m2_raw.lower()]
+        y2 = (int("20" + y2_raw) if len(y2_raw) == 2 else int(y2_raw)) if y2_raw else infer_year_for_month(m2, ref_dt)
+        
+        from_date = f"{d1:02d}-{NUM_TO_MONTH[m1]}-{y1}"
+        to_date = f"{d2:02d}-{NUM_TO_MONTH[m2]}-{y2}"
+        date_filter = {"type": "explicit_range", "start_day": d1, "start_month": m1, "start_year": y1, "end_day": d2, "end_month": m2, "end_year": y2}
+        return {"from_date": from_date, "to_date": to_date, "date_filter": date_filter, "reference_date": None}
+
+    # 0B. Explicit Numeric Date Ranges (e.g., 'from 01-04-2017 to 08-10-2017', '01/04/17 to 08/10/17')
+    m_num_range = re.search(
+        r'\b(?:from\s+|between\s+)?'
+        r'(\d{1,2})[\-\/\.](\d{1,2})[\-\/\.](\d{2,4})'
+        r'\s*(?:to|-|and)\s*'
+        r'(\d{1,2})[\-\/\.](\d{1,2})[\-\/\.](\d{2,4})\b',
+        q
+    )
+    if m_num_range:
+        d1, m1, y1, d2, m2, y2 = [int(x) for x in m_num_range.groups()]
+        if 1 <= m1 <= 12 and 1 <= d1 <= 31 and 1 <= m2 <= 12 and 1 <= d2 <= 31:
+            if y1 < 100: y1 += 2000
+            if y2 < 100: y2 += 2000
+            from_date = f"{d1:02d}-{NUM_TO_MONTH[m1]}-{y1}"
+            to_date = f"{d2:02d}-{NUM_TO_MONTH[m2]}-{y2}"
+            date_filter = {"type": "explicit_range", "start_day": d1, "start_month": m1, "start_year": y1, "end_day": d2, "end_month": m2, "end_year": y2}
+            return {"from_date": from_date, "to_date": to_date, "date_filter": date_filter, "reference_date": None}
+
     # 1. Point-in-time exact dates (DD-MMM-YYYY, DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, 8oct17, 08oct2017, 31mar18, on 15 june 17, dated 02-03-2025)
     # 1A. Dates with named months (e.g., '8oct17', 'on 8oct17', '15-aug-2017', 'as of 31mar18', 'dated 15 june 17')
     m_named_date = re.search(r'\b(?:(as\s+on|as\s+of|till|up\s+to|on|dated|date|balance\s+as\s+at)\s+)?(\d{1,2})(?:st|nd|rd|th)?[\s\-\/\.]*(' + month_regex_str + r')[\s\-\/\.]*(\d{2,4})\b', q)
@@ -231,6 +277,8 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
             
         if y1_str:
             y1 = int("20" + y1_str) if len(y1_str) == 2 else int(y1_str)
+        elif y2_str:
+            y1 = y2
         else:
             y1 = infer_year_for_month(m1, ref_dt)
             if m1 > m2 and not y1_str and not y2_str:

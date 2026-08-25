@@ -163,6 +163,41 @@ class NLPEngine:
             "cash", "bank", "interest received", "books & periodicals", "freight inward", "freight outward"
         }
 
+    def _score_ngram_alignment(self, query_phrase: str, target_name: str, **kwargs) -> float:
+        """
+        Calculates an N-Gram Weighted Alignment Score:
+        1. Breaks down query into N-Gram tokens Q = [q_1, q_2, ...]
+        2. Breaks down candidate ledger into tokens L = [t_1, t_2, ...]
+        3. For every query token q_i, finds its maximum alignment: Sim(q_i, L) = max_j ratio(q_i, t_j)
+        4. Evaluates total query token coverage and penalizes unaligned tokens.
+        5. Computes sequence and character permutation scores.
+        6. Combines into final confidence score.
+        """
+        q_tokens = [t for t in re.findall(r'[a-zA-Z0-9]+', query_phrase.lower()) if len(t) > 0]
+        l_tokens = [t for t in re.findall(r'[a-zA-Z0-9]+', target_name.lower()) if len(t) > 0]
+        
+        if not q_tokens or not l_tokens:
+            return 0.0
+            
+        token_sims = []
+        for qt in q_tokens:
+            best_t_sim = max([fuzz.ratio(qt, lt) for lt in l_tokens])
+            token_sims.append(best_t_sim)
+            
+        token_coverage_score = sum(token_sims) / len(token_sims)
+        
+        # Penalize if any individual query token completely failed to align (< 45%)
+        min_token_sim = min(token_sims)
+        if min_token_sim < 45.0:
+            penalty = (min_token_sim / 45.0) ** 1.5
+            token_coverage_score *= penalty
+
+        full_wratio = fuzz.WRatio(query_phrase.lower(), target_name.lower())
+        token_sort = fuzz.token_sort_ratio(query_phrase.lower(), target_name.lower())
+        
+        final_score = (token_coverage_score * 0.65) + (full_wratio * 0.20) + (token_sort * 0.15)
+        return float(final_score)
+
     def resolve_ledger(self, query, ledgers):
         if not ledgers:
             return None, 0.0, [], 0
@@ -178,9 +213,9 @@ class NLPEngine:
                 if lname.lower() == explicit_name.lower():
                     return lname, 100.0, [], 1
             # Exact match with case-insensitivity
-            for lname in ledger_names:
-                if lname.lower().strip() == explicit_name.lower().strip():
-                    return lname, 100.0, [], 1
+            exact_matches = [lname for lname in ledger_names if lname.lower() == explicit_name.lower()]
+            if exact_matches:
+                return exact_matches[0], 100.0, [], 1
         
         # Rewrite Group Expenses to Expenses ONLY if Group Expenses is not a valid ledger/group name in the company
         if "group expenses" in query_lower and not any(l.lower() == "group expenses" for l in ledger_names):
@@ -188,48 +223,40 @@ class NLPEngine:
                 query_lower = query_lower.replace("group expenses", "expenses")
         
         # ======================================================================
-        # RESOLUTION STEP 1: Exact Substring Word-Boundary Search (Fast Path)
+        # RESOLUTION STEP 1: Direct Substring & Word-Boundary Master Matching
         # ======================================================================
+        system_vtypes = {
+            "sales", "purchase", "payment", "receipt", "journal", "contra", 
+            "credit note", "debit note", "delivery note", "receipt note"
+        }
+        
         best_exact_name = None
-        best_exact_pos = len(query_lower)
-        best_is_generic = True
-        system_vtypes = {"sales", "purchase", "receipt", "payment", "journal", "contra"}
+        best_exact_pos = 9999
         for name in ledger_names:
-            name_lower = name.lower()
-            if name_lower in self.common_words or name_lower in system_vtypes:
+            name_clean = name.strip()
+            name_lower = name_clean.lower()
+            if name_lower in self.common_words or len(name_clean) < 2:
                 continue
-            # Skip multi-word ledger names whose leading token is a common accounting keyword
-            # e.g. "OUTSTANDING INTEREST ON CAPITAL FIRST" starts with "outstanding" → skip
-            name_tokens = name_lower.split()
-            if len(name_tokens) > 1 and name_tokens[0] in self.common_words:
+            if name_lower in self.generic_ledgers:
                 continue
-
+            if name_lower in system_vtypes:
+                continue
+                
             try:
-                pattern = r'(?<![a-zA-Z0-9])' + re.escape(name_lower) + r'(?![a-zA-Z0-9])'
-                match = re.search(pattern, query_lower)
-                if match:
-                    pos = match.start()
-                    is_generic = name_lower in self.generic_ledgers
-                    if is_generic and not best_is_generic:
-                        continue
-                    if not is_generic and best_is_generic:
+                m_exact = re.search(r'(?<![a-zA-Z0-9])' + re.escape(name_lower) + r'(?![a-zA-Z0-9])', query_lower)
+                if m_exact:
+                    pos = m_exact.start()
+                    if pos < best_exact_pos:
                         best_exact_pos = pos
                         best_exact_name = name
-                        best_is_generic = False
-                    elif is_generic == best_is_generic:
-                        if pos < best_exact_pos:
-                            best_exact_pos = pos
-                            best_exact_name = name
-                        elif pos == best_exact_pos and best_exact_name and len(name) > len(best_exact_name):
-                            best_exact_name = name
+                    elif pos == best_exact_pos and best_exact_name and len(name) > len(best_exact_name):
+                        best_exact_name = name
             except re.error:
                 pass
 
         if best_exact_name:
             exact_clean = best_exact_name.lower().strip()
             score = 100.0
-            # Only trigger ambiguity if the matched name is a short partial token (e.g. 'Reliance')
-            # and is NOT a known generic/group category like 'Sundry Debtors'
             if len(exact_clean.split()) <= 1 and exact_clean not in self.generic_ledgers:
                 ambig_matches = [best_exact_name]
                 for lname in ledger_names:
@@ -238,7 +265,6 @@ class NLPEngine:
                     if re.search(r'(?<![a-zA-Z0-9])' + re.escape(exact_clean) + r'(?![a-zA-Z0-9])', lname.lower()):
                         ambig_matches.append(lname)
                 if len(ambig_matches) > 1:
-                    # Score each candidate against the query/exact_clean and sort descending
                     scored_candidates = []
                     for lname in ambig_matches:
                         f_score = max(fuzz.token_set_ratio(exact_clean, lname.lower()), fuzz.WRatio(exact_clean, lname.lower()))
@@ -267,43 +293,17 @@ class NLPEngine:
         if not windows:
             return None, 0.0, [], 0
             
-        filtered_ledgers = [(i, name.lower()) for i, name in enumerate(ledger_names) if name.lower() not in self.common_words and len(name) >= 2]
-        if not filtered_ledgers:
-            return None, 0.0, [], 0
-            
-        ledger_names_lower = [name for i, name in filtered_ledgers]
-        original_indices = [i for i, name in filtered_ledgers]
-        
-        # ======================================================================
-        # RESOLUTION STEP 3: RapidFuzz Token Set Ratio String Matching
-        # ======================================================================
-        # Sort windows by length descending so longest party entity phrases are evaluated first
         windows.sort(key=lambda w: len(w.split()), reverse=True)
         
         ledger_best = {} # idx -> (score, w_len, window)
         for window in windows:
-            w_clean_tokens = set(re.findall(r'[a-zA-Z0-9]+', window.lower()))
-            w_len = len(w_clean_tokens)
-            if w_len == 0:
-                continue
-            matches = process.extract(window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=20)
+            w_len = len(window.split())
+            matches = process.extract(window, ledger_names, scorer=self._score_ngram_alignment, limit=15)
             if matches:
                 for m in matches:
-                    matched_name_lower = m[0]
-                    idx = original_indices[m[2]]
-                    m_clean_tokens = set(re.findall(r'[a-zA-Z0-9]+', matched_name_lower.lower()))
-                    if not m_clean_tokens:
+                    cand_name, score, idx = m[0], float(m[1]), m[2]
+                    if cand_name.lower() in self.common_words:
                         continue
-                    
-                    overlap = sum(1 for wt in w_clean_tokens if any(fuzz.ratio(wt, mt) >= 75.0 for mt in m_clean_tokens))
-                    if overlap == 0:
-                        continue
-                        
-                    coverage = overlap / w_len
-                    clean_m = " ".join(re.findall(r'[a-zA-Z0-9]+', matched_name_lower))
-                    raw_score = max(fuzz.WRatio(window.lower(), clean_m), max([fuzz.ratio(window.lower(), mt) for mt in m_clean_tokens]))
-                    score = raw_score * coverage
-                    
                     if idx not in ledger_best:
                         ledger_best[idx] = (score, w_len, window)
                     else:
@@ -320,35 +320,29 @@ class NLPEngine:
 
         # Strict thresholding for single-word candidate windows to prevent false positive ledger matching
         if best_w_len == 1:
-            if len(best_window) < 4 or best_score < 90.0:
+            if len(best_window) < 4 or best_score < 88.0:
                 return None, best_score, [], 0
             cand_tokens = set(re.findall(r'[a-zA-Z0-9]+', ledger_names[best_idx].lower()))
-            if not any(fuzz.ratio(best_window.lower(), ct) >= 80.0 for ct in cand_tokens):
+            if not any(fuzz.ratio(best_window.lower(), ct) >= 75.0 for ct in cand_tokens):
                 return None, best_score, [], 0
-        elif best_score < 85.0:
+        elif best_score < 80.0:
             return None, best_score, [], 0
 
-        # Ambiguity Check for candidate window: Collect and rank top 10 candidates based on fuzzy score
+        # Ambiguity Check for candidate window: Collect and rank top 10 candidates based on stem-aware fuzzy score
         if best_window:
-            top_matches = process.extract(best_window, ledger_names_lower, scorer=fuzz.token_set_ratio, limit=20)
-            high_score_candidates = []
-            seen_names = set()
-            for m in top_matches:
-                m_score = m[1]
-                m_orig_name = ledger_names[original_indices[m[2]]]
-                if m_orig_name not in seen_names:
-                    seen_names.add(m_orig_name)
-                    # Combine token_set_ratio and WRatio for robust ranking
-                    w_score = fuzz.WRatio(best_window.lower(), m_orig_name.lower())
-                    comb_score = (m_score + w_score) / 2.0
-                    if abs(m_score - best_score) < 10.0 or (comb_score >= 70.0 and abs(comb_score - best_score) < 15.0):
-                        high_score_candidates.append((m_orig_name, comb_score))
+            top_candidates = []
+            for cand_idx, (c_score, _c_len, _c_win) in sorted_candidates:
+                if c_score >= 80.0 and abs(c_score - best_score) < 10.0:
+                    cand_name = ledger_names[cand_idx]
+                    top_candidates.append((cand_name, c_score))
             
-            if len(high_score_candidates) > 1:
+            if len(top_candidates) > 1:
                 # Rank strictly by fuzzy score descending and take top 10
-                high_score_candidates.sort(key=lambda x: x[1], reverse=True)
-                top_10 = [c[0] for c in high_score_candidates[:10]]
-                return None, best_score, top_10, 3
+                top_candidates.sort(key=lambda x: x[1], reverse=True)
+                top_10 = [c[0] for c in top_candidates[:10]]
+                return None, best_score, top_10, 2
+            elif len(top_candidates) == 1:
+                return top_candidates[0][0], best_score, [], 2
             
         matched_name = ledger_names[best_idx]
         matched_lower = matched_name.lower()
@@ -1247,11 +1241,12 @@ class NLPEngine:
                 temp_query = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/\s]*(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec)[a-z]*[-/\s]*\d{2,4}\b', ' ', temp_query)
                 temp_query = re.sub(r'(?:(?:on|as of|as on|till|for|in|at)\s+)?\b\d{1,2}[-/. ]+\d{1,2}[-/. ]+\d{2,4}\b', ' ', temp_query)
                 temp_query = re.sub(r'\b\d{1,2}[a-z]{3}\d{2,4}\b', ' ', temp_query)
+                temp_query = re.sub(r'\b(?:as of today|as on today|today|yesterday|tomorrow|till date|as of now|as of|as on|dated)\b', ' ', temp_query, flags=re.IGNORECASE)
                 for phrase in sorted(self.stop_phrases, key=len, reverse=True):
                     temp_query = re.sub(r'\b' + re.escape(phrase) + r'\b', ' ', temp_query)
                 extracted_ledger = re.sub(r'\s+', ' ', temp_query).strip(",.!? ").strip()
-                extracted_ledger = re.sub(r'^(?:for|in|to|of|from|show|display|get|details|bills|balance)\s+', '', extracted_ledger, flags=re.IGNORECASE)
-                extracted_ledger = re.sub(r'\s+(?:for|in|to|of|from|show|display|get|details|bills|balance)$', '', extracted_ledger, flags=re.IGNORECASE).strip()
+                extracted_ledger = re.sub(r'^(?:tell me|tell|show me|show|give me|give|get me|get|display|what is the|what is|find|check|for|in|to|of|from|details|bills|balance)\s+', '', extracted_ledger, flags=re.IGNORECASE)
+                extracted_ledger = re.sub(r'\s+(?:for|in|to|of|from|show|display|get|details|bills|balance|as of today|as on today|today|as of|as on)$', '', extracted_ledger, flags=re.IGNORECASE).strip()
                 
                 try:
                     ledgers = masters.get("ledgers") if masters.get("ledgers") else self.tally_client.fetch_ledgers(resolved_company, port)
