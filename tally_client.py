@@ -17,6 +17,7 @@
 # ==============================================================================
 
 import io                       # IMPORT RATIONALE: BytesIO memory buffer enables chunked streaming parsing without writing temporary files to disk.
+import os                       # IMPORT RATIONALE: Directory management and file path resolution for diagnostic captures.
 import re                       # IMPORT RATIONALE: Regular expressions for stripping invalid XML control codes, currency symbols, and numeric cleaning.
 import requests                 # IMPORT RATIONALE: Synchronous HTTP POST client used to send raw TDL XML Envelopes to Tally's local HTTP sockets.
 import socket                   # IMPORT RATIONALE: Low-level socket timeout management to avoid indefinite hangs on dead sockets.
@@ -131,29 +132,24 @@ class TallyClient:
             ports_to_probe = self.ports
 
         def probe_port(port):
-            url = f"http://localhost:{port}"
             payload = (TDLEnvelopeBuilder()
                        .set_collection("Company", "LoadedCompaniesList")
                        .set_is_initialise(False)
                        .set_fetch(["Name"])
                        .build())
             try:
-                response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=(1.0, 3.0))
-
-                if response.status_code == 200:
-
-                    cleaned_xml = self.clean_xml(response.text)
-                    root = ET.fromstring(cleaned_xml)
-                    found = {}
-                    for company_elem in root.findall(".//COMPANY"):
-                        name_elem = company_elem.find("NAME")
-                        if name_elem is not None and name_elem.text:
-                            company_name = name_elem.text.strip()
-                            found[company_name.lower()] = {"name": company_name, "port": port}
-                        elif company_elem.attrib.get("NAME"):
-                            company_name = company_elem.attrib.get("NAME").strip()
-                            found[company_name.lower()] = {"name": company_name, "port": port}
-                    return found
+                resp_text = self.execute_xml_request(port, payload, timeout=(1.0, 3.0))
+                root = ET.fromstring(resp_text)
+                found = {}
+                for company_elem in root.findall(".//COMPANY"):
+                    name_elem = company_elem.find("NAME")
+                    if name_elem is not None and name_elem.text:
+                        company_name = name_elem.text.strip()
+                        found[company_name.lower()] = {"name": company_name, "port": port}
+                    elif company_elem.attrib.get("NAME"):
+                        company_name = company_elem.attrib.get("NAME").strip()
+                        found[company_name.lower()] = {"name": company_name, "port": port}
+                return found
             except Exception:
                 pass
             return {}
@@ -228,6 +224,18 @@ class TallyClient:
 
     def execute_xml_request(self, port, payload, timeout=DEFAULT_HTTP_TIMEOUT):
         """Sends an XML request to TallyPrime and returns the response text."""
+        # Diagnostic Outgoing XML Logging Hook
+        try:
+            diag_dir = os.path.join(os.path.dirname(__file__), "diagnostics")
+            os.makedirs(diag_dir, exist_ok=True)
+            with open(os.path.join(diag_dir, "last_request.xml"), "w", encoding="utf-8") as f:
+                f.write(payload)
+            with open(os.path.join(diag_dir, "tdl_requests.log"), "a", encoding="utf-8") as f:
+                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+                f.write(f"\n<!-- [{ts}] HTTP POST TO PORT {port} -->\n{payload}\n")
+        except Exception:
+            pass
+
         url = f"http://localhost:{port}"
         try:
             response = requests.post(url, data=payload, headers={'Content-Type': 'text/xml'}, timeout=timeout)
@@ -1789,14 +1797,21 @@ class TallyClient:
                     chunk_to_process = self.entity_regex.sub(b'', chunk_to_process)
                     return chunk_to_process
                     
+            # Instantiate the sanitized stream wrapper to stream and clean XML bytes concurrently
             stream = SanitizedStream(response)
             is_global_query = (ledger_filter is None)
+            
+            # MEMORY OPTIMIZATION: Bounded Min-Heap (K=200)
+            # Instead of buffering 50,000+ bill objects in RAM and running a massive O(N log N) sort,
+            # we maintain an in-flight min-heap of size 200. Insertion is O(log K), keeping total time O(N log 200).
             import heapq
-            bills_heap = [] # Min-heap to keep top 200 highest-amount bills
+            bills_heap = [] # Min-heap storing tuples: (normalized_amount, object_id, bill_dict)
             total_matched_count = 0
             total_matched_receivables_sum = 0.0
             total_matched_payables_sum = 0.0
             
+            # STREAMING XML PULL-PARSER: ET.iterparse
+            # Event 'end' fires the moment </BILL> closes. We process its fields and immediately clear it from RAM.
             context = ET.iterparse(stream, events=('end',))
             for event, elem in context:
                 if elem.tag == 'BILL':
@@ -1804,10 +1819,13 @@ class TallyClient:
                     party = elem.findtext("PARENT") or ""
                     date = elem.findtext("BILLDATE") or ""
                     is_billwise = elem.findtext("ISBILLWISEON") or ""
+                    
+                    # Filter out non-bill accounts (e.g. direct ledger vouchers without bill tracking)
                     if is_billwise.strip().lower() == "no":
                         elem.clear()
                         continue
                     
+                    # Resolve due date from BILLCREDITPERIOD (which may contain Julian Day integer 'JD')
                     due_date_elem = elem.find("BILLCREDITPERIOD")
                     due_date = date
                     if due_date_elem is not None:
@@ -1833,6 +1851,7 @@ class TallyClient:
                     parent_group = elem.findtext("PARENTGROUP") or ""
                     cleared_on = elem.findtext("CLEAREDON") or ""
                     
+                    # Parse numerical amount value (handling negative/debit formatting)
                     amt_str = amt.strip()
                     if "=" in amt_str:
                         amt_str = amt_str.split("=")[-1].strip()
@@ -1845,6 +1864,7 @@ class TallyClient:
                     pg_lower = parent_group.strip().lower()
                     party_lower = party.strip().lower()
                     
+                    # Verify party lineage using cached Group Hierarchy Map
                     is_creditor = (
                         self.is_group_under(pg_lower, "sundry creditors", group_map) or
                         self.is_group_under(pg_lower, "trade payables", group_map) or
@@ -1858,6 +1878,7 @@ class TallyClient:
                         any(w in party_lower for w in ["debtor", "customer", "client"])
                     )
                     
+                    # In Tally: Negative balance = Debit (Receivable); Positive balance = Credit (Payable)
                     is_payable = amt_float > 0
                     is_receivable = amt_float < 0
                     
@@ -1900,7 +1921,7 @@ class TallyClient:
                         "is_settled": (cleared_on.strip() != "" or amt_float == 0)
                     }
                     
-                    # Maintain Top 200 Highest Amount Bills using Min-Heap
+                    # Bounded Min-Heap Insertion (Maintains Top 200 Bills with highest exposure)
                     rank_amt = max(normalized_pay_amt, normalized_rec_amt)
                     if len(bills_heap) < 200:
                         heapq.heappush(bills_heap, (rank_amt, id(bill_obj), bill_obj))
@@ -1908,11 +1929,12 @@ class TallyClient:
                         if rank_amt > bills_heap[0][0]:
                             heapq.heappushpop(bills_heap, (rank_amt, id(bill_obj), bill_obj))
                             
+                    # CRITICAL MEMORY MANAGEMENT:
+                    # Clear child DOM elements immediately to prevent garbage collector heap ballooning
                     elem.clear()
                     
-            # Sort top 200 bills descending by amount
+            # Sort the final bounded heap descending by amount for presentation
             bills = [item[2] for item in sorted(bills_heap, key=lambda x: x[0], reverse=True)]
-            # Attach grand totals as list metadata attributes
             bills_summary = {
                 "total_count": total_matched_count,
                 "total_receivables_sum": total_matched_receivables_sum,

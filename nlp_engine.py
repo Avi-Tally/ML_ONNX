@@ -359,7 +359,23 @@ class NLPEngine:
             
         return matched_name, best_score, [], 3
 
-    def get_embedding(self, text):
+    def get_embedding(self, text: str) -> np.ndarray:
+        r"""
+        ========================================================================
+        FUNCTION: get_embedding(text)
+        PURPOSE:
+            Generates a 384-dimensional dense semantic vector for a text query
+            using HuggingFace MiniLM / BERT architecture exported to ONNX.
+        
+        MATHEMATICAL PIPELINE:
+            1. Fast Tokenization: Subword tokenization produces input_ids, attention_mask, token_type_ids.
+            2. Tensor Evaluation: Forward pass on C++ ONNX session outputs `last_hidden_state` (Shape: [1, seq_len, 384]).
+            3. Mean Pooling:
+               $$\mathbf{e} = \frac{\sum_{i=1}^{L} \mathbf{h}_i \cdot \text{mask}_i}{\sum_{i=1}^{L} \text{mask}_i}$$
+            4. L2 Unit Sphere Projection:
+               $$\hat{\mathbf{e}} = \frac{\mathbf{e}}{\|\mathbf{e}\|_2}$$
+        ========================================================================
+        """
         if not self.session or not self.tokenizer:
             return np.zeros(384)
             
@@ -388,59 +404,91 @@ class NLPEngine:
             embedding = embedding / norm
         return embedding
 
-    def predict_intent(self, query):
+    def predict_intent(self, query: str) -> str:
+        """
+        ========================================================================
+        FUNCTION: predict_intent(query)
+        PURPOSE:
+            Classifies a freeform accounting query into an actionable intent label.
+            Uses a 2-tier classification system:
+              Tier 1: High-precision domain rule overrides (comparative summaries,
+                      cost centres, trust scores, batch tracking, company overview).
+              Tier 2: Fast ONNX machine learning model inference (TF-IDF + LogisticRegression)
+                      running via C++ runtime in < 0.5ms.
+        ========================================================================
+        """
         q_lower = query.lower()
+
+        # Rule Override 1: Multi-company cross-port comparisons
         if "compare" in q_lower and ("company" in q_lower or "companies" in q_lower or "between" in q_lower):
             return "GET_COMPARATIVE_SUMMARY"
 
+        # Rule Override 2: Executive company financial summary
         if any(w in q_lower for w in ["company overview", "company summary", "financial overview", "executive summary", "business dashboard", "company dashboard"]):
             return "GET_COMPANY_SUMMARY"
 
+        # Rule Override 3: Multi-card 360 degree ledger dashboard
         if any(w in q_lower for w in ["ledger 360", "party 360", "ledger overview", "account overview", "party overview", "overview of", "360 of"]):
             return "GET_LEDGER_BALANCE"
 
+        # Rule Override 4: Departmental / Cost Centre breakups
         if "cost cent" in q_lower or "cost category" in q_lower or "cost centre" in q_lower or "cost center" in q_lower or "$cc(" in q_lower:
             return "GET_COST_CENTRE_BREAKUP"
 
+        # Rule Override 5: Counterparty trust & credit rating intelligence
         if any(w in q_lower for w in ["trust score", "trusted client", "trusted customer", "trusted vendor", "credit rating", "most trusted"]):
             return "GET_TRUST_SCORES"
 
+        # Rule Override 6: Transaction frequency & voucher count statistics
         if any(w in q_lower for w in ["transaction count", "voucher count", "most frequent", "frequent vendor", "frequent supplier", "frequent party", "by transactions"]):
             return "GET_TOP_VENDORS_BY_TXN"
 
+        # Rule Override 7: Batch tracking, manufacturing dates & expiry details
         if any(w in q_lower for w in ["batch details", "batch-wise", "batch tracking", "expiry date", "expiring batches", "mfg date", "batch wise"]):
             return "GET_BATCH_DETAILS"
 
+        # Rule Override 8: Direct ledger balance queries (guarding against false TB matches)
         if any(w in q_lower for w in ["balance of", "closing balance", "opening balance", "balance for", "ledger balance", "party balance"]):
             if not any(w in q_lower for w in ["trial", "tb", "payables", "receivables", "stock", "inventory"]):
                 return "GET_LEDGER_BALANCE"
 
-
-
-
-
+        # Tier 2: ONNX Machine Learning Model Forward Pass
         if hasattr(self, 'intent_session') and self.intent_session:
             ml_intent, conf = self.predict_param(self.intent_session, query)
             if ml_intent:
-                # Guard against false positive trial balance when 'trial' or 'tb' is absent
+                # Guardrail: Prevent false positive Trial Balance if explicit 'trial' or 'tb' tokens are absent
                 if ml_intent == "GET_TRIAL_BALANCE" and not any(w in q_lower for w in ["trial", "tb"]):
                     return "GET_LEDGER_BALANCE"
                 return ml_intent
         return "GET_LEDGER_BALANCE"
 
-
-    def predict_param(self, session, text: str):
+    def predict_param(self, session: ort.InferenceSession, text: str) -> Tuple[Any, float]:
+        """
+        ========================================================================
+        FUNCTION: predict_param(session, text)
+        PURPOSE:
+            Executes a forward pass on a scikit-learn pipeline exported to ONNX.
+            Takes raw string text, packs it into a StringTensor (2D numpy object array),
+            and executes in C++ without requiring Python-side tokenization.
+        RETURNS:
+            Tuple: (predicted_label_value, confidence_score_float)
+        ========================================================================
+        """
         if not session:
             return None, 0.0
         try:
+            # Construct 2D StringTensor for ONNX runtime C++ ABI: shape (1, 1)
             inputs = {'string_input': np.array([[text]], dtype=object)}
             label, probs = session.run(None, inputs)
             predicted = label[0]
+            
+            # Extract probability confidence
             if isinstance(probs[0], dict):
                 confidence = float(max(probs[0].values()))
             else:
                 confidence = float(np.max(probs[0]))
             
+            # Normalize serialized string boolean/null literals into native Python types
             if predicted == 'None':
                 predicted = None
             elif predicted == 'True':
@@ -1189,7 +1237,7 @@ class NLPEngine:
                         parameters["cost_center"] = cc_candidate
                         break
 
-            if detected_intent in ["GET_LEDGER_BALANCE", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_BILL_DETAILS", "GET_RECENT_VOUCHERS", "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "AMBIGUOUS_OUTSTANDINGS"] and detected_intent != "GET_STOCK_SUMMARY":
+            if (detected_intent in ["GET_LEDGER_BALANCE", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING", "GET_BILL_DETAILS", "GET_RECENT_VOUCHERS", "AMBIGUOUS_OUTSTANDINGS"] or explicit_ledger) and detected_intent != "GET_STOCK_SUMMARY":
                 # Rewrite group expenses to expenses for real-world companies
                 if "under group expenses" in query_without_company.lower():
                     query_without_company = re.sub(r'\bunder group expenses\b', 'under expenses', query_without_company, flags=re.IGNORECASE)

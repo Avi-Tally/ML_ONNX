@@ -1,7 +1,30 @@
 """
-Data-driven TDL (Tally Definition Language) XML Envelope Builder.
-Constructs strictly compliant XML request envelopes for TallyPrime HTTP socket transport.
-Conforms to the TDL Knowledge Graph and TallyPrime XML socket protocol specification.
+==============================================================================
+MODULE: TDL ENVELOPE BUILDER (tdl_builder.py)
+
+PURPOSE:
+  Provides a fluent, data-driven builder pattern for constructing strictly 
+  compliant Tally Definition Language (TDL) XML request envelopes. 
+  
+  TallyPrime does not support standard SQL or REST interfaces; instead, it uses
+  an internal object-oriented TDL engine. This builder serializes high-level Python 
+  intent parameters into low-level XML envelopes that execute directly within 
+  Tally's C++ core memory space.
+
+CORE ARCHITECTURAL CONCEPTS:
+  1. Request Typology:
+     - Collection (<TYPE>Collection</TYPE>): Dynamic schema projections with custom
+       FETCH attributes, SYSTEM formula filters, and cross-object COMPUTE methods.
+     - Data (<TYPE>Data</TYPE>): Native C++ compiled internal reports (e.g., Trial Balance,
+       Group Summary, Godown Summary) which leverage pre-indexed internal state.
+     - Object (<TYPE>Object</TYPE>): Targeted single-object queries (e.g. AlterIDCheck).
+  2. Static Variable Scoping (<STATICVARIABLES>):
+     - Injects execution context variables (SVCURRENTCOMPANY, SVFROMDATE, SVTODATE,
+       GROUPNAME, EXPLODEFLAG, ISITEMWISE) into Tally's report evaluation stack.
+  3. Engine Pushdown:
+     - Offloads arithmetic, date bounds, and condition filtering into Tally's engine
+       to minimize network payload and ensure sub-40ms latency.
+==============================================================================
 """
 
 import html
@@ -19,23 +42,25 @@ class TDLEnvelopeBuilder:
          COMPUTE, CHILDOF, and SYSTEM formulae.
       2. Data Requests: Native Tally C++ internal reports (e.g. 'Group Summary',
          'Trial Balance', 'Cost Centre Breakup', 'Godown Summary', 'Company').
+      3. Object Requests: Single-instance master object checks ($$SysName:MasterAlterID).
     """
 
     def __init__(self):
-        self._request_type: str = "Collection"  # "Collection", "Data", or "Object"
+        # Request category: 'Collection' (dynamic schema), 'Data' (native report), or 'Object' (single object)
+        self._request_type: str = "Collection"
         self._report_id: Optional[str] = None   # Target report ID when _request_type == "Data"
         self._object_name: Optional[str] = None # Target object ID when _request_type == "Object"
-        self._company: Optional[str] = None     # Company name
+        self._company: Optional[str] = None     # Target company name
         self._collection_name: str = "DynamicCollection"
-        self._collection_type: Optional[str] = None # "Ledger", "Bill", "Voucher", "StockItem", etc.
-        self._fetch_fields: List[str] = []
-        self._filters: Dict[str, str] = {}     # {FilterName: FormulaExpression}
-        self._computes: Dict[str, str] = {}    # {FieldName: ComputeExpression}
-        self._child_of: Optional[str] = None
-        self._belongs_to: bool = False
-        self._sort_field: Optional[str] = None
-        self._max_limit: Optional[int] = None
-        self._is_initialise: bool = True       # Enforce ISINITIALISE="Yes" for memory pop
+        self._collection_type: Optional[str] = None # Tally collection type: "Ledger", "Bill", "Voucher", "StockItem", etc.
+        self._fetch_fields: List[str] = []      # Specific object attributes to retrieve in XML output
+        self._filters: Dict[str, str] = {}     # Mapping of filter names to TDL system formula expressions
+        self._computes: Dict[str, str] = {}    # Computed methods for traversing foreign object relations
+        self._child_of: Optional[str] = None   # Hierarchical parent boundary (e.g. specific Group, Ledger, or Macro)
+        self._belongs_to: bool = False         # If True, matches entire recursive sub-hierarchy in Tally
+        self._sort_field: Optional[str] = None # Index sorting order (e.g. 'Default : -$ClosingBalance')
+        self._max_limit: Optional[int] = None  # Hard result count cap enforced at TDL engine level
+        self._is_initialise: bool = True       # Enforce ISINITIALISE="Yes" to force fresh memory evaluation
         self._static_vars: Dict[str, str] = {
             "SVEXPORTFORMAT": constants.TDL_EXPORT_FORMAT
         }

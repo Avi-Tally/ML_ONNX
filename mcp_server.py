@@ -160,8 +160,40 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             }
             return f"__AMBIGUITY__:{json.dumps(payload)}"
 
-        # When no explicit date is provided, default seamlessly to active Tally company date context
         intent = parsed.get("intent")
+
+        # ======================================================================
+        # INTERCEPTOR 1.5: Date Ambiguity Guardrail (DATE_SELECTION)
+        # PURPOSE:
+        #   If a date-sensitive query lacks an explicit date/period anchor,
+        #   prompt the user for date context before executing against Tally.
+        # ======================================================================
+        has_date_param = bool(parsed.get("parameters", {}).get("date_filter") or parsed.get("parameters", {}).get("reference_date"))
+        date_indicator_pattern = r'\b(as\s+on|as\s+of|on\s+\d|dated|till|today|yesterday|fy\s*\d|fy\s*20\d\d|q[1-4]|this\s+(?:week|month|quarter|year)|last\s+(?:week|month|quarter|year)|next\s+(?:week|month|quarter|year)|january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|oct|nov|dec|\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\b'
+        has_date_indicator = bool(re.search(date_indicator_pattern, query, re.IGNORECASE))
+        
+        date_sensitive_intents = {
+            "GET_STOCK_SUMMARY", "GET_LEDGER_BALANCE", "GET_TRIAL_BALANCE",
+            "GET_RECENT_VOUCHERS", "GET_RECEIVABLES", "GET_PAYABLES", "GET_AGEING",
+            "GET_TOP_DEBTORS", "GET_TOP_CREDITORS", "GET_COMPANY_SUMMARY",
+            "GET_COST_CENTRE_BREAKUP", "GET_COST_CENTRE_SUMMARY", "GET_BATCH_DETAILS"
+        }
+        
+        if not has_date_param and not has_date_indicator and intent in date_sensitive_intents:
+            active_date_disp = context_dict.get("current_date") or context_dict.get("to_date") or "Latest Active Date"
+            payload = {
+                "type": "DATE_SELECTION",
+                "prompt": f"[{company_name}] Please select or specify the date context for this query:",
+                "options": [
+                    f"As of Today ({active_date_disp})",
+                    "Specific Date (Point in time)",
+                    "Entire Active Fiscal Year",
+                    "Specific Month",
+                    "Custom Date Range"
+                ],
+                "original_query": query
+            }
+            return f"__AMBIGUITY__:{json.dumps(payload)}"
 
         # ======================================================================
         # INTERCEPTOR 2: Directional Ambiguity Guardrail (AMBIGUOUS_OUTSTANDINGS)
@@ -349,7 +381,15 @@ def _query_tally_internal(query: str, profiler=None) -> str:
             return "\n".join(response)
 
         # 2. GET_COMPANY_SUMMARY (Executive Financial Dashboard)
-        elif intent in ["GET_COMPANY_SUMMARY", "GET_COMPARATIVE_SUMMARY"] or ("summary" in query.lower() and not parsed.get("resolved_ledger") and not parsed.get("parameters", {}).get("stock_group") and not parsed.get("parameters", {}).get("godown_name") and not parsed.get("parameters", {}).get("cost_center")):
+        elif intent in ["GET_COMPANY_SUMMARY", "GET_COMPARATIVE_SUMMARY"] or (
+            "summary" in query.lower()
+            and intent not in ["GET_STOCK_SUMMARY", "GET_TRIAL_BALANCE", "GET_BATCH_DETAILS", "GET_COST_CENTRE_BREAKUP", "GET_COST_CENTRE_SUMMARY"]
+            and not any(w in query.lower() for w in ["stock", "inventory", "item", "items", "trial balance", "batch", "cost centre", "cost center"])
+            and not parsed.get("resolved_ledger")
+            and not parsed.get("parameters", {}).get("stock_group")
+            and not parsed.get("parameters", {}).get("godown_name")
+            and not parsed.get("parameters", {}).get("cost_center")
+        ):
             try:
                 dash = tally_client.fetch_company_dashboard(company_name, port, from_date=f_date, to_date=t_date)
                 period_str = f"Period: {f_date} to {t_date}" if f_date and t_date else (f"as of {t_date}" if t_date else "Active Financial Year")

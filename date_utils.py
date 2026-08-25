@@ -1,8 +1,22 @@
 """
-Consolidated Date & Temporal Utilities for ML_ONNX Tally Integration.
-Provides a unified, robust multi-format date parser, date range resolver,
-and TDL/Display date serializers supporting flexible natural language formats
-(e.g., 'this month', 'apr17', 'may to june', 'q1 2017', 'fy 17-18', etc.).
+==============================================================================
+MODULE: TEMPORAL RESOLUTION & DATE UTILITIES (date_utils.py)
+
+PURPOSE:
+  Provides unified, zero-ambiguity date parsing, fiscal year alignment, 
+  and temporal boundary resolution for natural language accounting queries.
+
+CORE ACCOUNTING MECHANICS:
+  1. Indian Fiscal Year Alignment (Standard Tally Books):
+     - Financial Year runs from April 1 of Year Y to March 31 of Year Y+1 (e.g., FY 17-18).
+     - Q1: Apr 1 - Jun 30 | Q2: Jul 1 - Sep 30 | Q3: Oct 1 - Dec 31 | Q4: Jan 1 - Mar 31.
+  2. Temporal Anchor Resolution (SVCURRENTDATE / Point-in-Time):
+     - Normalizes relative tokens ('this month', 'last 30 days', 'past quarter', 'last week')
+       against the active company's historical current_date (or real-world datetime.now()).
+  3. Strict String Serialization:
+     - Tally Internal / TDL Date: YYYYMMDD (e.g., 20170815)
+     - Standard Presentation Format: DD-MMM-YYYY (e.g., 15-Aug-2017)
+==============================================================================
 """
 
 import re
@@ -149,25 +163,43 @@ def extract_dates_from_query(query: str, ref_date_str: Optional[str] = None, con
 
     month_regex_str = r'(?:january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)'
 
-    # 1. Point-in-time exact dates (DD-MMM-YYYY, DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD): "as on 15-Aug-2017", "on 15 june 17", "dated 02-03-2025"
-    m_exact_date = re.search(r'\b(as\s+on|as\s+of|till|up\s+to|on|dated|date|balance\s+as\s+at)\s+(\d{1,2})[\s\-\/\.](' + month_regex_str + r'|\d{1,2})[\s\-\/\.](\d{2,4})\b', q)
-    if m_exact_date:
-        prefix = m_exact_date.group(1).strip()
-        d = int(m_exact_date.group(2))
-        m_raw = m_exact_date.group(3)
-        y = int(m_exact_date.group(4))
+    # 1. Point-in-time exact dates (DD-MMM-YYYY, DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, 8oct17, 08oct2017, 31mar18, on 15 june 17, dated 02-03-2025)
+    # 1A. Dates with named months (e.g., '8oct17', 'on 8oct17', '15-aug-2017', 'as of 31mar18', 'dated 15 june 17')
+    m_named_date = re.search(r'\b(?:(as\s+on|as\s+of|till|up\s+to|on|dated|date|balance\s+as\s+at)\s+)?(\d{1,2})(?:st|nd|rd|th)?[\s\-\/\.]*(' + month_regex_str + r')[\s\-\/\.]*(\d{2,4})\b', q)
+    if m_named_date:
+        prefix = (m_named_date.group(1) or "").strip().lower()
+        d = int(m_named_date.group(2))
+        m_raw = m_named_date.group(3).lower()
+        y = int(m_named_date.group(4))
         if y < 100: y += 2000
-        if m_raw.isdigit():
-            m = int(m_raw)
-        else:
-            m = MONTH_NAMES[m_raw]
+        m = MONTH_NAMES[m_raw]
         ref_str = f"{d:02d}-{NUM_TO_MONTH[m]}-{y}"
         if prefix in ["as on", "as of", "till", "up to", "balance as at"]:
             return {"from_date": None, "to_date": ref_str, "date_filter": None, "reference_date": ref_str}
-        else:
-            # Explicit single-date for vouchers/daybook: "on 15 june 17", "dated 15-06-2017"
+        elif prefix in ["on", "dated", "date"]:
             date_filter = {"type": "single_date", "day": d, "month": m, "year": y}
             return {"from_date": ref_str, "to_date": ref_str, "date_filter": date_filter, "reference_date": ref_str}
+        else:
+            # Standalone point-in-time date (e.g. '8oct17', '15-aug-2017')
+            return {"from_date": None, "to_date": ref_str, "date_filter": None, "reference_date": ref_str}
+
+    # 1B. Numeric dates with standard separators (e.g., '08-10-2017', '8/10/17', 'on 15/06/2017')
+    m_num_date = re.search(r'\b(?:(as\s+on|as\s+of|till|up\s+to|on|dated|date|balance\s+as\s+at)\s+)?(\d{1,2})[\-\/\.](\d{1,2})[\-\/\.](\d{2,4})\b', q)
+    if m_num_date:
+        prefix = (m_num_date.group(1) or "").strip().lower()
+        d = int(m_num_date.group(2))
+        m = int(m_num_date.group(3))
+        y = int(m_num_date.group(4))
+        if 1 <= m <= 12 and 1 <= d <= 31:
+            if y < 100: y += 2000
+            ref_str = f"{d:02d}-{NUM_TO_MONTH[m]}-{y}"
+            if prefix in ["as on", "as of", "till", "up to", "balance as at"]:
+                return {"from_date": None, "to_date": ref_str, "date_filter": None, "reference_date": ref_str}
+            elif prefix in ["on", "dated", "date"]:
+                date_filter = {"type": "single_date", "day": d, "month": m, "year": y}
+                return {"from_date": ref_str, "to_date": ref_str, "date_filter": date_filter, "reference_date": ref_str}
+            else:
+                return {"from_date": None, "to_date": ref_str, "date_filter": None, "reference_date": ref_str}
 
     # 2. Explicit FY: "fy 17-18", "fy 2017-18", "fy 2017-2018", "fy17-18", "fy17"
     m_fy = re.search(r'\bfy\s*(?:20)?(\d{2})(?:\s*-\s*(?:20)?(\d{2}))?\b', q)

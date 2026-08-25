@@ -1,3 +1,28 @@
+r"""
+==============================================================================
+MODULE: FINANCIAL ANALYTICS & RISK SCORING ENGINE (analytics_engine.py)
+
+PURPOSE:
+  Provides deterministic business intelligence, credit delay analysis, 
+  aging classifications, and counterparty trust scoring over TallyPrime 
+  accounting data.
+
+MATHEMATICAL & ANALYTICAL MODELS:
+  1. Aging & Days Sales Outstanding (DSO):
+     $$\text{AgeDays} = \text{ReferenceDate} - \text{DueDate}$$
+     - Overdue Threshold: $\text{AgeDays} > 0$
+     - Aging Buckets: 0-30d, 31-60d, 61-90d, 91-180d, >180d
+  2. Multi-Factor Counterparty Trust Scoring Model:
+     $$\text{Score} = \left(0.40 \cdot S_{\text{settle}} + 0.25 \cdot S_{\text{freq}} + 0.20 \cdot S_{\text{recent}} + 0.15 \cdot S_{\text{volume}}\right) \times (1.0 - P_{\text{overdue}})$$
+     Where:
+     - $S_{\text{settle}} \in [0, 1]$: Settlement Ratio ($\frac{\text{TotalSettled}}{\text{TotalInvoiced}}$)
+     - $S_{\text{freq}} \in [0, 1]$: Transaction Frequency ($\min(1.0, \frac{\text{Txns}}{10})$)
+     - $S_{\text{recent}} \in [0, 1]$: Recency Decay ($\max(0.0, 1.0 - \frac{\text{DaysSinceLastTxn}}{365})$)
+     - $S_{\text{volume}} \in [0, 1]$: Relative Turnover ($\frac{\text{PartyVolume}}{\text{MaxVolume}}$)
+     - $P_{\text{overdue}} \in [0, 0.5]$: Overdue Exposure Penalty ($\min(0.50, \frac{\text{OverdueAmt}}{\text{OutstandingAmt}}$)
+==============================================================================
+"""
+
 from datetime import datetime, timedelta
 import date_utils
 
@@ -5,7 +30,8 @@ class AnalyticsEngine:
     def __init__(self):
         pass
 
-    def _parse_date(self, date_str):
+    def _parse_date(self, date_str: str) -> datetime:
+        """Helper to parse raw date strings into standard datetime objects."""
         parsed = date_utils.parse_date(date_str)
         return parsed if parsed is not None else datetime.min
 
